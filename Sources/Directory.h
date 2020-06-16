@@ -18,7 +18,10 @@ public:
 	Directory(LPCTSTR szPath) : Path(szPath) {};
 
 	// Information.
-	void GetContents();
+	UINT GetSubDirectories();
+
+	// Misc.
+	void SetPath(Path path);
 };
 
 #endif  // _DIRECTORY_H

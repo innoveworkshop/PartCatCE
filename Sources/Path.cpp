@@ -21,8 +21,16 @@ Path::Path() {
  * @param szPath String representation of the path.
  */
 Path::Path(LPCTSTR szPath) {
-	this->szPath[0] = L'\0';
 	wcscpy(this->szPath, szPath);
+}
+
+/**
+ * Appends a raw string to the end of the path.
+ *
+ * @param szString String to be appended to the end of the path.
+ */
+void Path::AppendString(LPCTSTR szString) {
+	wcscat(szPath, szString);
 }
 
 /**
@@ -31,9 +39,13 @@ Path::Path(LPCTSTR szPath) {
  *
  * @param szChildPath String to be appended to this path.
  */
-void Path::Concatenate(LPCTSTR szChildPath) {
-	wcscat(szPath, L"\\");  // TODO: Optimize this.
-	wcscat(szPath, szChildPath);
+Path Path::Concatenate(LPCTSTR szChildPath) {
+	Path path(szPath);
+
+	path.AppendString(L"\\");  // TODO: Optimize this.
+	path.AppendString(szChildPath);
+
+	return path;
 }
 
 /**

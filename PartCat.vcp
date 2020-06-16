@@ -380,6 +380,83 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\Sources\Directory.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_DIREC=\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\PartCat.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -472,8 +549,79 @@ NODEP_CPP_PARTC=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_PARTC=\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
 	".\Sources\PartCat.h"\
+	".\Sources\Path.h"\
 	".\Sources\StdAfx.h"\
+	".\Sources\TreeView.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\Path.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_PATH_=\
+	".\Sources\Path.h"\
 	
 
 !ENDIF 
@@ -546,6 +694,73 @@ DEP_CPP_STDAF=\
 !ENDIF 
 
 # End Source File
+# Begin Source File
+
+SOURCE=.\Sources\TreeView.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_TREEV=\
+	".\Sources\TreeView.h"\
+	
+
+!ENDIF 
+
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -556,11 +771,23 @@ SOURCE=.\Sources\Constants.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Sources\Directory.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\PartCat.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Sources\Path.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\TreeView.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

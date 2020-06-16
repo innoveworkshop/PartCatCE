@@ -11,7 +11,7 @@
 #include <windows.h>
 
 class Path {
-private:
+protected:
 	WCHAR szPath[MAX_PATH];
 
 public:
@@ -20,7 +20,8 @@ public:
 	Path(LPCTSTR szPath);
 
 	// Operations.
-	void Concatenate(LPCTSTR szChildPath);
+	void AppendString(LPCTSTR szString);
+	Path Concatenate(LPCTSTR szChildPath);
 
 	// Misc.
 	LPCTSTR ToString();
