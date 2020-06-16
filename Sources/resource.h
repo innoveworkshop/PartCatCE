@@ -1,15 +1,16 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft eMbedded Visual C++ generated include file.
-// Used by PARTCAT.RC
+// Microsoft Developer Studio generated include file.
+// Used by PartCat.rc
 //
-#define IDS_APP_TITLE					1
-#define IDS_HELLO						2
-#define IDC_PARTCAT				3
-#define IDI_PARTCAT				101
-#define IDM_MENU						102
-#define IDD_ABOUTBOX					103
-#define IDM_FILE_EXIT					40002
-#define IDM_HELP_ABOUT					40003
+#define IDS_APP_TITLE                   1
+#define IDS_HELLO                       2
+#define IDC_PARTCAT                     3
+#define IDI_PARTCAT                     101
+#define IDM_MENU                        102
+#define IDM_MAINMENU                    102
+#define IDD_ABOUTBOX                    103
+#define IDM_FILE_EXIT                   40002
+#define IDM_HELP_ABOUT                  40003
 
 // Next default values for new objects
 // 

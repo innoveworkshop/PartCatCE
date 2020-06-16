@@ -1,185 +1,395 @@
-// PartCat.cpp : Defines the entry point for the application.
-//
+/**
+ * PartCat.c
+ * Electronic components cataloger and organizer application for Windows CE.
+ *
+ * @author Nathan Campos <nathan@innoveworkshop.com>
+ */
 
 #include "stdafx.h"
 #include "PartCat.h"
+#include <windows.h>
+#include <windowsx.h>
 #include <commctrl.h>
 
-#define MAX_LOADSTRING 100
+// Global variables.
+HINSTANCE hInst;
 
-// Global Variables:
-HINSTANCE			hInst;			// The current instance
-HWND				hwndCB;			// The command bar handle
-
-// Forward declarations of functions included in this code module:
-ATOM				MyRegisterClass	(HINSTANCE, LPTSTR);
-BOOL				InitInstance	(HINSTANCE, int);
-LRESULT CALLBACK	WndProc			(HWND, UINT, WPARAM, LPARAM);
-LRESULT CALLBACK	About			(HWND, UINT, WPARAM, LPARAM);
-
-int WINAPI WinMain(	HINSTANCE hInstance,
-					HINSTANCE hPrevInstance,
-					LPTSTR    lpCmdLine,
-					int       nCmdShow)
-{
+/**
+ * Application's main entry point.
+ *
+ * @param  hInstance     Program instance.
+ * @param  hPrevInstance Ignored: Leftover from Win16.
+ * @param  lpCmdLine     String with command line text.
+ * @param  nShowCmd      Initial state of the program's main window.
+ * @return               wParam of the WM_QUIT message.
+ */
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+				   LPWSTR lpCmdLine, int nShowCmd) {
 	MSG msg;
-	HACCEL hAccelTable;
+	HWND hwndMain;
+	HACCEL hAccel;
+	int rc;
 
-	// Perform application initialization:
-	if (!InitInstance (hInstance, nCmdShow)) 
-	{
-		return FALSE;
-	}
+	// Initialize the application.
+	rc = InitializeApplication(hInstance);
+	if (rc)
+		return 0;
 
-	hAccelTable = LoadAccelerators(hInstance, (LPCTSTR)IDC_PARTCAT);
+	// Initialize this single instance.
+	hwndMain = InitializeInstance(hInstance, lpCmdLine, nShowCmd);
+	if (hwndMain == 0)
+		return 0x10;
 
-	// Main message loop:
-	while (GetMessage(&msg, NULL, 0, 0)) 
-	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg)) 
-		{
+	// Load accelerators.
+	hAccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_PARTCAT));
+
+	// Application message loop.
+	while (GetMessage(&msg, NULL, 0, 0)) {
+		// Translate accelerators.
+		if (!TranslateAccelerator(hwndMain, hAccel, &msg)) {
+			// Translate message.
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 	}
 
-	return msg.wParam;
+	// Clean up.
+	return TerminateInstance(hInstance, msg.wParam);
 }
 
-//
-//  FUNCTION: MyRegisterClass()
-//
-//  PURPOSE: Registers the window class.
-//
-//  COMMENTS:
-//
-//    It is important to call this function so that the application 
-//    will get 'well formed' small icons associated with it.
-//
-ATOM MyRegisterClass(HINSTANCE hInstance, LPTSTR szWindowClass)
-{
-	WNDCLASS	wc;
+/**
+ * Initializes the application and registers the application class.
+ *
+ * @param  hInstance Application instance.
+ * @return           TRUE if the class was registered.
+ */
+int InitializeApplication(HINSTANCE hInstance) {
+	WNDCLASS wc;
+	TCHAR szWindowClass[MAX_LOADSTRING];
 
-    wc.style			= CS_HREDRAW | CS_VREDRAW;
-    wc.lpfnWndProc		= (WNDPROC) WndProc;
-    wc.cbClsExtra		= 0;
-    wc.cbWndExtra		= 0;
-    wc.hInstance		= hInstance;
-    wc.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PARTCAT));
-    wc.hCursor			= 0;
-    wc.hbrBackground	= (HBRUSH) GetStockObject(WHITE_BRUSH);
-    wc.lpszMenuName		= 0;
-    wc.lpszClassName	= szWindowClass;
+	// Load the application name.
+	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
 
-	return RegisterClass(&wc);
+	// Register the application's main window class.
+	wc.style = 0;					   // Window style.
+	wc.lpfnWndProc = MainWindowProc;   // Main window procedure.
+	wc.cbClsExtra = 0;				   // Extra class data.
+	wc.cbWndExtra = 0;				   // Extra window data.
+	wc.hInstance = hInstance;		   // Owner handle.
+	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PARTCAT));
+	wc.hCursor = NULL;				   // Default cursor. (Always NULL)
+	wc.hbrBackground = (HBRUSH)GetSysColorBrush(COLOR_STATIC);
+	wc.lpszMenuName = NULL;            // Menu name. (Always NULL)
+	wc.lpszClassName = szWindowClass;  // Window class name.
+
+	// Check if the class registration worked.
+	if (!RegisterClass(&wc)) {
+        MessageBox(NULL, L"Window Registration Failed!", L"Error",
+			MB_ICONEXCLAMATION | MB_OK);
+        return 1;
+    }
+
+	return 0;
 }
 
-//
-//  FUNCTION: InitInstance(HANDLE, int)
-//
-//  PURPOSE: Saves instance handle and creates main window
-//
-//  COMMENTS:
-//
-//    In this function, we save the instance handle in a global variable and
-//    create and display the main program window.
-//
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-	HWND	hWnd;
-	TCHAR	szTitle[MAX_LOADSTRING];			// The title bar text
-	TCHAR	szWindowClass[MAX_LOADSTRING];		// The window class name
+/**
+ * Initializes the instance and creates the window.
+ *
+ * @param  hInstance     Program instance.
+ * @param  lpCmdLine     String with command line text.
+ * @param  nShowCmd      Initial state of the program's main window.
+ * @return               Window handler.
+ */
+HWND InitializeInstance(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
+	HWND hWnd;
+	TCHAR szWindowClass[MAX_LOADSTRING];
+	hInst = hInstance;
 
-	hInst = hInstance;		// Store instance handle in our global variable
-	// Initialize global strings
-	LoadString(hInstance, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
-	MyRegisterClass(hInstance, szWindowClass);
+	// Load the application name.
+	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
 
-	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	hWnd = CreateWindow(szWindowClass, szTitle, WS_VISIBLE,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
+	// Create the main window.
+	hWnd = CreateWindow(szWindowClass,  // Window class.
+						L"WinUki",      // Window title.
+						WS_VISIBLE,		// Style flags.
+						CW_USEDEFAULT,  // X position.
+						CW_USEDEFAULT,  // Y position.
+						CW_USEDEFAULT,  // Initial width,
+						CW_USEDEFAULT,  // Initial height.
+						NULL,			// Parent window.
+						NULL,			// Menu class. (Always NULL)
+						hInstance,		// Application instance.
+						NULL);			// Pointer to create parameters.
 
-	if (!hWnd)
-	{	
-		return FALSE;
+
+	// Check if the window creation worked.
+	if (!IsWindow(hWnd)) {
+		MessageBox(NULL, L"Window Creation Failed!", L"Error",
+            MB_ICONEXCLAMATION | MB_OK);
+        return 0;
 	}
 
-	ShowWindow(hWnd, nCmdShow);
+	// Show and update the window.
+	ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 	UpdateWindow(hWnd);
-	if (hwndCB)
-		CommandBar_Show(hwndCB, TRUE);
 
-	return TRUE;
+	return hWnd;
 }
 
-//
-//  FUNCTION: WndProc(HWND, unsigned, WORD, LONG)
-//
-//  PURPOSE:  Processes messages for the main window.
-//
-//  WM_COMMAND	- process the application menu
-//  WM_PAINT	- Paint the main window
-//  WM_DESTROY	- post a quit message and return
-//
-//
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	HDC hdc;
-	int wmId, wmEvent;
-	PAINTSTRUCT ps;
-	TCHAR szHello[MAX_LOADSTRING];
-
-	switch (message) 
-	{
-		case WM_COMMAND:
-			wmId    = LOWORD(wParam); 
-			wmEvent = HIWORD(wParam); 
-			// Parse the menu selections:
-			switch (wmId)
-			{
-				case IDM_HELP_ABOUT:
-				   DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)About);
-				   break;
-				case IDM_FILE_EXIT:
-				   DestroyWindow(hWnd);
-				   break;
-				default:
-				   return DefWindowProc(hWnd, message, wParam, lParam);
-			}
-			break;
-		case WM_CREATE:
-			hwndCB = CommandBar_Create(hInst, hWnd, 1);			
-			CommandBar_InsertMenubar(hwndCB, hInst, IDM_MENU, 0);
-			CommandBar_AddAdornments(hwndCB, 0, 0);
-			break;
-		case WM_PAINT:
-			RECT rt;
-			hdc = BeginPaint(hWnd, &ps);
-			GetClientRect(hWnd, &rt);
-			LoadString(hInst, IDS_HELLO, szHello, MAX_LOADSTRING);
-			DrawText(hdc, szHello, _tcslen(szHello), &rt, 
-				DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-			EndPaint(hWnd, &ps);
-			break;
-		case WM_DESTROY:
-			CommandBar_Destroy(hwndCB);
-			PostQuitMessage(0);
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-   }
-   return 0;
+/**
+ * Terminates the application instance.
+ *
+ * @param  hInstance Application instance.
+ * @param  nDefRC    Return code.
+ * @return           Previous return code.
+ */
+int TerminateInstance(HINSTANCE hInstance, int nDefRC) {
+	return nDefRC;
 }
 
-// Mesage handler for the About box.
-LRESULT CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
+/**
+ * Main window procedure.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
+								LPARAM lParam) {
+	switch (wMsg) {
+	case WM_CREATE:
+		return WndMainCreate(hWnd, wMsg, wParam, lParam);
+	case WM_COMMAND:
+		return WndMainCommand(hWnd, wMsg, wParam, lParam);
+	case WM_INITMENUPOPUP:
+		return WndMainInitMenuPopUp(hWnd, wMsg, wParam, lParam);
+	case WM_NOTIFY:
+		return WndMainNotify(hWnd, wMsg, wParam, lParam);
+	case WM_CLOSE:
+		return WndMainClose(hWnd, wMsg, wParam, lParam);
+	case WM_DESTROY:
+		return WndMainDestroy(hWnd, wMsg, wParam, lParam);
+	}
+
+	return DefWindowProc(hWnd, wMsg, wParam, lParam);
+}
+
+/**
+ * Process the WM_CREATE message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
+					  LPARAM lParam) {
+	HWND hwndCB;
+	HWND hwndTV;
+	HIMAGELIST hIml;
+	RECT rcTreeView;
+	RECT rcPageView;
+
+	// Ensure that the common control DLL is loaded. 
+    InitCommonControls();
+
+	// Initialize the Image List.
+	//hIml = InitializeImageList(hInst);
+
+	// Create CommandBar.
+	hwndCB = CommandBar_Create(hInst, hWnd, IDC_CMDBAR);
+	
+    // Add the Standard and View bitmaps to the toolbar.
+    CommandBar_AddBitmap(hwndCB, HINST_COMMCTRL, IDB_STD_SMALL_COLOR,
+		STD_BMPS_LEN, 16, 16);
+    CommandBar_AddBitmap(hwndCB, HINST_COMMCTRL, IDB_VIEW_SMALL_COLOR,
+		VIEW_BMPS_LEN, 16, 16);
+
+	// Insert menu bar, toolbar buttons, and the exit button.
+	CommandBar_InsertMenubar(hwndCB, hInst, IDM_MAINMENU, 0);
+    //CommandBar_AddButtons(hwndCB, sizeof(tbButtons) / sizeof(TBBUTTON),
+	//	tbButtons);
+	CommandBar_AddAdornments(hwndCB, 0, 0);
+
+	// Calculate the TreeView control size and position.
+	GetClientRect(hWnd, &rcTreeView);
+	rcTreeView.top += CommandBar_Height(hwndCB);
+	rcTreeView.bottom -= rcTreeView.top;
+	rcTreeView.right = (LONG)(rcTreeView.right / 3.5);
+
+	// Create the TreeView control.
+	//hwndTV = InitializeTreeView(hInst, hWnd, rcTreeView,
+	//	(HMENU)IDC_TREEVIEW, hIml);
+
+	// Calculate the page view controls size and position.
+	GetClientRect(hWnd, &rcPageView);
+	rcPageView.top = rcTreeView.top;
+	rcPageView.bottom = rcTreeView.bottom;
+	rcPageView.left = rcTreeView.right + 5;
+	rcPageView.right -= rcPageView.left;
+
+	return 0;
+}
+
+/**
+ * Process the WM_INITMENUPUP message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
+							 LPARAM lParam) {
+	/*HMENU hMenu = CommandBar_GetMenu(GetDlgItem(hWnd, IDC_CMDBAR), 0);
+
+	// Check if we can undo and enable/disable the menu item accordingly.
+	if (SendPageEditMessage(EM_CANUNDO, 0, 0)) {
+		EnableMenuItem(hMenu, IDM_EDIT_UNDO, MF_BYCOMMAND | MF_ENABLED);
+	} else {
+		EnableMenuItem(hMenu, IDM_EDIT_UNDO, MF_BYCOMMAND | MF_GRAYED);
+	}
+
+	// Check if editing or viewing a page and change the menu radio group.
+	if (IsPageEditorActive()) {
+		CheckMenuRadioItem(hMenu, IDM_VIEW_PAGEVIEW, IDM_VIEW_PAGEEDIT,
+			IDM_VIEW_PAGEEDIT, MF_BYCOMMAND);
+	} else {
+		CheckMenuRadioItem(hMenu, IDM_VIEW_PAGEVIEW, IDM_VIEW_PAGEEDIT,
+			IDM_VIEW_PAGEVIEW, MF_BYCOMMAND);
+	}
+
+	// Enable/disable the Find Next button if there's something in the edit box.
+	if (PageEditCanFindNext()) {
+		EnableMenuItem(hMenu, IDM_EDIT_FINDNEXT, MF_BYCOMMAND | MF_ENABLED);
+	} else {
+		EnableMenuItem(hMenu, IDM_EDIT_FINDNEXT, MF_BYCOMMAND | MF_GRAYED);
+	}
+
+	// Enable and disable workspace related items.
+	if (fWorkspaceOpen) {
+		EnableMenuItem(hMenu, IDM_FILE_NEWARTICLE, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_FILE_NEWTEMPLATE, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_FILE_REFRESHWS, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_FILE_CLOSEWS, MF_BYCOMMAND | MF_ENABLED);
+	} else {
+		EnableMenuItem(hMenu, IDM_FILE_NEWARTICLE, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_NEWTEMPLATE, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_REFRESHWS, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_CLOSEWS, MF_BYCOMMAND | MF_GRAYED);
+	}
+
+	// Enable/disable article related items.
+	if (IsArticleLoaded() || IsTemplateLoaded()) {
+		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
+	} else {
+		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_GRAYED);
+	}*/
+
+	return 0;
+}
+
+/**
+ * Process the WM_COMMAND message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
+					   LPARAM lParam) {
+	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
+	case IDM_HELP_ABOUT:
+		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
+		break;
+	case IDM_FILE_EXIT:
+		return SendMessage(hWnd, WM_CLOSE, 0, 0);
+	default:
+		return DefWindowProc(hWnd, wMsg, wParam, lParam);
+	}
+
+	return 0;
+}
+
+/**
+ * Process the WM_NOTIFY message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
+					  LPARAM lParam) {
+	/*switch (((LPNMHDR)lParam)->code) {
+	case TVN_SELCHANGED:
+		return TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
+	}*/
+
+	return 0;
+}
+
+/**
+ * Process the WM_CLOSE message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
+					 LPARAM lParam) {
+	// Check for unsaved changes.
+	//if (CheckForUnsavedChanges())
+	//	return 1;
+
+	// Send window destruction message.
+	DestroyWindow(hWnd);
+	return 0;
+}
+
+/**
+ * Process the WM_DESTROY message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam,
+					   LPARAM lParam) {
+	// Post quit message and return.
+	PostQuitMessage(0);
+	return 0;
+}
+
+/**
+ * Mesage handler for the About dialog box.
+ *
+ * @param  hDlg   Dialog window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam,
+							  LPARAM lParam) {
 	RECT rt, rt1;
 	int DlgWidth, DlgHeight;	// dialog width and height in pixel units
 	int NewPosX, NewPosY;
 
-	switch (message)
-	{
+	switch (wMsg) {
 		case WM_INITDIALOG:
 			// trying to center the About dialog
 			if (GetWindowRect(hDlg, &rt1)) {
@@ -195,15 +405,15 @@ LRESULT CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				SetWindowPos(hDlg, 0, NewPosX, NewPosY,
 					0, 0, SWP_NOZORDER | SWP_NOSIZE);
 			}
-			return TRUE;
+			return 1;
 
 		case WM_COMMAND:
-			if ((LOWORD(wParam) == IDOK) || (LOWORD(wParam) == IDCANCEL))
-			{
+			if ((LOWORD(wParam) == IDOK) || (LOWORD(wParam) == IDCANCEL)) {
 				EndDialog(hDlg, LOWORD(wParam));
-				return TRUE;
+				return 1;
 			}
 			break;
 	}
-    return FALSE;
+
+    return 0;
 }
