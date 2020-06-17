@@ -86,15 +86,24 @@ public:
 	/**
 	 * Appends an item to the array.
 	 *
-	 * @param item Item to be appended to the array.
+	 * @param item Pointer to item to be appended to the array.
 	 */
-	void Push(const T item) {
+	void Push(const T *item) {
 		// Only allocate space if needed.
 		if ((nCount + 1) > nAllocSize)
 			Grow(1);
 
 		// Copy the memory to the location.
-		memcpy(&lpContainer[nCount++], &item, sizeof(item));
+		memcpy(&lpContainer[nCount++], item, sizeof(*item));
+	}
+
+	/**
+	 * Appends an item to the array.
+	 *
+	 * @param item Item to be appended to the array.
+	 */
+	void Push(const T item) {
+		Push(&item);
 	}
 
 	/**
