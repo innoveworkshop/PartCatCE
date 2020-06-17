@@ -14,6 +14,7 @@ template <class T>
 class Array {
 protected:
 	T *lpContainer;
+	size_t nAllocSize;
 	size_t nCount;
 
 private:
@@ -23,7 +24,8 @@ private:
 	 * @param nSize Size of the array.
 	 */
 	void Initialize(size_t nSize) {
-		lpContainer = (T*)LocalAlloc(LMEM_FIXED, nSize * sizeof(T));
+		nAllocSize = nSize;
+		lpContainer = (T*)LocalAlloc(LMEM_FIXED, nAllocSize * sizeof(T));
 	}
 
 public:
@@ -43,15 +45,19 @@ public:
 	 */
 	Array(size_t nInitialSize) {
 		Initialize(nInitialSize);
-		nCount = nInitialSize;
+		nCount = 0;
 	}
 
 	/**
 	 * Makes sure the array is properly freed.
 	 */
 	virtual ~Array() {
+		// Free the memory.
 		LocalFree(lpContainer);
+
+		// Clear the counters.
 		nCount = 0;
+		nAllocSize = 0;
 	}
 
 	/**
@@ -69,8 +75,12 @@ public:
 	 * @param nSize How much should we grow the array.
 	 */
 	void Grow(size_t nSize) {
-		nCount += nSize;
-		lpContainer = (T*)LocalReAlloc(lpContainer, nCount * sizeof(T), LMEM_MOVEABLE);
+		// Calculate new size.
+		nAllocSize += nSize;
+
+		// Reallocate memory.
+		lpContainer = (T*)LocalReAlloc(lpContainer, nAllocSize * sizeof(T),
+			LMEM_MOVEABLE);
 	}
 
 	/**
@@ -79,9 +89,12 @@ public:
 	 * @param item Item to be appended to the array.
 	 */
 	void Push(const T item) {
-		Grow(1);
-		//lpContainer[nCount - 1] = item;
-		memcpy(&lpContainer[nCount - 1], &item, sizeof(item));
+		// Only allocate space if needed.
+		if (nAllocSize <= nCount)
+			Grow(1);
+
+		// Copy the memory to the location.
+		memcpy(&lpContainer[nCount++], &item, sizeof(item));
 	}
 
 	/**
@@ -91,6 +104,7 @@ public:
 	 * @return       Pointer to the item retrieved or NULL if it doesn't exist.
 	 */
 	T* Get(size_t index) {
+		// Looks like an invalid index.
 		if (index >= nCount)
 			return NULL;
 
