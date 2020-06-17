@@ -8,9 +8,13 @@
 #ifndef  _CONSTANTS_H
 #define  _CONSTANTS_H
 
-#define MAX_LOADSTRING 100
-
+// Application development.
+#ifdef DEVELOP
 #define TEST_WORKSPACE L"\\PartCat"
+#endif
+
+// Limits.
+#define MAX_LOADSTRING 100
 
 // PartCat paths.
 #define COMPONENTS_ROOT L"components"
