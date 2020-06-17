@@ -24,6 +24,7 @@ public:
 	Path Concatenate(LPCTSTR szChildPath);
 
 	// Misc.
+	LPCTSTR FileName();
 	LPCTSTR ToString();
 };
 

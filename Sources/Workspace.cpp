@@ -20,7 +20,7 @@ Workspace::Workspace() {
  * @param dirWorkspace A PartCat workspace directory.
  */
 Workspace::Workspace(Directory dirWorkspace) {
-	this->dirWorkspace = dirWorkspace;
+	this->dirWorkspace = Directory(dirWorkspace);
 	PopulateComponents();
 }
 
@@ -29,7 +29,7 @@ Workspace::Workspace(Directory dirWorkspace) {
  *
  * @return The array of components in this workspace.
  */
-Array<Directory> Workspace::GetComponents() {
+Array<Component> Workspace::GetComponents() {
 	return arrComponents;
 }
 
@@ -38,11 +38,13 @@ Array<Directory> Workspace::GetComponents() {
  */
 void Workspace::PopulateComponents() {
 	Directory dirComponents(dirWorkspace.Concatenate(COMPONENTS_ROOT).ToString());
-	Array<Directory> subDirs = dirComponents.GetSubDirectories();
+	Array<Directory> *subDirs = dirComponents.GetSubDirectories();
 
-	// Initialize component array and populate it.
-	arrComponents = Array<Directory>(subDirs.Length());
-	for (size_t i = 0; i < subDirs.Length(); i++) {
-		arrComponents.Push(*subDirs[i]);
+	// Populate components array.
+	for (size_t i = 0; i < subDirs->Length(); i++) {
+		Directory dir = *(*subDirs)[i];
+		arrComponents.Push(Component(dir));
 	}
+
+	delete subDirs;
 }

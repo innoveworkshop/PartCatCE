@@ -17,6 +17,7 @@
 
 // Control IDs.
 #define IDC_CMDBAR   201
+#define IDC_TREEVIEW 202
 
 // Number of bitmaps in the standard and view image lists.
 #define STD_BMPS_LEN  STD_PRINT + 1
@@ -46,6 +47,5 @@ LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
 					 LPARAM lParam);
 LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam);
-
 
 #endif // _PARTCAT_H

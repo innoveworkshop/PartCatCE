@@ -49,6 +49,28 @@ Path Path::Concatenate(LPCTSTR szChildPath) {
 }
 
 /**
+ * Gets just the last filename from the path.
+ *
+ * @return A pointer to the filename.
+ */
+LPCTSTR Path::FileName() {
+	LPCTSTR szTemp = szPath;
+	LPCTSTR szLastPos = szPath;
+
+	// Go through the path looking for the separators.
+	for (; *szTemp != '\0'; szTemp++) {
+		if (*szTemp == '\\')
+			szLastPos = szTemp;
+	}
+
+	// Check if we stopped at a separator.
+	if (*szLastPos == '\\')
+		szLastPos++;
+
+	return szLastPos;
+}
+
+/**
  * Returns a string representation of the path.
  *
  * @return String representation of the path.

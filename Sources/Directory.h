@@ -20,9 +20,10 @@ public:
 	// Constructors and destructors.
 	Directory() : Path() {};
 	Directory(LPCTSTR szPath) : Path(szPath) {};
+	Directory(Path path);
 
 	// Information.
-	Array<Directory> GetSubDirectories();
+	Array<Directory>* GetSubDirectories();
 
 	// Misc.
 	void SetPath(Path path);

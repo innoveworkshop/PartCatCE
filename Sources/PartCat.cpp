@@ -5,14 +5,44 @@
  * @author Nathan Campos <nathan@innoveworkshop.com>
  */
 
+// Enable development mode.
+#define DEVELOP
+
 #include "stdafx.h"
 #include "PartCat.h"
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
+#include <string.h>
+
+#include "Directory.h"
+#include "TreeView.h"
+#include "Workspace.h"
+#include "ComponentManager.h"
 
 // Global variables.
 HINSTANCE hInst;
+TreeView treeView;
+Workspace workspace;
+ComponentManager manComponent;
+
+#ifdef DEVELOP
+/**
+ * Simple test workspace that is loaded for debugging quickly.
+ *
+ * @return 0 if everything went OK.
+ */
+LRESULT LoadTestWorkspace() {
+	// Initialize everything.
+	workspace = Workspace(Directory(TEST_WORKSPACE));
+	manComponent = ComponentManager(&workspace, &treeView);
+
+	// Populate the TreeView.
+	manComponent.PopulateTreeView();
+
+	return 0;
+}
+#endif
 
 /**
  * Application's main entry point.
@@ -188,8 +218,7 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 					  LPARAM lParam) {
 	HWND hwndCB;
-	HWND hwndTV;
-	HIMAGELIST hIml;
+	//HIMAGELIST hIml;
 	RECT rcTreeView;
 	RECT rcPageView;
 
@@ -221,8 +250,8 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	rcTreeView.right = (LONG)(rcTreeView.right / 3.5);
 
 	// Create the TreeView control.
-	//hwndTV = InitializeTreeView(hInst, hWnd, rcTreeView,
-	//	(HMENU)IDC_TREEVIEW, hIml);
+	treeView = TreeView(hInst, hWnd, rcTreeView, (HMENU)IDC_TREEVIEW);
+	//treeView.SetImageList(hIml);
 
 	// Calculate the page view controls size and position.
 	GetClientRect(hWnd, &rcPageView);
@@ -230,6 +259,11 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	rcPageView.bottom = rcTreeView.bottom;
 	rcPageView.left = rcTreeView.right + 5;
 	rcPageView.right -= rcPageView.left;
+
+#ifdef DEVELOP
+	// Load the test workspace.
+	LoadTestWorkspace();
+#endif
 
 	return 0;
 }

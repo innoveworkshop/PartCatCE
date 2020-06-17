@@ -380,11 +380,118 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\Sources\ComponentManager.cpp
+SOURCE=.\Sources\Component.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
 
 DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_COMPO=\
+	".\Sources\Array.h"\
+	".\Sources\Component.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\StringUtils.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\ComponentManager.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -393,7 +500,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -402,7 +509,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -411,7 +518,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -420,7 +527,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -429,7 +536,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -438,7 +545,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -447,7 +554,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -456,7 +563,7 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Directory.h"\
@@ -465,11 +572,15 @@ DEP_CPP_COMPO=\
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
-DEP_CPP_COMPO=\
+DEP_CPP_COMPON=\
 	".\Sources\Array.h"\
+	".\Sources\Component.h"\
 	".\Sources\ComponentManager.h"\
+	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\Workspace.h"\
 	
 
 !ENDIF 
@@ -648,6 +759,7 @@ NODEP_CPP_PARTC=\
 
 DEP_CPP_PARTC=\
 	".\Sources\Array.h"\
+	".\Sources\Component.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
@@ -790,6 +902,73 @@ DEP_CPP_STDAF=\
 
 DEP_CPP_STDAF=\
 	".\Sources\StdAfx.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\StringUtils.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_STRIN=\
+	".\Sources\StringUtils.h"\
 	
 
 !ENDIF 
@@ -960,6 +1139,7 @@ DEP_CPP_WORKS=\
 
 DEP_CPP_WORKS=\
 	".\Sources\Array.h"\
+	".\Sources\Component.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
@@ -976,6 +1156,10 @@ DEP_CPP_WORKS=\
 # Begin Source File
 
 SOURCE=.\Sources\Array.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\Component.h
 # End Source File
 # Begin Source File
 
@@ -1000,6 +1184,10 @@ SOURCE=.\Sources\Path.h
 # Begin Source File
 
 SOURCE=.\Sources\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\StringUtils.h
 # End Source File
 # Begin Source File
 

@@ -10,13 +10,14 @@
 #define _WORKSPACE_H
 
 #include <windows.h>
-#include "Directory.h"
 #include "Constants.h"
+#include "Directory.h"
+#include "Component.h"
 
 class Workspace {
 protected:
 	Directory dirWorkspace;
-	Array<Directory> arrComponents;
+	Array<Component> arrComponents;
 
 	void PopulateComponents();
 
@@ -26,7 +27,7 @@ public:
 	Workspace(Directory dirWorkspace);
 
 	// Components.
-	Array<Directory> GetComponents();
+	Array<Component> GetComponents();
 };
 
 #endif  // _WORKSPACE_H

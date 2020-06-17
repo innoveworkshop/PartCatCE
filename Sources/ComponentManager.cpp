@@ -33,11 +33,9 @@ void ComponentManager::PopulateTreeView() {
 	// Clear the TreeView to receive our components.
 	treeView->Clear();
 
-	Array<Directory> arr = workspace->GetComponents();
+	// Populate the components.
+	Array<Component> arr = workspace->GetComponents();
 	for (size_t i = 0; i < arr.Length(); i++) {
-		LPCTSTR name = arr[i]->ToString();
-		OutputDebugString(name);
-		OutputDebugString(L"\r\n");
-		//treeView.AddItem(NULL, arr[i]->ToString(), NULL, 0, (LPARAM)i);
+		treeView->AddItem(NULL, arr[i]->ToString(), NULL, 0, (LPARAM)i);
 	}
 }
