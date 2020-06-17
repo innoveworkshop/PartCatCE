@@ -90,7 +90,7 @@ public:
 	 */
 	void Push(const T item) {
 		// Only allocate space if needed.
-		if (nAllocSize <= nCount)
+		if ((nCount + 1) > nAllocSize)
 			Grow(1);
 
 		// Copy the memory to the location.
@@ -109,6 +109,16 @@ public:
 			return NULL;
 
 		return &lpContainer[index];
+	}
+
+	/**
+	 * Shorthand operator for the Get() operation.
+	 *
+	 * @param  index Index of the item to be retrieved.
+	 * @return       Pointer to the item retrieved or NULL if it doesn't exist.
+	 */
+	T* operator [](size_t index) {
+		return Get(index);
 	}
 };
 
