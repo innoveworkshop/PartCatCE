@@ -13,13 +13,16 @@
 #include "Array.h"
 
 class Directory : public Path {
+protected:
+	size_t GetSubDirectoriesCount();
+
 public:
 	// Constructors and destructors.
 	Directory() : Path() {};
 	Directory(LPCTSTR szPath) : Path(szPath) {};
 
 	// Information.
-	UINT GetSubDirectories();
+	Array<Directory> GetSubDirectories();
 
 	// Misc.
 	void SetPath(Path path);
