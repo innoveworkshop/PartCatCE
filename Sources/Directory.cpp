@@ -14,9 +14,11 @@
  */
 UINT Directory::GetSubDirectories() {
 	UINT count = 0;
-
 	HANDLE hFind;
 	WIN32_FIND_DATA fndData;
+
+	// Array test.
+	Array<Directory> arr;
 
 	// Allocate space for our list if needed.
 /*	if (list != NULL) {
@@ -38,8 +40,10 @@ UINT Directory::GetSubDirectories() {
 	while (hFind != INVALID_HANDLE_VALUE) {
 		// Looks like we hit a directory.
 		if (fndData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY) {
-			OutputDebugString(fndData.cFileName);
-			OutputDebugString(L"\r\n");
+			//OutputDebugString(fndData.cFileName);
+			//OutputDebugString(L"\r\n");
+			Directory dir(fndData.cFileName);
+			arr.Push(dir);
 
 			// Count up.
 			count++;
@@ -57,6 +61,12 @@ UINT Directory::GetSubDirectories() {
 				return 0;
 			}
 		}
+	}
+
+	// Print array contents.
+	for (size_t i = 0; i < arr.Length(); i++) {
+		OutputDebugString(arr.Get(i)->ToString());
+		OutputDebugString(L"\r\n");
 	}
 
 	return count;

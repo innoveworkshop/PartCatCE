@@ -10,6 +10,7 @@
 
 #include <windows.h>
 #include "Path.h"
+#include "Array.h"
 
 class Directory : public Path {
 public:

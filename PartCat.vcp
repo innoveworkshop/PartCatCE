@@ -767,6 +767,10 @@ DEP_CPP_TREEV=\
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=.\Sources\Array.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\Constants.h
 # End Source File
 # Begin Source File
