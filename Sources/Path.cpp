@@ -58,13 +58,13 @@ LPCTSTR Path::FileName() {
 	LPCTSTR szLastPos = szPath;
 
 	// Go through the path looking for the separators.
-	for (; *szTemp != '\0'; szTemp++) {
-		if (*szTemp == '\\')
+	for (; *szTemp != L'\0'; szTemp++) {
+		if (*szTemp == L'\\')
 			szLastPos = szTemp;
 	}
 
 	// Check if we stopped at a separator.
-	if (*szLastPos == '\\')
+	if (*szLastPos == L'\\')
 		szLastPos++;
 
 	return szLastPos;
