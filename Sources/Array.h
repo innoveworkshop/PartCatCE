@@ -121,6 +121,15 @@ public:
 	}
 
 	/**
+	 * Clears the array.
+	 */
+	void Clear() {
+		LocalFree(lpContainer);
+		nCount = 0;
+		nAllocSize = 0;
+	}
+
+	/**
 	 * Shorthand operator for the Get() operation.
 	 *
 	 * @param  index Index of the item to be retrieved.
