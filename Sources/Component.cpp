@@ -26,10 +26,22 @@ Component::Component(Directory dirPath) {
 }
 
 /**
+ * Populates the properties from the MANIFEST file.
+ */
+void Component::PopulateProperties() {
+	//arrProperties.Clear();
+
+	// TODO: Open file and populate it.
+	arrProperties.Push(Property(L"Category: Test"));
+	arrProperties.Push(Property(L"Sub-Category: Sub Test"));
+}
+
+/**
  * Populates this component with data from its directory.
  */
 void Component::PopulateFromDirectory() {
 	SetName(dirPath.FileName());
+	PopulateProperties();
 }
 
 /**
@@ -90,11 +102,21 @@ void Component::SetQuantity(size_t nQuantity) {
 }
 
 /**
+ * Gets the component properties.
+ *
+ * @return Component properties.
+ */
+Array<Property> Component::GetProperties() {
+	return arrProperties;
+}
+
+/**
  * Clears all the fields in the object.
  */
 void Component::ClearFields() {
 	szName[0] = L'\0';
 	nQuantity = 0;
+	//arrProperties.Clear();
 }
 
 /**

@@ -842,6 +842,73 @@ DEP_CPP_PATH_=\
 # End Source File
 # Begin Source File
 
+SOURCE=.\Sources\Property.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\StdAfx.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -1180,6 +1247,10 @@ SOURCE=.\Sources\PartCat.h
 # Begin Source File
 
 SOURCE=.\Sources\Path.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\Property.h
 # End Source File
 # Begin Source File
 

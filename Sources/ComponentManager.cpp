@@ -36,6 +36,15 @@ void ComponentManager::PopulateTreeView() {
 	// Populate the components.
 	Array<Component> arr = workspace->GetComponents();
 	for (size_t i = 0; i < arr.Length(); i++) {
-		treeView->AddItem(NULL, arr[i]->ToString(), NULL, 0, (LPARAM)i);
+		Component *comp = arr[i];
+		treeView->AddItem(NULL, comp->ToString(), NULL, 0, (LPARAM)i);
+
+		Array<Property> props = arr[i]->GetProperties();
+		for (size_t j = 0; j < props.Length(); j++) {
+			OutputDebugString(props[j]->GetName());
+			OutputDebugString(L"\r\n");
+			OutputDebugString(props[j]->GetValue());
+			OutputDebugString(L"\r\n\r\n");
+		}
 	}
 }

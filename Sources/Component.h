@@ -10,13 +10,18 @@
 
 #include <windows.h>
 #include "Directory.h"
+#include "Property.h"
+#include "Array.h"
 
 class Component {
 protected:
 	Directory dirPath;
 	WCHAR szName[MAX_PATH];
 	size_t nQuantity;
+	Array<Property> arrProperties;
 
+	// Population.
+	void PopulateProperties();
 	void PopulateFromDirectory();
 
 public:
@@ -31,6 +36,7 @@ public:
 	void SetNotes(LPCTSTR szNotes);
 	size_t GetQuantity();
 	void SetQuantity(size_t nQuantity);
+	Array<Property> GetProperties();
 
 	// Misc.
 	void ClearFields();
