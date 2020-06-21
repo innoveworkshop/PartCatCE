@@ -11,14 +11,17 @@
 #include <windows.h>
 #include "Directory.h"
 #include "Property.h"
-#include "Array.h"
+//#include "Array.h"
+#include <vector>
+
+using namespace std;
 
 class Component {
 protected:
 	Directory dirPath;
 	WCHAR szName[MAX_PATH];
 	size_t nQuantity;
-	Array<Property> arrProperties;
+	vector<Property> arrProperties;
 
 	// Population.
 	void PopulateProperties();
@@ -36,7 +39,7 @@ public:
 	void SetNotes(LPCTSTR szNotes);
 	size_t GetQuantity();
 	void SetQuantity(size_t nQuantity);
-	Array<Property> GetProperties();
+	vector<Property> GetProperties();
 
 	// Misc.
 	void ClearFields();

@@ -29,7 +29,7 @@ Workspace::Workspace(Directory dirWorkspace) {
  *
  * @return The array of components in this workspace.
  */
-Array<Component> Workspace::GetComponents() {
+vector<Component> Workspace::GetComponents() {
 	return arrComponents;
 }
 
@@ -38,13 +38,11 @@ Array<Component> Workspace::GetComponents() {
  */
 void Workspace::PopulateComponents() {
 	Directory dirComponents(dirWorkspace.Concatenate(COMPONENTS_ROOT).ToString());
-	Array<Directory> *subDirs = dirComponents.GetSubDirectories();
+	vector<Directory> subDirs = dirComponents.GetSubDirectories();
 
 	// Populate components array.
-	for (size_t i = 0; i < subDirs->Length(); i++) {
-		Directory dir = *(*subDirs)[i];
-		arrComponents.Push(Component(dir));
+	for (size_t i = 0; i < subDirs.size(); i++) {
+		Directory dir = subDirs[i];
+		arrComponents.push_back(Component(dir));
 	}
-
-	delete subDirs;
 }

@@ -32,8 +32,17 @@ void Component::PopulateProperties() {
 	//arrProperties.Clear();
 
 	// TODO: Open file and populate it.
-	arrProperties.Push(Property(L"Category: Test"));
-	arrProperties.Push(Property(L"Sub-Category: Sub Test"));
+	arrProperties.push_back(Property(L"Category: Test"));
+	arrProperties.push_back(Property(L"Sub-Category: Sub Test"));
+
+	OutputDebugString(L"POPULATE\r\n");
+		for (size_t j = 0; j < arrProperties.size(); j++) {
+			OutputDebugString(arrProperties[j].GetName());
+			OutputDebugString(L"\r\n");
+			OutputDebugString(arrProperties[j].GetValue());
+			OutputDebugString(L"\r\n\r\n");
+		}
+	OutputDebugString(L"POPULATE\r\n");
 }
 
 /**
@@ -106,7 +115,16 @@ void Component::SetQuantity(size_t nQuantity) {
  *
  * @return Component properties.
  */
-Array<Property> Component::GetProperties() {
+vector<Property> Component::GetProperties() {
+	OutputDebugString(L"GET\r\n");
+		for (size_t j = 0; j < arrProperties.size(); j++) {
+			OutputDebugString(arrProperties[j].GetName());
+			OutputDebugString(L"\r\n");
+			OutputDebugString(arrProperties[j].GetValue());
+			OutputDebugString(L"\r\n\r\n");
+		}
+	OutputDebugString(L"GET\r\n");
+
 	return arrProperties;
 }
 

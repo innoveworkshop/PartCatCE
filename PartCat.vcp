@@ -479,7 +479,11 @@ DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
+	".\Sources\Property.h"\
 	".\Sources\StringUtils.h"\
+	
+NODEP_CPP_COMPO=\
+	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -579,8 +583,12 @@ DEP_CPP_COMPON=\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
+	".\Sources\Property.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\Workspace.h"\
+	
+NODEP_CPP_COMPON=\
+	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -765,9 +773,13 @@ DEP_CPP_PARTC=\
 	".\Sources\Directory.h"\
 	".\Sources\PartCat.h"\
 	".\Sources\Path.h"\
+	".\Sources\Property.h"\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\Workspace.h"\
+	
+NODEP_CPP_PARTC=\
+	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -1210,7 +1222,11 @@ DEP_CPP_WORKS=\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
+	".\Sources\Property.h"\
 	".\Sources\Workspace.h"\
+	
+NODEP_CPP_WORKS=\
+	".\Sources\vector.h"\
 	
 
 !ENDIF 

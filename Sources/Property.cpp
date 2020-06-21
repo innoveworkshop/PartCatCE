@@ -21,7 +21,9 @@ Property::Property() {
  */
 Property::Property(LPCTSTR szLine) {
 	ClearFields();
-	ParseLine(szLine);
+	wcscpy(szName, szLine);
+	wcscpy(szValue, szLine);
+	//ParseLine(szLine);
 }
 
 /**

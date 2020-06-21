@@ -10,7 +10,9 @@
 
 #include <windows.h>
 #include "Path.h"
-#include "Array.h"
+#include <vector>
+
+using namespace std;
 
 class Directory : public Path {
 protected:
@@ -23,7 +25,7 @@ public:
 	Directory(Path path);
 
 	// Information.
-	Array<Directory>* GetSubDirectories();
+	vector<Directory> GetSubDirectories();
 
 	// Misc.
 	void SetPath(Path path);

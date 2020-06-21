@@ -14,10 +14,12 @@
 #include "Directory.h"
 #include "Component.h"
 
+using namespace std;
+
 class Workspace {
 protected:
 	Directory dirWorkspace;
-	Array<Component> arrComponents;
+	vector<Component> arrComponents;
 
 	void PopulateComponents();
 
@@ -27,7 +29,7 @@ public:
 	Workspace(Directory dirWorkspace);
 
 	// Components.
-	Array<Component> GetComponents();
+	vector<Component> GetComponents();
 };
 
 #endif  // _WORKSPACE_H

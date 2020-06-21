@@ -21,12 +21,12 @@ Directory::Directory(Path path) {
  *
  * @return Pointer to an array of subdirectories. (MUST BE FREED LATER)
  */
-Array<Directory>* Directory::GetSubDirectories() {
+vector<Directory> Directory::GetSubDirectories() {
 	HANDLE hFind;
 	WIN32_FIND_DATA fndData;
 
 	// Initialize array with enough space for everything.
-	Array<Directory> *arr = new Array<Directory>(GetSubDirectoriesCount());
+	vector<Directory> arr;// = new Array<Directory>(GetSubDirectoriesCount());
 
 	// Find the first file in the directory.
 	hFind = FindFirstFile(this->Concatenate(L"\\*").ToString(), &fndData);
@@ -36,7 +36,7 @@ Array<Directory>* Directory::GetSubDirectories() {
 		// Looks like we hit a directory.
 		if (fndData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY) {
 			// Push directory into the array.
-			arr->Push(Directory(this->Concatenate(fndData.cFileName)));
+			arr.push_back(Directory(this->Concatenate(fndData.cFileName)));
 		}
 
 		// Continue to the next file.
