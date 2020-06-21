@@ -40,11 +40,11 @@ void ComponentManager::PopulateTreeView() {
 		treeView->AddItem(NULL, comp.ToString(), NULL, 0, (LPARAM)i);
 
 		vector<Property> props = arr[i].GetProperties();
-		/*for (size_t j = 0; j < props.size(); j++) {
+		for (size_t j = 0; j < props.size(); j++) {
 			OutputDebugString(props[j].GetName());
 			OutputDebugString(L"\r\n");
 			OutputDebugString(props[j].GetValue());
 			OutputDebugString(L"\r\n\r\n");
-		}*/
+		}
 	}
 }

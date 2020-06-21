@@ -29,20 +29,11 @@ Component::Component(Directory dirPath) {
  * Populates the properties from the MANIFEST file.
  */
 void Component::PopulateProperties() {
-	//arrProperties.Clear();
+	arrProperties.clear();
 
 	// TODO: Open file and populate it.
 	arrProperties.push_back(Property(L"Category: Test"));
 	arrProperties.push_back(Property(L"Sub-Category: Sub Test"));
-
-	OutputDebugString(L"POPULATE\r\n");
-		for (size_t j = 0; j < arrProperties.size(); j++) {
-			OutputDebugString(arrProperties[j].GetName());
-			OutputDebugString(L"\r\n");
-			OutputDebugString(arrProperties[j].GetValue());
-			OutputDebugString(L"\r\n\r\n");
-		}
-	OutputDebugString(L"POPULATE\r\n");
 }
 
 /**
@@ -116,15 +107,6 @@ void Component::SetQuantity(size_t nQuantity) {
  * @return Component properties.
  */
 vector<Property> Component::GetProperties() {
-	OutputDebugString(L"GET\r\n");
-		for (size_t j = 0; j < arrProperties.size(); j++) {
-			OutputDebugString(arrProperties[j].GetName());
-			OutputDebugString(L"\r\n");
-			OutputDebugString(arrProperties[j].GetValue());
-			OutputDebugString(L"\r\n\r\n");
-		}
-	OutputDebugString(L"GET\r\n");
-
 	return arrProperties;
 }
 
@@ -134,7 +116,7 @@ vector<Property> Component::GetProperties() {
 void Component::ClearFields() {
 	szName[0] = L'\0';
 	nQuantity = 0;
-	//arrProperties.Clear();
+	arrProperties.clear();
 }
 
 /**
