@@ -18,6 +18,7 @@ class Category {
 protected:
 	WCHAR szName[MAX_PATH];
 	vector<wstring> arrSubCategories;
+	bool bHasComponentsWithNoSubCategory;
 
 public:
 	// Constructors and destructors.
@@ -29,6 +30,7 @@ public:
 	LPCTSTR GetName();
 	vector<wstring> GetSubCategories();
 	void PopulateSubCategories(vector<Component> arrComponents);
+	bool HasComponentsWithNoSubCategory();
 
 	// Comparisons.
 	bool Equals(Category category);

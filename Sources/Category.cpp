@@ -39,6 +39,8 @@ Category::Category(LPCTSTR szName, vector<Component> arrComponents) {
  * @param arrComponents Array of components to search for sub-categories.
  */
 void Category::PopulateSubCategories(vector<Component> arrComponents) {
+	bHasComponentsWithNoSubCategory = false;
+
 	for (size_t i = 0; i < arrComponents.size(); i++) {
 		LPCTSTR szCategory = arrComponents[i].GetCategory();
 		if (szCategory == NULL)
@@ -50,8 +52,10 @@ void Category::PopulateSubCategories(vector<Component> arrComponents) {
 			bool bUnique = true;
 
 			// Check if it's categorized.
-			if (szSubCategory == NULL)
+			if (szSubCategory == NULL) {
+				bHasComponentsWithNoSubCategory = true;
 				continue;
+			}
 		
 			// Check if this category is new.
 			wstring swSubCategory(szSubCategory);
@@ -112,4 +116,13 @@ LPCTSTR Category::GetName() {
  */
 vector<wstring> Category::GetSubCategories() {
 	return arrSubCategories;
+}
+
+/**
+ * Does this category has any components without a sub-category?
+ *
+ * @return Do we have this kind of weird-ass component?
+ */
+bool Category::HasComponentsWithNoSubCategory() {
+	return bHasComponentsWithNoSubCategory;
 }
