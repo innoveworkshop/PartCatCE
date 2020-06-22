@@ -42,7 +42,7 @@ TreeView::TreeView(HINSTANCE hInst, HWND hwndParent,
  * @param  lParam    Item lParam.
  * @return           Added item handle.
  */
-HTREEITEM TreeView::AddItem(HTREEITEM hParent, LPTSTR szText,
+HTREEITEM TreeView::AddItem(HTREEITEM hParent, LPCTSTR szText,
 							HTREEITEM hInsAfter, int iImage,
 							LPARAM lParam) {
 	HTREEITEM hItem;
@@ -51,7 +51,7 @@ HTREEITEM TreeView::AddItem(HTREEITEM hParent, LPTSTR szText,
 	
 	// Fill out the item structure.
 	tvItem.mask = TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_PARAM;
-	tvItem.pszText = szText;
+	tvItem.pszText = (LPTSTR)szText;
 	tvItem.cchTextMax = wcslen(szText);
 	tvItem.iImage = iImage;
 	tvItem.iSelectedImage = iImage;

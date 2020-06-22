@@ -22,7 +22,7 @@ public:
 			 RECT rcClient, HMENU hTreeViewID);
 
 	// Node operations.
-	HTREEITEM AddItem(HTREEITEM hParent, LPTSTR szText,
+	HTREEITEM AddItem(HTREEITEM hParent, LPCTSTR szText,
 					  HTREEITEM hInsAfter, int iImage,
 					  LPARAM lParam);
 	BOOL GetItem(TVITEM *tvItem);
