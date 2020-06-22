@@ -41,6 +41,7 @@ public:
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
 	LPCTSTR GetCategory();
+	LPCTSTR GetSubCategory();
 
 	// Misc.
 	void ClearFields();

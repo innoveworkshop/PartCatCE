@@ -135,6 +135,20 @@ LPCTSTR Component::GetCategory() {
 }
 
 /**
+ * Gets the component sub-category.
+ *
+ * @return Sub-category name or NULL if it doesn't have one.
+ */
+LPCTSTR Component::GetSubCategory() {
+	Property *prop = GetProperty(PROPERTY_SUBCATEGORY);
+
+	if (prop)
+		return prop->GetValue();
+
+	return NULL;
+}
+
+/**
  * Gets a property from the component.
  *
  * @param  szName Name of the property.
