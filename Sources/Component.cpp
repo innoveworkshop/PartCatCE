@@ -5,8 +5,14 @@
  * @author Nathan Campos <nathan@innoveworkshop.com>
  */
 
+#include <windows.h>
+#include <string>
+
+#include "Constants.h"
 #include "Component.h"
-#include "StringUtils.h"
+#include "FileUtils.h"
+
+using namespace std;
 
 /**
  * Initializes an empty component.
@@ -29,11 +35,24 @@ Component::Component(Directory dirPath) {
  * Populates the properties from the MANIFEST file.
  */
 void Component::PopulateProperties() {
+	HANDLE hFile;
+	wstring swLine;
+
+	// Clear the properties array.
 	arrProperties.clear();
 
-	// TODO: Open file and populate it.
-	arrProperties.push_back(Property(L"Category: Test"));
-	arrProperties.push_back(Property(L"Sub-Category: Sub Test"));
+	// Open the MANIFEST file for reading.
+	hFile = CreateFile(dirPath.Concatenate(MANIFEST_FILE).ToString(),
+		GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	// Go through the file line by line.
+	while (FileUtils::ReadLine(hFile, &swLine)) {
+		arrProperties.push_back(Property(swLine));
+	}
+
+	// Close the file handle.
+	CloseHandle(hFile);
 }
 
 /**
