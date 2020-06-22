@@ -364,10 +364,11 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
  */
 LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
 					  LPARAM lParam) {
-	/*switch (((LPNMHDR)lParam)->code) {
+	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
-		return TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
-	}*/
+		return manComponent.TreeViewSelectionChanged(hWnd, wMsg, wParam,
+			lParam);
+	}
 
 	return 0;
 }

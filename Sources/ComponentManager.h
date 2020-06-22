@@ -26,6 +26,8 @@ public:
 
 	// UI stuff.
 	void PopulateTreeView();
+	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
+									 LPARAM lParam);
 };
 
 #endif  // _COMPONENT_MANAGER_H

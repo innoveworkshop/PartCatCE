@@ -29,6 +29,49 @@ ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView) {
 }
 
 /**
+ * Process the TVN_SELCHANGED message for the component TreeView.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT ComponentManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
+												   WPARAM wParam, LPARAM lParam) {
+	TVITEM tvItem;
+	NMTREEVIEW* pnmTreeView = (LPNMTREEVIEW)lParam;
+	size_t nIndex;
+
+	// Get item information.
+	tvItem.hItem = pnmTreeView->itemNew.hItem;
+	tvItem.mask = TVIF_PARAM | TVIF_IMAGE;
+	treeView->GetItem(&tvItem);
+
+	// Check if the selected item is a component.
+	if (tvItem.lParam == -1)
+		return 0;
+	
+	// Get component index from parameter.
+	nIndex = (size_t)tvItem.lParam;
+	
+	// Open the component in the detail view.
+	Component *component = workspace->GetComponent(nIndex);
+	if (component == NULL) {
+		MessageBox(NULL, L"Looks like you've selected an invalid component",
+			L"Invalid Component Selected", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	wstring str(component->ToString());
+	str += L"\r\n";
+	str += component->GetNotes();
+	MessageBox(NULL, str.c_str(), L"Component Selected", MB_OK | MB_ICONINFORMATION);
+
+	return 0;
+}
+
+/**
  * Populates the TreeView with components.
  */
 void ComponentManager::PopulateTreeView() {
@@ -72,13 +115,13 @@ void ComponentManager::PopulateTreeView() {
 	for (i = 0; i < arrCategories.size(); i++) {
 		// Add category to the TreeView.
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, arrCategories[i].GetName(),
-			NULL, 0, (LPARAM)NULL);
+			NULL, 0, (LPARAM)-1);
 
 		// Go through sub-categories and populate its components.
 		vector<wstring> arrSubCategories = arrCategories[i].GetSubCategories();
 		for (j = 0; j < arrSubCategories.size(); j++) {
 			HTREEITEM nodeSubCategory = treeView->AddItem(nodeCategory,
-				arrSubCategories[j].c_str(), NULL, 0, (LPARAM)NULL);
+				arrSubCategories[j].c_str(), NULL, 0, (LPARAM)-1);
 
 			// Go through components searching for the ones that belong here.
 			for (size_t k = 0; k < arrComponents.size(); k++) {
@@ -131,7 +174,7 @@ void ComponentManager::PopulateTreeView() {
 	if (bHasUncategorized) {
 		arrCategories.push_back(Category(L"Uncategorized"));
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, L"Uncategorized",
-			NULL, 0, (LPARAM)(arrCategories.size() - 1));
+			NULL, 0, (LPARAM)-1);
 
 		// Go through components searching for uncategorized ones.
 		for (j = 0; j < arrComponents.size(); j++) {
