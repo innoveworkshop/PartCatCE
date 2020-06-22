@@ -6,6 +6,9 @@
  */
 
 #include "Property.h"
+#include <string>
+
+using namespace std;
 
 /**
  * Initializes an empty property.
@@ -21,35 +24,28 @@ Property::Property() {
  */
 Property::Property(LPCTSTR szLine) {
 	ClearFields();
-	wcscpy(szName, szLine);
-	wcscpy(szValue, szLine);
-	//ParseLine(szLine);
+	ParseLine(szLine);
 }
 
 /**
  * Parses a line from a manifest file.
  *
- * @param szLine Manifest file line.
+ * @param  szLine Manifest file line.
+ * @return        TRUE if the line was parsed sucessfully.
  */
-void Property::ParseLine(LPCTSTR szLine) {
-	LPCTSTR szTemp = szLine;
-	LPCTSTR szValue = szLine;
+bool Property::ParseLine(LPCTSTR szLine) {
+	wstring swLine(szLine);
 
-	// Go through the line looking for the separator.
-	for (; *szTemp != L'\0'; szTemp++) {
-		if (*szTemp == L':') {
-			szValue = szTemp + 1;
-			break;
-		}
-	}
+	// Search for the separator.
+	wstring::size_type pos = swLine.find_first_of(L":");
+	if (pos == wstring::npos)
+		return false;
 
-	// Check if we have a space after the separator.
-	if (*szValue == L' ')
-		szValue++;
+	// Copy the name and value strings to the object.
+	wcscpy(szName, swLine.substr(0, pos).c_str());
+	wcscpy(szValue, swLine.substr(pos + 2).c_str());
 
-	// Copy strings.
-	wcsncpy(szName, szLine, szTemp - szLine);
-	wcscpy(this->szValue, szValue);
+	return true;
 }
 
 /**

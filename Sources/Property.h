@@ -15,7 +15,7 @@ protected:
 	WCHAR szName[MAX_PATH];
 	WCHAR szValue[MAX_PATH];
 
-	void ParseLine(LPCTSTR szLine);
+	bool ParseLine(LPCTSTR szLine);
 
 public:
 	// Constructors and destructors.
