@@ -23,12 +23,12 @@ public:
 	// Constructors and destructors.
 	Category();
 	Category(LPCTSTR szName);
-	Category(LPCTSTR szName, vector<Component> *arrComponents);
+	Category(LPCTSTR szName, vector<Component> arrComponents);
 
 	// Geters and seters.
 	LPCTSTR GetName();
 	vector<wstring> GetSubCategories();
-	void PopulateSubCategories(vector<Component> *arrComponents);
+	void PopulateSubCategories(vector<Component> arrComponents);
 
 	// Comparisons.
 	bool Equals(Category category);

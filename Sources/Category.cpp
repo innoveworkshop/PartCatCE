@@ -28,7 +28,7 @@ Category::Category(LPCTSTR szName) {
  * @param szName        Category name.
  * @param arrComponents Array of components to search for sub-categories.
  */
-Category::Category(LPCTSTR szName, vector<Component> *arrComponents) {
+Category::Category(LPCTSTR szName, vector<Component> arrComponents) {
 	wcscpy(this->szName, szName);
 	PopulateSubCategories(arrComponents);
 }
@@ -38,7 +38,35 @@ Category::Category(LPCTSTR szName, vector<Component> *arrComponents) {
  *
  * @param arrComponents Array of components to search for sub-categories.
  */
-void Category::PopulateSubCategories(vector<Component> *arrComponents) {
+void Category::PopulateSubCategories(vector<Component> arrComponents) {
+	for (size_t i = 0; i < arrComponents.size(); i++) {
+		LPCTSTR szCategory = arrComponents[i].GetCategory();
+		if (szCategory == NULL)
+			continue;
+
+		// This component belongs into this category.
+		if (wcscmp(szCategory, szName) == 0) {
+			LPCTSTR szSubCategory = arrComponents[i].GetSubCategory();
+			bool bUnique = true;
+
+			// Check if it's categorized.
+			if (szSubCategory == NULL)
+				continue;
+		
+			// Check if this category is new.
+			wstring swSubCategory(szSubCategory);
+			for (size_t j = 0; j < arrSubCategories.size(); j++) {
+				if (arrSubCategories[j].compare(swSubCategory) == 0) {
+					bUnique = false;
+					break;
+				}
+			}
+
+			// Looks like we have a sub-category.
+			if (bUnique)
+				arrSubCategories.push_back(swSubCategory);
+		}
+	}
 }
 
 /**
