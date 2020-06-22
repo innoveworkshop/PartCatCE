@@ -6,7 +6,6 @@
  */
 
 #include "Path.h"
-#include <string.h>
 
 /**
  * Initializes an empty path.

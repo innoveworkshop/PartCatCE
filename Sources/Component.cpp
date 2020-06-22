@@ -59,9 +59,9 @@ LPCTSTR Component::GetName() {
  * @param  szName Component name.
  * @return        TRUE if the name was valid and was set.
  */
-BOOL Component::SetName(LPCTSTR szName) {
+bool Component::SetName(LPCTSTR szName) {
 	wcscpy(this->szName, szName);
-	return TRUE;
+	return true;
 }
 
 /**

@@ -475,15 +475,11 @@ DEP_CPP_COMPO=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_COMPO=\
-	".\Sources\Array.h"\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
 	".\Sources\StringUtils.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -577,7 +573,6 @@ DEP_CPP_COMPON=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_COMPON=\
-	".\Sources\Array.h"\
 	".\Sources\Component.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Constants.h"\
@@ -586,9 +581,6 @@ DEP_CPP_COMPON=\
 	".\Sources\Property.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\Workspace.h"\
-	
-NODEP_CPP_COMPON=\
-	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -664,7 +656,6 @@ DEP_CPP_DIREC=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_DIREC=\
-	".\Sources\Array.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	
@@ -766,7 +757,6 @@ NODEP_CPP_PARTC=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_PARTC=\
-	".\Sources\Array.h"\
 	".\Sources\Component.h"\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Constants.h"\
@@ -777,9 +767,6 @@ DEP_CPP_PARTC=\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\Workspace.h"\
-	
-NODEP_CPP_PARTC=\
-	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -1217,16 +1204,12 @@ DEP_CPP_WORKS=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_WORKS=\
-	".\Sources\Array.h"\
 	".\Sources\Component.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
 	".\Sources\Workspace.h"\
-	
-NODEP_CPP_WORKS=\
-	".\Sources\vector.h"\
 	
 
 !ENDIF 
@@ -1236,10 +1219,6 @@ NODEP_CPP_WORKS=\
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\Sources\Array.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\Sources\Component.h

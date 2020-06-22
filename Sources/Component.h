@@ -9,10 +9,9 @@
 #define _COMPONENT_H
 
 #include <windows.h>
+#include <vector>
 #include "Directory.h"
 #include "Property.h"
-//#include "Array.h"
-#include <vector>
 
 using namespace std;
 
@@ -34,7 +33,7 @@ public:
 
 	// Geters and seters.
 	LPCTSTR GetName();
-	BOOL SetName(LPCTSTR szName);
+	bool SetName(LPCTSTR szName);
 	LPCTSTR GetNotes();
 	void SetNotes(LPCTSTR szNotes);
 	size_t GetQuantity();
