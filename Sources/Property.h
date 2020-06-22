@@ -9,18 +9,23 @@
 #define _PROPERTY_H
 
 #include <windows.h>
+#include <string>
+
+using namespace std;
 
 class Property {
 protected:
 	WCHAR szName[MAX_PATH];
 	WCHAR szValue[MAX_PATH];
 
+	bool ParseLine(wstring swLine);
 	bool ParseLine(LPCTSTR szLine);
 
 public:
 	// Constructors and destructors.
 	Property();
 	Property(LPCTSTR szLine);
+	Property(wstring swLine);
 
 	// Geters and seters.
 	LPCTSTR GetName();

@@ -6,9 +6,6 @@
  */
 
 #include "Property.h"
-#include <string>
-
-using namespace std;
 
 /**
  * Initializes an empty property.
@@ -28,14 +25,32 @@ Property::Property(LPCTSTR szLine) {
 }
 
 /**
+ * Initializes a property and populate it based on a line.
+ *
+ * @param swLine Line from a manifest file.
+ */
+Property::Property(wstring swLine) {
+	ClearFields();
+	ParseLine(swLine);
+}
+
+/**
  * Parses a line from a manifest file.
  *
  * @param  szLine Manifest file line.
  * @return        TRUE if the line was parsed sucessfully.
  */
 bool Property::ParseLine(LPCTSTR szLine) {
-	wstring swLine(szLine);
+	return ParseLine(wstring(szLine));
+}
 
+/**
+ * Parses a line from a manifest file.
+ *
+ * @param  swLine Manifest file line.
+ * @return        TRUE if the line was parsed sucessfully.
+ */
+bool Property::ParseLine(wstring swLine) {
 	// Search for the separator.
 	wstring::size_type pos = swLine.find_first_of(L":");
 	if (pos == wstring::npos)
