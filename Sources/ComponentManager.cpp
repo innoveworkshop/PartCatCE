@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include "ComponentManager.h"
+#include "Category.h"
 
 /**
  * Initializes an empty component manager.
@@ -39,7 +40,7 @@ void ComponentManager::PopulateTreeView() {
 	vector<Component> arrComponents = workspace->GetComponents();
 
 	// Populate the categories.
-	vector<wstring> arrCategories;
+	vector<Category> arrCategories;
 	for (i = 0; i < arrComponents.size(); i++) {
 		LPCTSTR szCategory = arrComponents[i].GetCategory();
 		bool bUnique = true;
@@ -51,21 +52,20 @@ void ComponentManager::PopulateTreeView() {
 		}
 		
 		// Check if this category is new.
-		wstring swName(szCategory);
 		for (j = 0; j < arrCategories.size(); j++) {
-			if (arrCategories[j].compare(swName) == 0) {
+			if (arrCategories[j].Equals(szCategory)) {
 				bUnique = false;
 				break;
 			}
 		}
 
 		if (bUnique)
-			arrCategories.push_back(swName);
+			arrCategories.push_back(Category(szCategory));
 	}
 
 	// Add the category nodes and populate them with components.
 	for (i = 0; i < arrCategories.size(); i++) {
-		HTREEITEM nodeCategory = treeView->AddItem(NULL, arrCategories[i].c_str(),
+		HTREEITEM nodeCategory = treeView->AddItem(NULL, arrCategories[i].GetName(),
 			NULL, 0, (LPARAM)i);
 
 		// Go through components searching for the ones that belong here.
@@ -75,7 +75,7 @@ void ComponentManager::PopulateTreeView() {
 				continue;
 
 			// This component belongs inside this category.
-			if (wcscmp(szCategory, arrCategories[i].c_str()) == 0)
+			if (arrCategories[i].Equals(szCategory))
 				treeView->AddItem(nodeCategory, arrComponents[j].ToString(),
 					NULL, 0, (LPARAM)j);
 		}
@@ -86,7 +86,7 @@ void ComponentManager::PopulateTreeView() {
 
 	// Add the uncategorized folder and its components.
 	if (bHasUncategorized) {
-		arrCategories.push_back(wstring(L"Uncategorized"));
+		arrCategories.push_back(Category(L"Uncategorized"));
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, L"Uncategorized",
 			NULL, 0, (LPARAM)(arrCategories.size() - 1));
 
