@@ -25,6 +25,19 @@ Workspace::Workspace(Directory dirWorkspace) {
 }
 
 /**
+ * Gets a component from the array using an index.
+ *
+ * @param  nIndex Index of the component in the array.
+ * @return        Component if the index was valid or NULL if it doesn't exist.
+ */
+Component* Workspace::GetComponent(size_t nIndex) {
+	if (nIndex >= arrComponents.size())
+		return NULL;
+
+	return &arrComponents[nIndex];
+}
+
+/**
  * Gets the components array.
  *
  * @return The array of components in this workspace.

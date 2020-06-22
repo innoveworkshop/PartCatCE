@@ -29,6 +29,7 @@ public:
 	Workspace(Directory dirWorkspace);
 
 	// Components.
+	Component* GetComponent(size_t nIndex);
 	vector<Component> GetComponents();
 };
 
