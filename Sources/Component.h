@@ -40,10 +40,11 @@ public:
 	void SetQuantity(size_t nQuantity);
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
+	LPCTSTR GetCategory();
 
 	// Misc.
 	void ClearFields();
-	LPTSTR ToString();
+	LPCTSTR ToString();
 };
 
 #endif  // _COMPONENT_H

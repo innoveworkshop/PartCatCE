@@ -121,6 +121,20 @@ void Component::SetQuantity(size_t nQuantity) {
 }
 
 /**
+ * Gets the component category.
+ *
+ * @return Category name or NULL if it's uncategorized.
+ */
+LPCTSTR Component::GetCategory() {
+	Property *prop = GetProperty(PROPERTY_CATEGORY);
+
+	if (prop)
+		return prop->GetValue();
+
+	return NULL;
+}
+
+/**
  * Gets a property from the component.
  *
  * @param  szName Name of the property.
@@ -158,6 +172,6 @@ void Component::ClearFields() {
  *
  * @return Component name.
  */
-LPTSTR Component::ToString() {
+LPCTSTR Component::ToString() {
 	return szName;
 }
