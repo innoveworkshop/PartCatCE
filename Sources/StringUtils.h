@@ -15,7 +15,7 @@ private:
 	StringUtils() {}
 
 public:
-	static void AllocStringCopy(LPTSTR *szDestination, LPCTSTR szSource);
+	static void AllocCopy(LPTSTR *szDestination, LPCTSTR szSource);
 };
 
 #endif  // _STRING_UTILS_H

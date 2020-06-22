@@ -13,7 +13,7 @@
  * @param szDestination Destination string.
  * @param szSource      Source string.
  */
-void StringUtils::AllocStringCopy(LPTSTR *szDestination, LPCTSTR szSource) {
+void StringUtils::AllocCopy(LPTSTR *szDestination, LPCTSTR szSource) {
 	// Free the destination string first if it is allocated already.
 	if (szDestination)
 		LocalFree(szDestination);
@@ -22,4 +22,3 @@ void StringUtils::AllocStringCopy(LPTSTR *szDestination, LPCTSTR szSource) {
 	*szDestination = (LPTSTR)LocalAlloc(LMEM_FIXED, (len + 1) * sizeof(WCHAR));
 	wcscpy(*szDestination, szSource);
 }
-
