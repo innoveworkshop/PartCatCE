@@ -38,6 +38,7 @@ public:
 	void SetNotes(LPCTSTR szNotes);
 	size_t GetQuantity();
 	void SetQuantity(size_t nQuantity);
+	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
 
 	// Misc.

@@ -121,6 +121,21 @@ void Component::SetQuantity(size_t nQuantity) {
 }
 
 /**
+ * Gets a property from the component.
+ *
+ * @param  szName Name of the property.
+ * @return        The requested property or NULL if it wasn't found.
+ */
+Property* Component::GetProperty(LPCTSTR szName) {
+	for (size_t i = 0; i < arrProperties.size(); i++) {
+		if (wcscmp(arrProperties[i].GetName(), szName) == 0)
+			return &arrProperties[i];
+	}
+
+	return NULL;
+}
+
+/**
  * Gets the component properties.
  *
  * @return Component properties.
