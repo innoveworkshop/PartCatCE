@@ -28,4 +28,10 @@
 #define DATASHEET_FILE L"datasheet.pdf"
 #define NOTES_FILE     L"notes.txt"
 
+// PartCat MANIFEST property keys.
+#define PROPERTY_CATEGORY    L"Category"
+#define PROPERTY_SUBCATEGORY L"Sub-Category"
+#define PROPERTY_VALUE       L"Value"
+#define PROPERTY_PACKAGE     L"Package"
+
 #endif  //  _CONSTANTS_H
