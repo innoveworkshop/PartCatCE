@@ -41,17 +41,17 @@ void ComponentManager::PopulateTreeView() {
 	// Populate the categories.
 	vector<wstring> arrCategories;
 	for (i = 0; i < arrComponents.size(); i++) {
-		Property *prop = arrComponents[i].GetProperty(L"Category");
+		LPCTSTR szCategory = arrComponents[i].GetCategory();
 		bool bUnique = true;
 
 		// Check if it's an uncategorized component.
-		if (prop == NULL) {
+		if (szCategory == NULL) {
 			bHasUncategorized = true;
 			continue;
 		}
 		
 		// Check if this category is new.
-		wstring swName(prop->GetValue());
+		wstring swName(szCategory);
 		for (j = 0; j < arrCategories.size(); j++) {
 			if (arrCategories[j].compare(swName) == 0) {
 				bUnique = false;
@@ -68,16 +68,20 @@ void ComponentManager::PopulateTreeView() {
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, arrCategories[i].c_str(),
 			NULL, 0, (LPARAM)i);
 
+		// Go through components searching for the ones that belong here.
 		for (j = 0; j < arrComponents.size(); j++) {
-			Property *prop = arrComponents[j].GetProperty(L"Category");
-			if (prop == NULL)
+			LPCTSTR szCategory = arrComponents[j].GetCategory();
+			if (szCategory == NULL)
 				continue;
 
 			// This component belongs inside this category.
-			if (wcscmp(prop->GetValue(), arrCategories[i].c_str()) == 0)
+			if (wcscmp(szCategory, arrCategories[i].c_str()) == 0)
 				treeView->AddItem(nodeCategory, arrComponents[j].ToString(),
 					NULL, 0, (LPARAM)j);
 		}
+
+		// Expand the node.
+		treeView->ExpandNode(nodeCategory);
 	}
 
 	// Add the uncategorized folder and its components.
@@ -86,25 +90,15 @@ void ComponentManager::PopulateTreeView() {
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, L"Uncategorized",
 			NULL, 0, (LPARAM)(arrCategories.size() - 1));
 
+		// Go through components searching for uncategorized ones.
 		for (j = 0; j < arrComponents.size(); j++) {
-			Property *prop = arrComponents[j].GetProperty(L"Category");
-			if (prop == NULL)
+			LPCTSTR szCategory = arrComponents[j].GetCategory();
+			if (szCategory == NULL)
 				treeView->AddItem(nodeCategory, arrComponents[j].ToString(),
 					NULL, 0, (LPARAM)j);
 		}
-	}
-	// Populate the components.
-/*	for (size_t i = 0; i < arr.size(); i++) {
-		Component comp = arr[i];
-		treeView->AddItem(NULL, comp.ToString(), NULL, 0, (LPARAM)i);
 
-		vector<Property> props = arr[i].GetProperties();
-		for (size_t j = 0; j < props.size(); j++) {
-			OutputDebugString(props[j].GetName());
-			OutputDebugString(L"\r\n");
-			OutputDebugString(props[j].GetValue());
-			OutputDebugString(L"\r\n\r\n");
-		}
+		// Expand the node.
+		treeView->ExpandNode(nodeCategory);
 	}
-	*/
 }
