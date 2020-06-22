@@ -476,10 +476,11 @@ DEP_CPP_COMPO=\
 
 DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
+	".\Sources\FileUtils.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
-	".\Sources\StringUtils.h"\
 	
 
 !ENDIF 
@@ -658,6 +659,73 @@ DEP_CPP_DIREC=\
 DEP_CPP_DIREC=\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\FileUtils.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_FILEU=\
+	".\Sources\FileUtils.h"\
 	
 
 !ENDIF 
@@ -1234,6 +1302,10 @@ SOURCE=.\Sources\Constants.h
 # Begin Source File
 
 SOURCE=.\Sources\Directory.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\FileUtils.h
 # End Source File
 # Begin Source File
 
