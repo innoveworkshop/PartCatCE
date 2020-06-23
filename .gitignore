@@ -1,6 +1,7 @@
 # Objects and other compilation artifacts.
 *.o
 *.so
+*.aps
 build/
 Debug/
 *Dbg/
