@@ -28,7 +28,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_PARTCAT             ICON    DISCARDABLE     "..\\Resources\\PartCat.ICO"
+IDI_APPICON             ICON    DISCARDABLE     "..\\Resources\\PartCat.ICO"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -85,9 +85,26 @@ EXSTYLE 0x80000000L
 CAPTION "About PartCat"
 FONT 8, "System"
 BEGIN
-    ICON            IDI_PARTCAT,IDC_STATIC,11,17,20,20
+    ICON            IDI_APPICON,IDC_STATIC,11,17,20,20
     LTEXT           "PartCat Version 1.0",IDC_STATIC,38,10,70,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2020",IDC_STATIC,38,25,70,8
+END
+
+IDD_DETAILVIEW DIALOG DISCARDABLE  0, 0, 245, 86
+STYLE DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_BORDER
+FONT 8, "System"
+BEGIN
+    LTEXT           "Image",IDC_STATIC,0,0,60,50,WS_BORDER
+    LTEXT           "Name:",IDC_STATIC,65,0,22,8
+    EDITTEXT        IDC_EDNAME,65,10,85,14,ES_AUTOHSCROLL
+    LTEXT           "Quantity:",IDC_STATIC,65,25,32,8
+    EDITTEXT        IDC_EDQUANTITY,65,35,30,14,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Datasheet",IDC_BTDATASHEET,100,35,50,14
+    LTEXT           "Notes:",IDC_STATIC,0,50,22,8
+    EDITTEXT        IDC_EDNOTES,0,60,150,25,ES_MULTILINE | ES_AUTOVSCROLL
+    LISTBOX         IDC_LSPROPS,155,10,90,75,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Properties:",IDC_STATIC,155,0,36,8
 END
 
 
@@ -105,6 +122,14 @@ BEGIN
         RIGHTMARGIN, 118
         TOPMARGIN, 7
         BOTTOMMARGIN, 48
+    END
+
+    IDD_DETAILVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 238
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
     END
 END
 #endif    // APSTUDIO_INVOKED

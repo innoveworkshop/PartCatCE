@@ -25,6 +25,7 @@ HINSTANCE hInst;
 TreeView treeView;
 Workspace workspace;
 ComponentManager manComponent;
+HWND hwndDetail;
 
 #ifdef DEVELOP
 /**
@@ -106,7 +107,7 @@ int InitializeApplication(HINSTANCE hInstance) {
 	wc.cbClsExtra = 0;				   // Extra class data.
 	wc.cbWndExtra = 0;				   // Extra window data.
 	wc.hInstance = hInstance;		   // Owner handle.
-	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PARTCAT));
+	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
 	wc.hCursor = NULL;				   // Default cursor. (Always NULL)
 	wc.hbrBackground = (HBRUSH)GetSysColorBrush(COLOR_STATIC);
 	wc.lpszMenuName = NULL;            // Menu name. (Always NULL)
@@ -217,19 +218,14 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
  */
 LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 					  LPARAM lParam) {
-	HWND hwndCB;
-	//HIMAGELIST hIml;
-	RECT rcTreeView;
-	RECT rcPageView;
-
-	// Ensure that the common control DLL is loaded. 
+	// Ensure that the common controls DLL is loaded. 
     InitCommonControls();
 
 	// Initialize the Image List.
-	//hIml = InitializeImageList(hInst);
+	//HIMAGELIST hIml = InitializeImageList(hInst);
 
 	// Create CommandBar.
-	hwndCB = CommandBar_Create(hInst, hWnd, IDC_CMDBAR);
+	HWND hwndCB = CommandBar_Create(hInst, hWnd, IDC_CMDBAR);
 	
     // Add the Standard and View bitmaps to the toolbar.
     CommandBar_AddBitmap(hwndCB, HINST_COMMCTRL, IDB_STD_SMALL_COLOR,
@@ -244,6 +240,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	CommandBar_AddAdornments(hwndCB, 0, 0);
 
 	// Calculate the TreeView control size and position.
+	RECT rcTreeView;
 	GetClientRect(hWnd, &rcTreeView);
 	rcTreeView.top += CommandBar_Height(hwndCB);
 	rcTreeView.bottom -= rcTreeView.top;
@@ -253,12 +250,21 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	treeView = TreeView(hInst, hWnd, rcTreeView, (HMENU)IDC_TREEVIEW);
 	//treeView.SetImageList(hIml);
 
-	// Calculate the page view controls size and position.
-	GetClientRect(hWnd, &rcPageView);
-	rcPageView.top = rcTreeView.top;
-	rcPageView.bottom = rcTreeView.bottom;
-	rcPageView.left = rcTreeView.right + 5;
-	rcPageView.right -= rcPageView.left;
+	// Calculate the detail view dialog size and position.
+	RECT rcDetailView;
+	GetClientRect(hWnd, &rcDetailView);
+	rcDetailView.top = rcTreeView.top;
+	rcDetailView.bottom = rcTreeView.bottom;
+	rcDetailView.left = rcTreeView.right + 5;
+	rcDetailView.right -= rcDetailView.left;
+
+	// Load the detail dialog.
+	HRSRC hResDialog = FindResource(hInst, MAKEINTRESOURCE(IDD_DETAILVIEW), RT_DIALOG);
+	HGLOBAL hDialogGlobal = LoadResource(hInst, hResDialog);
+	hwndDetail = CreateDialogIndirect(hInst, (LPCDLGTEMPLATE)hDialogGlobal,
+		hWnd, DetailDlgProc);
+	SetWindowPos(hwndDetail, HWND_TOP, rcDetailView.left, rcDetailView.top, 0, 0,
+		SWP_NOSIZE | SWP_SHOWWINDOW);
 
 #ifdef DEVELOP
 	// Load the test workspace.
@@ -390,6 +396,8 @@ LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
 
 	// Send window destruction message.
 	DestroyWindow(hWnd);
+	DestroyWindow(hwndDetail);
+
 	return 0;
 }
 
@@ -448,6 +456,25 @@ LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam,
 				return 1;
 			}
 			break;
+	}
+
+    return 0;
+}
+
+/**
+ * Mesage handler for the detail view.
+ *
+ * @param  hDlg   Dialog window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
+	switch (wMsg) {
+	case WM_INITDIALOG:
+		//SetWindowPos(GetDlgItem(hwndDetail, IDC_LSPROPS), HWND_TOP, 10, 10, 100, 100, SWP_SHOWWINDOW);
+		return 0;
 	}
 
     return 0;
