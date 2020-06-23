@@ -20,8 +20,12 @@
 #include "Workspace.h"
 #include "ComponentManager.h"
 
+// Styling stuff.
+#define DEFAULT_UI_MARGIN 5
+
 // Global variables.
 HINSTANCE hInst;
+HWND hwndMain;
 TreeView treeView;
 Workspace workspace;
 ComponentManager manComponent;
@@ -57,7 +61,6 @@ LRESULT LoadTestWorkspace() {
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				   LPWSTR lpCmdLine, int nShowCmd) {
 	MSG msg;
-	HWND hwndMain;
 	HACCEL hAccel;
 	int rc;
 
@@ -255,16 +258,16 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	GetClientRect(hWnd, &rcDetailView);
 	rcDetailView.top = rcTreeView.top;
 	rcDetailView.bottom = rcTreeView.bottom;
-	rcDetailView.left = rcTreeView.right + 5;
+	rcDetailView.left = rcTreeView.right + DEFAULT_UI_MARGIN;
 	rcDetailView.right -= rcDetailView.left;
 
-	// Load the detail dialog.
+	// Load and embed the detail view dialog.
 	HRSRC hResDialog = FindResource(hInst, MAKEINTRESOURCE(IDD_DETAILVIEW), RT_DIALOG);
 	HGLOBAL hDialogGlobal = LoadResource(hInst, hResDialog);
-	hwndDetail = CreateDialogIndirect(hInst, (LPCDLGTEMPLATE)hDialogGlobal,
-		hWnd, DetailDlgProc);
-	SetWindowPos(hwndDetail, HWND_TOP, rcDetailView.left, rcDetailView.top, 0, 0,
-		SWP_NOSIZE | SWP_SHOWWINDOW);
+	hwndDetail = CreateDialogIndirectParam(hInst, (LPCDLGTEMPLATE)hDialogGlobal,
+		hWnd, DetailDlgProc, (LPARAM)&rcDetailView);
+	SetWindowPos(hwndDetail, HWND_TOP, rcDetailView.left, rcDetailView.top,
+		rcDetailView.right, rcDetailView.bottom, SWP_SHOWWINDOW);
 
 #ifdef DEVELOP
 	// Load the test workspace.
@@ -472,8 +475,34 @@ LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam,
  */
 int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (wMsg) {
-	case WM_INITDIALOG:
-		//SetWindowPos(GetDlgItem(hwndDetail, IDC_LSPROPS), HWND_TOP, 10, 10, 100, 100, SWP_SHOWWINDOW);
+	case WM_SIZE:
+		// Get the dialog position and size.
+		RECT rcDialog;
+		GetWindowRect(hDlg, &rcDialog);
+
+		// Calculate the properties list size and position.
+		HWND hwndList = GetDlgItem(hDlg, IDC_LSPROPS);
+		RECT rcList;
+		GetWindowRect(hwndList, &rcList);
+		rcList.left -= rcDialog.left;
+		rcList.top -= rcDialog.top;
+		rcList.right = rcDialog.right - rcDialog.left - rcList.left - DEFAULT_UI_MARGIN;
+		rcList.bottom = rcDialog.bottom - rcDialog.top - rcList.top - DEFAULT_UI_MARGIN;
+
+		// Calculate the notes edit size and position.
+		HWND hwndNotes = GetDlgItem(hDlg, IDC_EDNOTES);
+		RECT rcNotes;
+		GetWindowRect(hwndNotes, &rcNotes);
+		rcNotes.left -= rcDialog.left;
+		rcNotes.top -= rcDialog.top;
+		rcNotes.right = rcList.left - (DEFAULT_UI_MARGIN * 2);
+		rcNotes.bottom = rcDialog.bottom - rcDialog.top - rcNotes.top - DEFAULT_UI_MARGIN;
+
+		// Expand the dynamic controls in the view.
+		SetWindowPos(hwndList, HWND_TOP, rcList.left, rcList.top, rcList.right,
+			rcList.bottom, SWP_SHOWWINDOW);
+		SetWindowPos(hwndNotes, HWND_TOP, rcNotes.left, rcNotes.top,
+			rcNotes.right, rcNotes.bottom, SWP_SHOWWINDOW);
 		return 0;
 	}
 
