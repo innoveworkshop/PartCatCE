@@ -10,11 +10,16 @@
 
 #include <windows.h>
 #include <commctrl.h>
+#include <vector>
+#include <string>
+
+using namespace std;
 
 class ListView {
 private:
 	HWND *hWnd;
 	int nColumns;
+	int nRows;
 
 public:
 	// Contructors and destructor.
@@ -26,6 +31,8 @@ public:
 	bool AddColumn(LPCTSTR szCaption);
 
 	// Row operations.
+	bool AddRow(vector<wstring> arrValues, LPARAM lParam);
+	bool AddRow(vector<wstring> arrValues);
 	bool Clear();
 };
 
