@@ -19,6 +19,8 @@ private:
 
 public:
 	static bool ReadLine(HANDLE hFile, wstring *swLine);
+	static bool ReadContents(LPCTSTR szPath, LPTSTR *szFileContents);
+	static bool SaveContents(LPCTSTR szFilePath, LPCTSTR szContents);
 };
 
 #endif  // _FILE_UTILS_H
