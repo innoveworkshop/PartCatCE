@@ -21,7 +21,7 @@ ListView::ListView() {
  * @param hWnd A ListView handle.
  */
 ListView::ListView(HWND *hWnd) {
-    this->hWnd = hWnd;
+    SetListView(hWnd);
 	nColumns = 0;
 	nRows = 0;
 }
@@ -45,6 +45,7 @@ bool ListView::AddColumn(LPCTSTR szCaption) {
  */
 bool ListView::AddColumn(LPCTSTR szCaption, int nWidth) {
 	LVCOLUMN lvc;
+	memset(&lvc, 0, sizeof(lvc));
 
 	// Set the column properties.
 	lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
@@ -77,6 +78,7 @@ bool ListView::AddRow(vector<wstring> arrValues) {
 bool ListView::AddRow(vector<wstring> arrValues, LPARAM lParam) {
 	// Set the common item parameters.
 	LVITEM lvi;
+	memset(&lvi, 0, sizeof(lvi));
 	lvi.mask = LVIF_TEXT | LVIF_PARAM;
 	lvi.pszText = (LPTSTR)arrValues[0].c_str();
 	lvi.iSubItem = 0;
@@ -102,11 +104,62 @@ bool ListView::AddRow(vector<wstring> arrValues, LPARAM lParam) {
 }
 
 /**
- * Clears the ListView rows.
+ * Adds a key-value pair row to the ListView.
  *
- * @return TRUE if the operation was successful.
+ * @param  szKey   Key name of the pair.
+ * @param  szValue Value of the pair.
+ * @return         TRUE if the operation was succesful.
  */
-bool ListView::Clear() {
-	nRows = 0;
+bool ListView::AddRowKeyValue(LPCTSTR szKey, LPCTSTR szValue) {
+	return AddRowKeyValue(szKey, szValue, -1);
+}
+
+/**
+ * Adds a key-value pair row to the ListView with an specific LPARAM.
+ *
+ * @param  szKey   Key name of the pair.
+ * @param  szValue Value of the pair.
+ * @param  lParam  LPARAM for this row item.
+ * @return         TRUE if the operation was succesful.
+ */
+bool ListView::AddRowKeyValue(LPCTSTR szKey, LPCTSTR szValue, LPARAM lParam) {
+	// Set the common item parameters.
+	LVITEM lvi;
+	memset(&lvi, 0, sizeof(lvi));
+	lvi.mask = LVIF_TEXT | LVIF_PARAM;
+	lvi.pszText = (LPTSTR)szKey;
+	lvi.iSubItem = 0;
+	lvi.iItem = nRows;
+	lvi.lParam = lParam;
+
+	// Insert the item row into the ListView.
+	if (ListView_InsertItem(*hWnd, &lvi) == -1) {
+		MessageBox(NULL, L"Failed to insert a row into the properties list.",
+			L"Properties List Error", MB_OK | MB_ICONERROR);
+		return false;
+	}
+
+	// Set the value cell in the row.
+	ListView_SetItemText(*hWnd, nRows, 1, (LPTSTR)szValue);
+
+	// Increment row count and return.
+	nRows++;
 	return true;
+}
+
+/**
+ * Clears the ListView rows.
+ */
+void ListView::Clear() {
+	ListView_DeleteAllItems(*hWnd);
+	nRows = 0;
+}
+
+/**
+ * Sets the ListView window handle.
+ *
+ * @param listView ListView handle.
+ */
+void ListView::SetListView(HWND *listView) {
+	this->hWnd = listView;
 }

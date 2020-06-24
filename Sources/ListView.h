@@ -33,7 +33,12 @@ public:
 	// Row operations.
 	bool AddRow(vector<wstring> arrValues, LPARAM lParam);
 	bool AddRow(vector<wstring> arrValues);
-	bool Clear();
+	bool AddRowKeyValue(LPCTSTR szKey, LPCTSTR szValue, LPARAM lParam);
+	bool AddRowKeyValue(LPCTSTR szKey, LPCTSTR szValue);
+	void Clear();
+
+	// Misc.
+	void SetListView(HWND *listView);
 };
 
 #endif // _LISTVIEW_H
