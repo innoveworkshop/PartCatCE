@@ -17,6 +17,7 @@
 
 #include "Directory.h"
 #include "TreeView.h"
+#include "ListView.h"
 #include "Workspace.h"
 #include "ComponentManager.h"
 
@@ -27,6 +28,7 @@
 HINSTANCE hInst;
 HWND hwndMain;
 TreeView treeView;
+ListView listView;
 Workspace workspace;
 ComponentManager manComponent;
 HWND hwndDetail;
@@ -273,6 +275,12 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	SendDlgItemMessage(hwndDetail, IDC_SPQUANTITY, UDM_SETBUDDY,
 		(WPARAM)GetDlgItem(hwndDetail, IDC_EDQUANTITY), (LPARAM)0);
 	SendDlgItemMessage(hwndDetail, IDC_SPQUANTITY, UDM_SETBASE, (WPARAM)10, (LPARAM)0);
+
+	// Setup the properties list view.
+	HWND hwndList = GetDlgItem(hwndDetail, IDC_LSPROPS);
+	listView = ListView(&hwndList);
+	listView.AddColumn(L"Property");
+	listView.AddColumn(L"Value", 73);
 
 #ifdef DEVELOP
 	// Load the test workspace.
