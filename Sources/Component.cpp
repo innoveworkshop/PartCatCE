@@ -59,8 +59,16 @@ void Component::PopulateProperties() {
  * Populates this component with data from its directory.
  */
 void Component::PopulateFromDirectory() {
+	// Populate the name and properties.
 	SetName(dirPath.FileName());
 	PopulateProperties();
+
+	// Populate the quantity.
+	LPTSTR szQuantity;
+	if (FileUtils::ReadContents(dirPath.Concatenate(QUANTITY_FILE).ToString(), &szQuantity)) {
+		nQuantity = _wtol(szQuantity);
+		LocalFree(szQuantity);
+	}
 }
 
 /**
@@ -85,21 +93,18 @@ bool Component::SetName(LPCTSTR szName) {
 
 /**
  * Get the component notes.
+ * @remark Remember to free the string using LocalFree.
  *
- * @return Notes about the component.
+ * @return Notes about the component or NULL if none were found.
  */
-LPCTSTR Component::GetNotes() {
-	// TODO: Read from file.
-	return L"";
-}
+LPTSTR Component::GetNotes() {
+	LPTSTR szNotes;
+	
+	// Read the contents of the notes file.
+	if (!FileUtils::ReadContents(dirPath.Concatenate(NOTES_FILE).ToString(), &szNotes))
+		return NULL;
 
-/**
- * Sets the component notes.
- *
- * @param szNotes Component notes.
- */
-void Component::SetNotes(LPCTSTR szNotes) {
-	// TODO: Write to file.
+	return szNotes;
 }
 
 /**
@@ -109,6 +114,19 @@ void Component::SetNotes(LPCTSTR szNotes) {
  */
 size_t Component::GetQuantity() {
 	return nQuantity;
+}
+
+/**
+ * Gets the quantity of components as a string.
+ * @remark Remember to free this string with LocalFree.
+ *
+ * @return Number of components available as a string.
+ */
+LPTSTR Component::GetQuantityString() {
+	LPTSTR szQuantity = (LPTSTR)LocalAlloc(LMEM_FIXED, 33 * sizeof(WCHAR));
+	_ltow(nQuantity, szQuantity, 10);
+
+	return szQuantity;
 }
 
 /**

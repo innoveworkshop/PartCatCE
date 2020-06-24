@@ -34,9 +34,9 @@ public:
 	// Geters and seters.
 	LPCTSTR GetName();
 	bool SetName(LPCTSTR szName);
-	LPCTSTR GetNotes();
-	void SetNotes(LPCTSTR szNotes);
+	LPTSTR GetNotes();
 	size_t GetQuantity();
+	LPTSTR GetQuantityString();
 	void SetQuantity(size_t nQuantity);
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
