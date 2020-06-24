@@ -16,6 +16,8 @@ private:
 
 public:
 	static void AllocCopy(LPTSTR *szDestination, LPCTSTR szSource);
+	static bool AsciiToUnicode(LPTSTR szUnicode, const char *szASCII);
+	static bool UnicodeToAscii(char *szASCII, LPCTSTR szUnicode);
 };
 
 #endif  // _STRING_UTILS_H
