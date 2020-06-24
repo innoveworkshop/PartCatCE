@@ -878,73 +878,6 @@ DEP_CPP_FILEU=\
 # End Source File
 # Begin Source File
 
-SOURCE=.\Sources\ListView.cpp
-
-!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
-
-DEP_CPP_LISTV=\
-	".\Sources\ListView.h"\
-	
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\Sources\PartCat.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -1041,7 +974,6 @@ DEP_CPP_PARTC=\
 	".\Sources\ComponentManager.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
-	".\Sources\ListView.h"\
 	".\Sources\PartCat.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
@@ -1541,10 +1473,6 @@ SOURCE=.\Sources\Directory.h
 # Begin Source File
 
 SOURCE=.\Sources\FileUtils.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Sources\ListView.h
 # End Source File
 # Begin Source File
 

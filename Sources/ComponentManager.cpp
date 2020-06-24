@@ -23,19 +23,13 @@ ComponentManager::ComponentManager() {
  *
  * @param workspace  PartCat workspace .
  * @param treeView   TreeView control manager.
- * @param listView   ListView control manager.
  * @param hwndDetail Detail dialog view.
  */
 ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView,
-								   ListView *listView, HWND *hwndDetail) {
+								   HWND *hwndDetail) {
 	this->workspace = workspace;
 	this->treeView = treeView;
-	this->listView = listView;
 	this->hwndDetail = hwndDetail;
-
-	// Initialize the properties list columns.
-	this->listView->AddColumn(L"Property");
-	this->listView->AddColumn(L"Value", 73);
 }
 
 /**
@@ -74,7 +68,17 @@ void ComponentManager::PopulateDetailView(size_t nIndex) {
 	vector<Property> arrProperties = component->GetProperties();
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		Property prop = arrProperties[i];
-		listView->AddRowKeyValue(prop.GetName(), prop.GetValue(), (LPARAM)i);
+		
+		// Build list caption string.
+		wstring szCaption(prop.GetName());
+		szCaption += L": ";
+		szCaption += prop.GetValue();
+
+		// Append the string to the list box.
+		int pos = (int)SendDlgItemMessage(*hwndDetail, IDC_LSPROPS,
+			LB_ADDSTRING, 0, (LPARAM)szCaption.c_str());
+		SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_SETITEMDATA,
+			(WPARAM)pos, (LPARAM)i);
 	}
 }
 
@@ -82,10 +86,13 @@ void ComponentManager::PopulateDetailView(size_t nIndex) {
  * Clears the detail view.
  */
 void ComponentManager::ClearDetailView() {
+	// Clear edit boxes.
 	SetDlgItemText(*hwndDetail, IDC_EDNAME, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDNOTES, L"");
-	listView->Clear();
+
+	// Clear the list box.
+	SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_RESETCONTENT, 0, 0);
 
 	// TODO: Image.
 }
