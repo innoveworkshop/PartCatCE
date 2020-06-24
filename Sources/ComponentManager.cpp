@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "ComponentManager.h"
 #include "Category.h"
+#include "resource.h"
 
 /**
  * Initializes an empty component manager.
@@ -20,12 +21,60 @@ ComponentManager::ComponentManager() {
  * Initializes a component manager with a workspace directory and a TreeView
  * control to manage.
  *
- * @param workspace PartCat workspace .
- * @param treeView  TreeView control to manage.
+ * @param workspace  PartCat workspace .
+ * @param treeView   TreeView control to manage.
+ * @param hwndDetail Detail dialog view.
  */
-ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView) {
+ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView,
+								   HWND *hwndDetail) {
 	this->workspace = workspace;
 	this->treeView = treeView;
+	this->hwndDetail = hwndDetail;
+}
+
+/**
+ * Populates the detail view with data from a selected component.
+ *
+ * @param nIndex Selected component index.
+ */
+void ComponentManager::PopulateDetailView(size_t nIndex) {
+	// Clear the view for a new component.
+	ClearDetailView();
+
+	// Get the component and check if it's valid.
+	Component *component = workspace->GetComponent(nIndex);
+	if (component == NULL) {
+		MessageBox(NULL, L"Looks like you've selected an invalid component",
+			L"Invalid Component Selected", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// Set the name field.
+	SetDlgItemText(*hwndDetail, IDC_EDNAME, component->GetName());
+
+	// Set the quantity field.
+	LPTSTR szQuantity = component->GetQuantityString();
+	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, szQuantity);
+	LocalFree(szQuantity);
+
+	// Set the notes field.
+	LPTSTR szNotes = component->GetNotes();
+	if (szNotes) {
+		SetDlgItemText(*hwndDetail, IDC_EDNOTES, szNotes);
+		LocalFree(szNotes);
+	}
+}
+
+/**
+ * Clears the detail view.
+ */
+void ComponentManager::ClearDetailView() {
+	SetDlgItemText(*hwndDetail, IDC_EDNAME, L"");
+	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, L"");
+	SetDlgItemText(*hwndDetail, IDC_EDNOTES, L"");
+
+	// TODO: Image.
+	// TODO: Properties list.
 }
 
 /**
@@ -49,24 +98,14 @@ LRESULT ComponentManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
 	treeView->GetItem(&tvItem);
 
 	// Check if the selected item is a component.
-	if (tvItem.lParam == -1)
+	if (tvItem.lParam == -1) {
+		ClearDetailView();
 		return 0;
-	
-	// Get component index from parameter.
-	nIndex = (size_t)tvItem.lParam;
-	
-	// Open the component in the detail view.
-	Component *component = workspace->GetComponent(nIndex);
-	if (component == NULL) {
-		MessageBox(NULL, L"Looks like you've selected an invalid component",
-			L"Invalid Component Selected", MB_OK | MB_ICONERROR);
-		return 1;
 	}
-
-	wstring str(component->ToString());
-	str += L"\r\n";
-	str += component->GetNotes();
-	MessageBox(NULL, str.c_str(), L"Component Selected", MB_OK | MB_ICONINFORMATION);
+	
+	// Get component index from parameter and show it in the detail view.
+	nIndex = (size_t)tvItem.lParam;
+	PopulateDetailView(nIndex);
 
 	return 0;
 }

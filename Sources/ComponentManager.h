@@ -18,14 +18,18 @@ class ComponentManager {
 protected:
 	Workspace *workspace;
 	TreeView *treeView;
+	HWND *hwndDetail;
 
 public:
 	// Constructors and destructors.
 	ComponentManager();
-	ComponentManager(Workspace *workspace, TreeView *treeView);
+	ComponentManager(Workspace *workspace, TreeView *treeView,
+					 HWND *hwndDetail);
 
 	// UI stuff.
 	void PopulateTreeView();
+	void ClearDetailView();
+	void PopulateDetailView(size_t nIndex);
 	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
 									 LPARAM lParam);
 };

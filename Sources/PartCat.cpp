@@ -40,7 +40,7 @@ HWND hwndDetail;
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
 	workspace = Workspace(Directory(TEST_WORKSPACE));
-	manComponent = ComponentManager(&workspace, &treeView);
+	manComponent = ComponentManager(&workspace, &treeView, &hwndDetail);
 
 	// Populate the TreeView.
 	manComponent.PopulateTreeView();
