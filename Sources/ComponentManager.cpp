@@ -22,14 +22,20 @@ ComponentManager::ComponentManager() {
  * control to manage.
  *
  * @param workspace  PartCat workspace .
- * @param treeView   TreeView control to manage.
+ * @param treeView   TreeView control manager.
+ * @param listView   ListView control manager.
  * @param hwndDetail Detail dialog view.
  */
 ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView,
-								   HWND *hwndDetail) {
+								   ListView *listView, HWND *hwndDetail) {
 	this->workspace = workspace;
 	this->treeView = treeView;
+	this->listView = listView;
 	this->hwndDetail = hwndDetail;
+
+	// Initialize the properties list columns.
+	this->listView->AddColumn(L"Property");
+	this->listView->AddColumn(L"Value", 73);
 }
 
 /**
@@ -63,6 +69,13 @@ void ComponentManager::PopulateDetailView(size_t nIndex) {
 		SetDlgItemText(*hwndDetail, IDC_EDNOTES, szNotes);
 		LocalFree(szNotes);
 	}
+
+	// Populate the properties list.
+	vector<Property> arrProperties = component->GetProperties();
+	for (size_t i = 0; i < arrProperties.size(); i++) {
+		Property prop = arrProperties[i];
+		listView->AddRowKeyValue(prop.GetName(), prop.GetValue(), (LPARAM)i);
+	}
 }
 
 /**
@@ -72,9 +85,9 @@ void ComponentManager::ClearDetailView() {
 	SetDlgItemText(*hwndDetail, IDC_EDNAME, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDNOTES, L"");
+	listView->Clear();
 
 	// TODO: Image.
-	// TODO: Properties list.
 }
 
 /**

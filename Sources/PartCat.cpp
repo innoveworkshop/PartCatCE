@@ -32,6 +32,7 @@ ListView listView;
 Workspace workspace;
 ComponentManager manComponent;
 HWND hwndDetail;
+HWND hwndListProp;
 
 #ifdef DEVELOP
 /**
@@ -42,7 +43,8 @@ HWND hwndDetail;
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
 	workspace = Workspace(Directory(TEST_WORKSPACE));
-	manComponent = ComponentManager(&workspace, &treeView, &hwndDetail);
+	manComponent = ComponentManager(&workspace, &treeView, &listView,
+		&hwndDetail);
 
 	// Populate the TreeView.
 	manComponent.PopulateTreeView();
@@ -277,10 +279,8 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	SendDlgItemMessage(hwndDetail, IDC_SPQUANTITY, UDM_SETBASE, (WPARAM)10, (LPARAM)0);
 
 	// Setup the properties list view.
-	HWND hwndList = GetDlgItem(hwndDetail, IDC_LSPROPS);
-	listView = ListView(&hwndList);
-	listView.AddColumn(L"Property");
-	listView.AddColumn(L"Value", 73);
+	hwndListProp = GetDlgItem(hwndDetail, IDC_LSPROPS);
+	listView = ListView(&hwndListProp);
 
 #ifdef DEVELOP
 	// Load the test workspace.

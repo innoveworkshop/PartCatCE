@@ -11,6 +11,7 @@
 
 #include <windows.h>
 #include "TreeView.h"
+#include "ListView.h"
 #include "Directory.h"
 #include "Workspace.h"
 
@@ -18,13 +19,14 @@ class ComponentManager {
 protected:
 	Workspace *workspace;
 	TreeView *treeView;
+	ListView *listView;
 	HWND *hwndDetail;
 
 public:
 	// Constructors and destructors.
 	ComponentManager();
 	ComponentManager(Workspace *workspace, TreeView *treeView,
-					 HWND *hwndDetail);
+					 ListView *listView, HWND *hwndDetail);
 
 	// UI stuff.
 	void PopulateTreeView();
