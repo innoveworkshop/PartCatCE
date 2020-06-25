@@ -35,9 +35,11 @@ public:
 	LPCTSTR GetName();
 	bool SetName(LPCTSTR szName);
 	LPTSTR GetNotes();
+	bool SaveNotes(LPCTSTR szNotes);
 	size_t GetQuantity();
 	LPTSTR GetQuantityString();
 	void SetQuantity(size_t nQuantity);
+	void SetQuantity(LPCTSTR szQuantity);
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
 	LPCTSTR GetCategory();
@@ -46,6 +48,7 @@ public:
 	// Misc.
 	void ClearFields();
 	LPCTSTR ToString();
+	void PrintDebug();
 };
 
 #endif  // _COMPONENT_H

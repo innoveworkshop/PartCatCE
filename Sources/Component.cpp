@@ -108,6 +108,16 @@ LPTSTR Component::GetNotes() {
 }
 
 /**
+ * Set the component notes.
+ *
+ * @param  szNotes Component notes.
+ * @return         TRUE if the operation was successful.
+ */
+bool Component::SaveNotes(LPCTSTR szNotes) {
+	return FileUtils::SaveContents(dirPath.Concatenate(NOTES_FILE).ToString(), szNotes);
+}
+
+/**
  * Gets the quantity of components.
  *
  * @return Number of components available.
@@ -136,6 +146,15 @@ LPTSTR Component::GetQuantityString() {
  */
 void Component::SetQuantity(size_t nQuantity) {
 	this->nQuantity = nQuantity;
+}
+
+/**
+ * Sets the amount of componets available as a string.
+ *
+ * @param szQuantity Quantity of components as a string.
+ */
+void Component::SetQuantity(LPCTSTR szQuantity) {
+	SetQuantity((size_t)_wtol(szQuantity));
 }
 
 /**
@@ -206,4 +225,38 @@ void Component::ClearFields() {
  */
 LPCTSTR Component::ToString() {
 	return szName;
+}
+
+/**
+ * Prints some debug information about the component.
+ */
+void Component::PrintDebug() {
+	LPTSTR szQuantity = GetQuantityString();
+	LPTSTR szNotes = GetNotes();
+
+	OutputDebugString(L"Name: ");
+	OutputDebugString(szName);
+	OutputDebugString(L"\r\n");
+	OutputDebugString(L"Quantity: ");
+	OutputDebugString(szQuantity);
+	OutputDebugString(L"\r\n");
+	OutputDebugString(L"Notes: \"");
+	OutputDebugString(szNotes);
+	OutputDebugString(L"\"\r\n");
+
+	OutputDebugString(L"Properties:");
+	for (size_t i = 0; i < arrProperties.size(); i++) {
+		Property prop = arrProperties[i];
+
+		OutputDebugString(L"    ");
+		OutputDebugString(prop.GetName());
+		OutputDebugString(L": ");
+		OutputDebugString(prop.GetValue());
+		OutputDebugString(L"\r\n");
+	}
+	OutputDebugString(L"\r\n");
+
+
+	LocalFree(szQuantity);
+	LocalFree(szNotes);
 }
