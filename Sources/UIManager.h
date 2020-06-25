@@ -20,12 +20,20 @@ protected:
 	HWND *hwndDetail;
 	Workspace *workspace;
 	TreeView *treeView;
+	long iSelComponent;
 
 public:
 	// Constructors and destructors.
 	UIManager();
 	UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
 			  HWND *hwndDetail);
+
+	// General stuff.
+	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
+
+	// Component operations.
+	LRESULT SyncDetailViewWithComponent();
+	LRESULT SaveComponent();
 
 	// TreeView and detail view.
 	void PopulateTreeView();

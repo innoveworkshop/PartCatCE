@@ -10,6 +10,7 @@
 #include "UIManager.h"
 #include "Category.h"
 #include "resource.h"
+#include "commdlg.h"
 
 /**
  * Initializes an empty component manager.
@@ -32,6 +33,8 @@ UIManager::UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
 	this->treeView = treeView;
 	this->hwndMain = hwndMain;
 	this->hwndDetail = hwndDetail;
+
+	ClearDetailView();
 }
 
 /**
@@ -40,6 +43,29 @@ UIManager::UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::OpenWorkspace() {
+	ClearDetailView();
+/*	OPENFILENAME ofn = {0};
+    WCHAR szPath[MAX_PATH] = L"";
+
+	// Populate the structure.
+    ofn.lStructSize = sizeof(ofn);
+	ofn.lpstrTitle = L"Open PartCat Workspace";
+    ofn.hwndOwner = *hwndMain;
+    ofn.lpstrFile = szPath;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_EXPLORER;
+
+	// Open the open folder dialog.
+	if (!GetOpenFileName(&ofn))
+		return 1;
+
+	// Try to open the workspace.
+	if (!workspace->Open(Directory(szPath))) {
+		MessageBox(*hwndMain, L"An error occured while trying to open the workspace.",
+			L"Open Workspace Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+*/
 	return 0;
 }
 
@@ -49,6 +75,8 @@ LRESULT UIManager::OpenWorkspace() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::RefreshWorkspace() {
+	ClearDetailView();
+
 	if (!workspace->Refresh()) {
 		MessageBox(*hwndMain, L"An error occured while refreshing the workspace.",
 			L"Workspace Refresh Error", MB_OK | MB_ICONERROR);
@@ -64,7 +92,67 @@ LRESULT UIManager::RefreshWorkspace() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::CloseWorkspace() {
+	ClearDetailView();
 	workspace->Close();
+	return 0;
+}
+
+/**
+ * Saves a component.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::SaveComponent() {
+	return SyncDetailViewWithComponent();
+}
+
+/**
+ * Syncs the detail view controls changes with the opened component object.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::SyncDetailViewWithComponent() {
+	LPTSTR szBuffer;
+
+	// Get component.
+	Component *comp = workspace->GetComponent(iSelComponent);
+	if (comp == NULL) {
+		MessageBox(*hwndMain, L"Couldn't retrieve the currently selected component.",
+			L"Component Retrieval Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	// Sync quantity.
+	GetEditText(GetDlgItem(*hwndDetail, IDC_EDQUANTITY), &szBuffer);
+	comp->SetQuantity(szBuffer);
+	LocalFree(szBuffer);
+
+	// Sync notes.
+	GetEditText(GetDlgItem(*hwndDetail, IDC_EDNOTES), &szBuffer);
+	comp->SaveNotes(szBuffer);
+	LocalFree(szBuffer);
+
+	// Sync properties.
+	vector<Property> *arrProperties = comp->GetEditableProperties();
+	arrProperties->clear();
+	int nCount = SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_GETCOUNT, 0, 0);
+	for (int i = 0; i < nCount; i++) {
+		// Get the size of the string and allocate memory for it.
+		int nStrLen = SendDlgItemMessage(*hwndDetail, IDC_LSPROPS,
+			LB_GETTEXTLEN, (WPARAM)i, 0);
+		LPTSTR szLine = (LPTSTR)LocalAlloc(LMEM_FIXED,
+			(nStrLen + 1) * sizeof(WCHAR));
+
+		// Get the string and push it into the array.
+		SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_GETTEXT, (WPARAM)i,
+			(LPARAM)szLine);
+		arrProperties->push_back(Property(szLine));
+		LocalFree(szLine);
+	}
+
+	// Check if our changes worked.
+	comp->PrintDebug();
+
 	return 0;
 }
 
@@ -84,6 +172,9 @@ void UIManager::PopulateDetailView(size_t nIndex) {
 			L"Invalid Component Selected", MB_OK | MB_ICONERROR);
 		return;
 	}
+
+	// Set the selected component index.
+	iSelComponent = nIndex;
 
 	// Set the name field.
 	SetDlgItemText(*hwndDetail, IDC_EDNAME, component->GetName());
@@ -131,6 +222,8 @@ void UIManager::ClearDetailView() {
 	SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_RESETCONTENT, 0, 0);
 
 	// TODO: Image.
+
+	iSelComponent = -1;
 }
 
 /**
@@ -282,4 +375,23 @@ void UIManager::PopulateTreeView() {
 		// Expand the node.
 		treeView->ExpandNode(nodeCategory);
 	}
+}
+
+/**
+ * Gets the text from a control on screen.
+ * @remark This function allocates the string. Remember to free it later.
+ *
+ * @param  hwndControl Control to get the text from.
+ * @param  szBuffer    Pointer to a string to store the text.
+ * @return             TRUE if the operation was successful.
+ */
+bool UIManager::GetEditText(HWND hwndControl, LPTSTR *szBuffer) {
+	int nLength;
+
+	// Get the string length and allocate it.
+	nLength = GetWindowTextLength(hwndControl) + 1;
+	*szBuffer = (LPTSTR)LocalAlloc(LMEM_FIXED, nLength * sizeof(WCHAR));
+
+	// Get the string from the control and return.
+	return GetWindowText(hwndControl, *szBuffer, nLength) != 0;
 }

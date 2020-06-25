@@ -325,6 +325,8 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
+	case IDM_FILE_SAVE:
+		return uiManager.SaveComponent();
 	case IDM_FILE_OPENWS:
 		return uiManager.OpenWorkspace();
 	case IDM_FILE_REFRESHWS:
