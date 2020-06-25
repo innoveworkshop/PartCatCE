@@ -210,6 +210,15 @@ vector<Property> Component::GetProperties() {
 }
 
 /**
+ * Gets the component properties in editable form.
+ *
+ * @return Component properties.
+ */
+vector<Property>* Component::GetEditableProperties() {
+	return &arrProperties;
+}
+
+/**
  * Clears all the fields in the object.
  */
 void Component::ClearFields() {
@@ -244,7 +253,7 @@ void Component::PrintDebug() {
 	OutputDebugString(szNotes);
 	OutputDebugString(L"\"\r\n");
 
-	OutputDebugString(L"Properties:");
+	OutputDebugString(L"Properties:\r\n");
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		Property prop = arrProperties[i];
 

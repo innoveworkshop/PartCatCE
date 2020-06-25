@@ -42,6 +42,7 @@ public:
 	void SetQuantity(LPCTSTR szQuantity);
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
+	vector<Property>* GetEditableProperties();
 	LPCTSTR GetCategory();
 	LPCTSTR GetSubCategory();
 
