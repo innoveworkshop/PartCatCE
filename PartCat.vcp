@@ -380,130 +380,6 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat;h"
 # Begin Source File
 
-SOURCE=.\Sources\ComponentManager.cpp
-
-!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
-
-DEP_CPP_COMPO=\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	
-NODEP_CPP_COMPO=\
-	".\Sources\Array.h"\
-	
-
-!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
-
-DEP_CPP_COMPO=\
-	".\Sources\Category.h"\
-	".\Sources\Component.h"\
-	".\Sources\ComponentManager.h"\
-	".\Sources\Constants.h"\
-	".\Sources\Directory.h"\
-	".\Sources\Path.h"\
-	".\Sources\Property.h"\
-	".\Sources\TreeView.h"\
-	".\Sources\Workspace.h"\
-	
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\Sources\ComponentManager.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Sources\PartCat.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -686,6 +562,157 @@ DEP_CPP_TREEV=\
 
 SOURCE=.\Sources\TreeView.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\Sources\UIManager.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_UIMAN=\
+	".\Sources\Category.h"\
+	".\Sources\Component.h"\
+	".\Sources\Constants.h"\
+	".\Sources\Directory.h"\
+	".\Sources\Path.h"\
+	".\Sources\Property.h"\
+	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
+	".\Sources\Workspace.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\UIManager.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 
@@ -850,115 +877,115 @@ SOURCE=.\Sources\Component.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Directory.h"\
 	".\Sources\Path.h"\
 	".\Sources\StringUtils.h"\
 	
-NODEP_CPP_COMPON=\
+NODEP_CPP_COMPO=\
 	".\Sources\Array.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
-DEP_CPP_COMPON=\
+DEP_CPP_COMPO=\
 	".\Sources\Component.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\

@@ -1,5 +1,5 @@
 /**
- * ComponentManager.cpp
+ * UIManager.cpp
  * Manages all of the components in the application and also offloads some of
  * the UI stuff.
  *
@@ -7,14 +7,14 @@
  */
 
 #include <algorithm>
-#include "ComponentManager.h"
+#include "UIManager.h"
 #include "Category.h"
 #include "resource.h"
 
 /**
  * Initializes an empty component manager.
  */
-ComponentManager::ComponentManager() {
+UIManager::UIManager() {
 }
 
 /**
@@ -25,7 +25,7 @@ ComponentManager::ComponentManager() {
  * @param treeView   TreeView control manager.
  * @param hwndDetail Detail dialog view.
  */
-ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView,
+UIManager::UIManager(Workspace *workspace, TreeView *treeView,
 								   HWND *hwndDetail) {
 	this->workspace = workspace;
 	this->treeView = treeView;
@@ -33,11 +33,38 @@ ComponentManager::ComponentManager(Workspace *workspace, TreeView *treeView,
 }
 
 /**
+ * Opens a workspace for the user.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::OpenWorkspace() {
+	return 0;
+}
+
+/**
+ * Refreshes the workspace for the user.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::RefreshWorkspace() {
+	return 0;
+}
+
+/**
+ * Closes the workspace for the user.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::CloseWorkspace() {
+	return 0;
+}
+
+/**
  * Populates the detail view with data from a selected component.
  *
  * @param nIndex Selected component index.
  */
-void ComponentManager::PopulateDetailView(size_t nIndex) {
+void UIManager::PopulateDetailView(size_t nIndex) {
 	// Clear the view for a new component.
 	ClearDetailView();
 
@@ -85,7 +112,7 @@ void ComponentManager::PopulateDetailView(size_t nIndex) {
 /**
  * Clears the detail view.
  */
-void ComponentManager::ClearDetailView() {
+void UIManager::ClearDetailView() {
 	// Clear edit boxes.
 	SetDlgItemText(*hwndDetail, IDC_EDNAME, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, L"");
@@ -106,7 +133,7 @@ void ComponentManager::ClearDetailView() {
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT ComponentManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
+LRESULT UIManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
 												   WPARAM wParam, LPARAM lParam) {
 	TVITEM tvItem;
 	NMTREEVIEW* pnmTreeView = (LPNMTREEVIEW)lParam;
@@ -133,7 +160,7 @@ LRESULT ComponentManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
 /**
  * Populates the TreeView with components.
  */
-void ComponentManager::PopulateTreeView() {
+void UIManager::PopulateTreeView() {
 	size_t i, j;
 	bool bHasUncategorized = false;
 

@@ -18,7 +18,7 @@
 #include "Directory.h"
 #include "TreeView.h"
 #include "Workspace.h"
-#include "ComponentManager.h"
+#include "UIManager.h"
 
 // Styling stuff.
 #define DEFAULT_UI_MARGIN 5
@@ -28,7 +28,7 @@ HINSTANCE hInst;
 HWND hwndMain;
 TreeView treeView;
 Workspace workspace;
-ComponentManager manComponent;
+UIManager uiManager;
 HWND hwndDetail;
 
 #ifdef DEVELOP
@@ -40,10 +40,10 @@ HWND hwndDetail;
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
 	workspace = Workspace(Directory(TEST_WORKSPACE));
-	manComponent = ComponentManager(&workspace, &treeView, &hwndDetail);
+	uiManager = UIManager(&workspace, &treeView, &hwndDetail);
 
 	// Populate the TreeView.
-	manComponent.PopulateTreeView();
+	uiManager.PopulateTreeView();
 
 	return 0;
 }
@@ -358,7 +358,7 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
 					  LPARAM lParam) {
 	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
-		return manComponent.TreeViewSelectionChanged(hWnd, wMsg, wParam,
+		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam,
 			lParam);
 	}
 
