@@ -16,14 +16,16 @@
 
 class UIManager {
 protected:
+	HWND *hwndMain;
+	HWND *hwndDetail;
 	Workspace *workspace;
 	TreeView *treeView;
-	HWND *hwndDetail;
 
 public:
 	// Constructors and destructors.
 	UIManager();
-	UIManager(Workspace *workspace, TreeView *treeView, HWND *hwndDetail);
+	UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
+			  HWND *hwndDetail);
 
 	// TreeView and detail view.
 	void PopulateTreeView();

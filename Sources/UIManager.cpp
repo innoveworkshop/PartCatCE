@@ -21,14 +21,16 @@ UIManager::UIManager() {
  * Initializes a component manager with a workspace directory and a TreeView
  * control to manage.
  *
+ * @param hwndMain   Main window handle.
  * @param workspace  PartCat workspace .
  * @param treeView   TreeView control manager.
- * @param hwndDetail Detail dialog view.
+ * @param hwndDetail Detail dialog view handle.
  */
-UIManager::UIManager(Workspace *workspace, TreeView *treeView,
-								   HWND *hwndDetail) {
+UIManager::UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
+					 HWND *hwndDetail) {
 	this->workspace = workspace;
 	this->treeView = treeView;
+	this->hwndMain = hwndMain;
 	this->hwndDetail = hwndDetail;
 }
 
@@ -47,6 +49,12 @@ LRESULT UIManager::OpenWorkspace() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::RefreshWorkspace() {
+	if (!workspace->Refresh()) {
+		MessageBox(*hwndMain, L"An error occured while refreshing the workspace.",
+			L"Workspace Refresh Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
 	return 0;
 }
 
@@ -56,6 +64,7 @@ LRESULT UIManager::RefreshWorkspace() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::CloseWorkspace() {
+	workspace->Close();
 	return 0;
 }
 

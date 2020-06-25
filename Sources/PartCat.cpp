@@ -40,7 +40,7 @@ HWND hwndDetail;
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
 	workspace = Workspace(Directory(TEST_WORKSPACE));
-	uiManager = UIManager(&workspace, &treeView, &hwndDetail);
+	uiManager = UIManager(&hwndMain, &workspace, &treeView, &hwndDetail);
 
 	// Populate the TreeView.
 	uiManager.PopulateTreeView();
@@ -325,14 +325,12 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
+	case IDM_FILE_OPENWS:
+		return uiManager.OpenWorkspace();
 	case IDM_FILE_REFRESHWS:
-		if (!workspace.Refresh())
-			MessageBox(hWnd, L"An error occured while refreshing the workspace.",
-				L"Workspace Refresh Error", MB_OK | MB_ICONERROR);
-		break;
+		return uiManager.RefreshWorkspace();
 	case IDM_FILE_CLOSEWS:
-		workspace.Close();
-		break;
+		return uiManager.CloseWorkspace();
 	case IDM_FILE_EXIT:
 		return SendMessage(hWnd, WM_CLOSE, 0, 0);
 	case IDM_HELP_ABOUT:
