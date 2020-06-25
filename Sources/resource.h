@@ -18,17 +18,23 @@
 #define IDC_EDNOTES                     1005
 #define IDC_LSPROPS                     1006
 #define IDC_SPQUANTITY                  1007
-#define IDC_LIST3                       1010
 #define IDM_FILE_EXIT                   40002
 #define IDM_HELP_ABOUT                  40003
+#define IDM_FILE_NEW_COMP               40005
+#define IDM_FILE_NEW_WORKSPACE          40006
+#define IDM_FILE_SAVE                   40007
+#define IDM_FILE_SAVEAS                 40008
+#define IDM_FILE_OPENWS                 40009
+#define IDM_FILE_REFRESHWS              40010
+#define IDM_FILE_CLOSEWS                40011
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
-#define _APS_NEXT_COMMAND_VALUE         40004
-#define _APS_NEXT_CONTROL_VALUE         1011
+#define _APS_NEXT_COMMAND_VALUE         40012
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

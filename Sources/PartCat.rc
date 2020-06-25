@@ -65,6 +65,18 @@ IDM_MAINMENU MENU DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
+        POPUP "&New"
+        BEGIN
+            MENUITEM "Component\tCtrl+N",           IDM_FILE_NEW_COMP
+            MENUITEM "Workspace",                   IDM_FILE_NEW_WORKSPACE
+        END
+        MENUITEM "&Save\tCtrl+S",               IDM_FILE_SAVE
+        MENUITEM "Save &As...",                 IDM_FILE_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Open Workspace...\tCtrl+O",  IDM_FILE_OPENWS
+        MENUITEM "&Refresh Workspace\tCtrl+R",  IDM_FILE_REFRESHWS
+        MENUITEM "&Close Workspace\tCtrl+W",    IDM_FILE_CLOSEWS
+        MENUITEM SEPARATOR
         MENUITEM "E&xit",                       IDM_FILE_EXIT
     END
     POPUP "&Help"
@@ -144,7 +156,12 @@ END
 IDC_PARTCAT ACCELERATORS DISCARDABLE 
 BEGIN
     "/",            IDM_HELP_ABOUT,         ASCII,  ALT, NOINVERT
+    "N",            IDM_FILE_NEW_COMP,      VIRTKEY, CONTROL, NOINVERT
+    "O",            IDM_FILE_OPENWS,        VIRTKEY, CONTROL, NOINVERT
+    "R",            IDM_FILE_REFRESHWS,     VIRTKEY, CONTROL, NOINVERT
+    "S",            IDM_FILE_SAVE,          VIRTKEY, CONTROL, NOINVERT
     VK_F4,          IDM_FILE_EXIT,          VIRTKEY, ALT, NOINVERT
+    "W",            IDM_FILE_CLOSEWS,       VIRTKEY, CONTROL, NOINVERT
 END
 
 
