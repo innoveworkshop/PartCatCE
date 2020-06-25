@@ -293,52 +293,22 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
  */
 LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 							 LPARAM lParam) {
-	/*HMENU hMenu = CommandBar_GetMenu(GetDlgItem(hWnd, IDC_CMDBAR), 0);
-
-	// Check if we can undo and enable/disable the menu item accordingly.
-	if (SendPageEditMessage(EM_CANUNDO, 0, 0)) {
-		EnableMenuItem(hMenu, IDM_EDIT_UNDO, MF_BYCOMMAND | MF_ENABLED);
-	} else {
-		EnableMenuItem(hMenu, IDM_EDIT_UNDO, MF_BYCOMMAND | MF_GRAYED);
-	}
-
-	// Check if editing or viewing a page and change the menu radio group.
-	if (IsPageEditorActive()) {
-		CheckMenuRadioItem(hMenu, IDM_VIEW_PAGEVIEW, IDM_VIEW_PAGEEDIT,
-			IDM_VIEW_PAGEEDIT, MF_BYCOMMAND);
-	} else {
-		CheckMenuRadioItem(hMenu, IDM_VIEW_PAGEVIEW, IDM_VIEW_PAGEEDIT,
-			IDM_VIEW_PAGEVIEW, MF_BYCOMMAND);
-	}
-
-	// Enable/disable the Find Next button if there's something in the edit box.
-	if (PageEditCanFindNext()) {
-		EnableMenuItem(hMenu, IDM_EDIT_FINDNEXT, MF_BYCOMMAND | MF_ENABLED);
-	} else {
-		EnableMenuItem(hMenu, IDM_EDIT_FINDNEXT, MF_BYCOMMAND | MF_GRAYED);
-	}
+	HMENU hMenu = CommandBar_GetMenu(GetDlgItem(hWnd, IDC_CMDBAR), 0);
 
 	// Enable and disable workspace related items.
-	if (fWorkspaceOpen) {
-		EnableMenuItem(hMenu, IDM_FILE_NEWARTICLE, MF_BYCOMMAND | MF_ENABLED);
-		EnableMenuItem(hMenu, IDM_FILE_NEWTEMPLATE, MF_BYCOMMAND | MF_ENABLED);
+	if (workspace.IsOpened()) {
+		EnableMenuItem(hMenu, IDM_FILE_NEW_COMP, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_FILE_REFRESHWS, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_FILE_CLOSEWS, MF_BYCOMMAND | MF_ENABLED);
 	} else {
-		EnableMenuItem(hMenu, IDM_FILE_NEWARTICLE, MF_BYCOMMAND | MF_GRAYED);
-		EnableMenuItem(hMenu, IDM_FILE_NEWTEMPLATE, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_NEW_COMP, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_FILE_REFRESHWS, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_FILE_CLOSEWS, MF_BYCOMMAND | MF_GRAYED);
 	}
-
-	// Enable/disable article related items.
-	if (IsArticleLoaded() || IsTemplateLoaded()) {
-		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_ENABLED);
-		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
-	} else {
-		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_GRAYED);
-		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_GRAYED);
-	}*/
 
 	return 0;
 }
@@ -355,11 +325,19 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
-	case IDM_HELP_ABOUT:
-		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
+	case IDM_FILE_REFRESHWS:
+		if (!workspace.Refresh())
+			MessageBox(hWnd, L"An error occured while refreshing the workspace.",
+				L"Workspace Refresh Error", MB_OK | MB_ICONERROR);
+		break;
+	case IDM_FILE_CLOSEWS:
+		workspace.Close();
 		break;
 	case IDM_FILE_EXIT:
 		return SendMessage(hWnd, WM_CLOSE, 0, 0);
+	case IDM_HELP_ABOUT:
+		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
+		break;
 	default:
 		return DefWindowProc(hWnd, wMsg, wParam, lParam);
 	}
