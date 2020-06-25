@@ -375,9 +375,9 @@ LINK32=link.exe
 # Name "PartCat - Win32 (WCE ARM) Debug"
 # Name "PartCat - Win32 (WCE x86em) Release"
 # Name "PartCat - Win32 (WCE x86em) Debug"
-# Begin Group "Source Files"
+# Begin Group "User Interface"
 
-# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat;h"
 # Begin Source File
 
 SOURCE=.\Sources\ComponentManager.cpp
@@ -500,6 +500,10 @@ DEP_CPP_COMPO=\
 # End Source File
 # Begin Source File
 
+SOURCE=.\Sources\ComponentManager.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\PartCat.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -609,6 +613,10 @@ DEP_CPP_PARTC=\
 # End Source File
 # Begin Source File
 
+SOURCE=.\Sources\PartCat.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\TreeView.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -674,18 +682,6 @@ DEP_CPP_TREEV=\
 !ENDIF 
 
 # End Source File
-# End Group
-# Begin Group "Header Files"
-
-# PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\Sources\ComponentManager.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Sources\PartCat.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\Sources\TreeView.h
@@ -736,7 +732,7 @@ SOURCE=.\Sources\resource.h
 # End Group
 # Begin Group "PartCat"
 
-# PROP Default_Filter "*.h *.cpp"
+# PROP Default_Filter "h;cpp"
 # Begin Source File
 
 SOURCE=.\Sources\Category.cpp
@@ -1186,7 +1182,7 @@ SOURCE=.\Sources\Workspace.h
 # End Group
 # Begin Group "File System"
 
-# PROP Default_Filter "*.h *.cpp"
+# PROP Default_Filter "h;cpp"
 # Begin Source File
 
 SOURCE=.\Sources\Directory.cpp
@@ -1342,7 +1338,7 @@ SOURCE=.\Sources\Path.h
 # End Group
 # Begin Group "Utilities"
 
-# PROP Default_Filter "*.h *.cpp"
+# PROP Default_Filter "h;cpp"
 # Begin Source File
 
 SOURCE=.\Sources\FileUtils.cpp
