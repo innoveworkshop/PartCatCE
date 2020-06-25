@@ -12,6 +12,7 @@
  * Initializes an empty PartCat workspace.
  */
 Workspace::Workspace() {
+	bOpened = false;
 }
 
 /**
@@ -20,8 +21,7 @@ Workspace::Workspace() {
  * @param dirWorkspace A PartCat workspace directory.
  */
 Workspace::Workspace(Directory dirWorkspace) {
-	this->dirWorkspace = Directory(dirWorkspace);
-	PopulateComponents();
+	Open(dirWorkspace);
 }
 
 /**
@@ -53,9 +53,53 @@ void Workspace::PopulateComponents() {
 	Directory dirComponents(dirWorkspace.Concatenate(COMPONENTS_ROOT).ToString());
 	vector<Directory> subDirs = dirComponents.GetSubDirectories();
 
+	// Clear the components array.
+	arrComponents.clear();
+
 	// Populate components array.
 	for (size_t i = 0; i < subDirs.size(); i++) {
 		Directory dir = subDirs[i];
 		arrComponents.push_back(Component(dir));
 	}
+}
+
+/**
+ * Opens a workspace.
+ *
+ * @param  dirWorkspace A PartCat workspace directory.
+ * @return              TRUE if the operation was successful.
+ */
+bool Workspace::Open(Directory dirWorkspace) {
+	this->dirWorkspace = Directory(dirWorkspace);
+	PopulateComponents();
+	bOpened = true;
+
+	return bOpened;
+}
+
+/**
+ * Refreshes the workspace.
+ *
+ * @return TRUE if the operation was successful.
+ */
+bool Workspace::Refresh() {
+	Close();
+	return Open(dirWorkspace);
+}
+
+/**
+ * Closes the workspace.
+ */
+void Workspace::Close() {
+	bOpened	= false;
+	arrComponents.clear();
+}
+
+/**
+ * Checks if the workspace is currently opened.
+ *
+ * @return TRUE if the workspace is opened.
+ */
+bool Workspace::IsOpened() {
+	return bOpened;
 }
