@@ -23,6 +23,9 @@ public:
 	void AppendString(LPCTSTR szString);
 	Path Concatenate(LPCTSTR szChildPath);
 
+	// Existance.
+	bool Exists();
+
 	// Misc.
 	LPCTSTR FileName();
 	LPCTSTR ToString();

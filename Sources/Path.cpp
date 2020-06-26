@@ -48,6 +48,15 @@ Path Path::Concatenate(LPCTSTR szChildPath) {
 }
 
 /**
+ * Checks if the path exists.
+ *
+ * @return TRUE if the path exists.
+ */
+bool Path::Exists() {
+	return GetFileAttributes(szPath) != 0xFFFFFFFF;
+}
+
+/**
  * Gets just the last filename from the path.
  *
  * @return A pointer to the filename.
