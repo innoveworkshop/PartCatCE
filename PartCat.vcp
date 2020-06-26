@@ -473,7 +473,6 @@ NODEP_CPP_PARTC=\
 
 DEP_CPP_PARTC=\
 	".\Sources\Component.h"\
-	".\Sources\ComponentManager.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
 	".\Sources\PartCat.h"\
@@ -481,6 +480,7 @@ DEP_CPP_PARTC=\
 	".\Sources\Property.h"\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
+	".\Sources\UIManager.h"\
 	".\Sources\Workspace.h"\
 	
 
@@ -1437,6 +1437,37 @@ DEP_CPP_FILEU=\
 # Begin Source File
 
 SOURCE=.\Sources\FileUtils.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\ImageUtils.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\ImageUtils.h
 # End Source File
 # Begin Source File
 
