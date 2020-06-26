@@ -18,6 +18,7 @@ class UIManager {
 protected:
 	HWND *hwndMain;
 	HWND *hwndDetail;
+	HBITMAP hbmpComponent;
 	Workspace *workspace;
 	TreeView *treeView;
 	long iSelComponent;
@@ -36,8 +37,10 @@ public:
 	LRESULT SaveComponent();
 
 	// TreeView and detail view.
-	void PopulateTreeView();
+	void ClearImage();
 	void ClearDetailView();
+	void PopulateTreeView();
+	void SetComponentImage(Component *component);
 	void PopulateDetailView(size_t nIndex);
 	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
 									 LPARAM lParam);

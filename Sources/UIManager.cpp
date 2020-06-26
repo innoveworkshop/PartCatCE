@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "UIManager.h"
 #include "Category.h"
+#include "ImageUtils.h"
 #include "resource.h"
 #include "commdlg.h"
 
@@ -179,6 +180,9 @@ void UIManager::PopulateDetailView(size_t nIndex) {
 	// Set the name field.
 	SetDlgItemText(*hwndDetail, IDC_EDNAME, component->GetName());
 
+	// Set component image.
+	SetComponentImage(component);
+
 	// Set the quantity field.
 	LPTSTR szQuantity = component->GetQuantityString();
 	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, szQuantity);
@@ -218,12 +222,44 @@ void UIManager::ClearDetailView() {
 	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDNOTES, L"");
 
-	// Clear the list box.
+	// Clear the list box and image.
 	SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_RESETCONTENT, 0, 0);
-
-	// TODO: Image.
+	ClearImage();
 
 	iSelComponent = -1;
+}
+
+/**
+ * Sets the component image label in the detail view.
+ *
+ * @param component Component to get the image for.
+ */
+void UIManager::SetComponentImage(Component *component) {
+	// Clear the current image.
+	ClearImage();
+
+	// Load the new image.
+	HBITMAP hBmp = ImageUtils::LoadBitmap(L"\\PartCat\\assets\\images\\0805.bmp");
+	if (hBmp == NULL) {
+		MessageBox(*hwndMain, L"An error occured while loading the component image.",
+			L"Image Loading Error", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// Resize it and display it.
+	hbmpComponent = ImageUtils::ResizeBitmap(hBmp, 105, 85);
+	SendDlgItemMessage(*hwndDetail, IDC_PICOMP, STM_SETIMAGE, IMAGE_BITMAP,
+		(LPARAM)hbmpComponent);
+	ShowWindow(GetDlgItem(*hwndDetail, IDC_LBNOIMAGE), SW_HIDE);
+}
+
+/**
+ * Clears the component image from the view.
+ */
+void UIManager::ClearImage() {
+	SendDlgItemMessage(*hwndDetail, IDC_PICOMP, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)NULL);
+	DeleteObject(hbmpComponent);
+	ShowWindow(GetDlgItem(*hwndDetail, IDC_LBNOIMAGE), SW_SHOW);
 }
 
 /**

@@ -18,7 +18,6 @@
 #include "TreeView.h"
 #include "Workspace.h"
 #include "UIManager.h"
-#include "ImageUtils.h"
 
 // Styling stuff.
 #define DEFAULT_UI_MARGIN 5
@@ -44,18 +43,6 @@ LRESULT LoadTestWorkspace() {
 
 	// Populate the TreeView.
 	uiManager.PopulateTreeView();
-
-	HBITMAP bmp = ImageUtils::LoadBitmap(L"\\PartCat\\assets\\images\\0805.bmp");
-	if (bmp == NULL) {
-		MessageBox(hwndMain, L"An error occured while loading the component image.",
-			L"Image Loading Error", MB_OK | MB_ICONERROR);
-		return 1;
-	}
-	HBITMAP bmpNew = ImageUtils::ResizeBitmap(bmp, 105, 85);
-	SendDlgItemMessage(hwndDetail, IDC_LBIMAGE, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpNew);
-	ShowWindow(GetDlgItem(hwndDetail, IDC_LBNOIMAGE), SW_HIDE);
-	//DeleteObject(bmpNew);
-	//SendDlgItemMessage(hwndDetail, IDC_LBIMAGE, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)NULL);
 
 	return 0;
 }

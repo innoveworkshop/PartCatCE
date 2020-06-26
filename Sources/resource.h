@@ -18,7 +18,7 @@
 #define IDC_EDNOTES                     1005
 #define IDC_LSPROPS                     1006
 #define IDC_SPQUANTITY                  1007
-#define IDC_LBIMAGE                     1013
+#define IDC_PICOMP                      1013
 #define IDC_LBNOIMAGE                   1014
 #define IDM_FILE_EXIT                   40002
 #define IDM_HELP_ABOUT                  40003
