@@ -15,6 +15,9 @@
 #include "Constants.h"
 #include "resource.h"
 
+// Limits.
+#define MAX_LOADSTRING 100
+
 // Control IDs.
 #define IDC_CMDBAR   201
 #define IDC_TREEVIEW 202

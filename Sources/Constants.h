@@ -13,9 +13,6 @@
 #define TEST_WORKSPACE L"\\PartCat"
 #endif
 
-// Limits.
-#define MAX_LOADSTRING 100
-
 // PartCat paths.
 #define COMPONENTS_ROOT L"components"
 #define ASSETS_ROOT     L"assets"
