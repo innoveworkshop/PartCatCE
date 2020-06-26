@@ -13,12 +13,12 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
-#include <string.h>
 
 #include "Directory.h"
 #include "TreeView.h"
 #include "Workspace.h"
 #include "UIManager.h"
+#include "ImageUtils.h"
 
 // Styling stuff.
 #define DEFAULT_UI_MARGIN 5
@@ -44,6 +44,18 @@ LRESULT LoadTestWorkspace() {
 
 	// Populate the TreeView.
 	uiManager.PopulateTreeView();
+
+	HBITMAP bmp = ImageUtils::LoadBitmap(L"\\PartCat\\assets\\images\\0805.bmp");
+	if (bmp == NULL) {
+		MessageBox(hwndMain, L"An error occured while loading the component image.",
+			L"Image Loading Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+	HBITMAP bmpNew = ImageUtils::ResizeBitmap(bmp, 105, 85);
+	SendDlgItemMessage(hwndDetail, IDC_LBIMAGE, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpNew);
+	ShowWindow(GetDlgItem(hwndDetail, IDC_LBNOIMAGE), SW_HIDE);
+	//DeleteObject(bmpNew);
+	//SendDlgItemMessage(hwndDetail, IDC_LBIMAGE, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)NULL);
 
 	return 0;
 }
@@ -458,6 +470,10 @@ LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam,
  */
 int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (wMsg) {
+	case WM_INITDIALOG:
+		BringWindowToTop(GetDlgItem(hDlg, IDC_LBNOIMAGE));
+		ShowWindow(GetDlgItem(hDlg, IDC_LBNOIMAGE), SW_SHOW);
+		return 0;
 	case WM_SIZE:
 		// Get the dialog position and size.
 		RECT rcDialog;
