@@ -253,10 +253,11 @@ void UIManager::SetComponentImage(Component *component) {
 	}
 
 	// Resize it and display it.
-	hbmpComponent = ImageUtils::ResizeBitmap(hBmp, 105, 85);
+	hbmpComponent = ImageUtils::ResizeBitmap(hBmp, 103, 83);
 	SendDlgItemMessage(*hwndDetail, IDC_PICOMP, STM_SETIMAGE, IMAGE_BITMAP,
 		(LPARAM)hbmpComponent);
 	ShowWindow(GetDlgItem(*hwndDetail, IDC_LBNOIMAGE), SW_HIDE);
+	ShowWindow(GetDlgItem(*hwndDetail, IDC_PICOMP), SW_SHOW);
 }
 
 /**
@@ -264,6 +265,7 @@ void UIManager::SetComponentImage(Component *component) {
  */
 void UIManager::ClearImage() {
 	SendDlgItemMessage(*hwndDetail, IDC_PICOMP, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)NULL);
+	ShowWindow(GetDlgItem(*hwndDetail, IDC_PICOMP), SW_HIDE);
 	DeleteObject(hbmpComponent);
 	ShowWindow(GetDlgItem(*hwndDetail, IDC_LBNOIMAGE), SW_SHOW);
 }

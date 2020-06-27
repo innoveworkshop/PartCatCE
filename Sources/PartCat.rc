@@ -117,7 +117,7 @@ BEGIN
                     140,35,11,14
     LISTBOX         IDC_LSPROPS,155,10,90,75,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    CONTROL         "",IDC_PICOMP,"Static",SS_BITMAP,0,0,15,13
+    CONTROL         "",IDC_PICOMP,"Static",SS_BITMAP | WS_BORDER,0,0,15,13
     CTEXT           "No\r\nImage",IDC_LBNOIMAGE,0,15,60,20
 END
 
