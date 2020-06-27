@@ -27,6 +27,20 @@ Path::Path(LPCTSTR szPath) {
 }
 
 /**
+ * Appens a separator to the end of the path.
+ */
+void Path::AppendSeparator() {
+	// Check if we already have a separator at the end.
+	if (EndsWithSeparator())
+		return;
+
+	// Append separator and terminate the string.
+	size_t iStrEnd = wcslen(szPath);
+	szPath[iStrEnd++] = L'\\';
+	szPath[iStrEnd] = L'\0';
+}
+
+/**
  * Appends a raw string to the end of the path.
  *
  * @param szString String to be appended to the end of the path.
@@ -44,7 +58,7 @@ void Path::AppendString(LPCTSTR szString) {
 Path Path::Concatenate(LPCTSTR szChildPath) {
 	Path path(szPath);
 
-	path.AppendString(L"\\");  // TODO: Optimize this.
+	path.AppendSeparator();
 	path.AppendString(szChildPath);
 
 	return path;
@@ -99,6 +113,27 @@ LPCTSTR Path::FileName() {
 		szLastPos++;
 
 	return szLastPos;
+}
+
+/**
+ * Removes a separator in the end of a path string in case there's one.
+ */
+void Path::RemoveEndingSeparator() {
+	// Check if we have a separator at the end.
+	if (!EndsWithSeparator())
+		return;
+
+	// Remove the separator from the string.
+	szPath[wcslen(szPath) - 1] = L'\0';
+}
+
+/**
+ * Checks if this path string ends with a separator.
+ *
+ * @return TRUE if the path string ends in a separator.
+ */
+bool Path::EndsWithSeparator() {
+	return szPath[wcslen(szPath) - 1] == L'\\';
 }
 
 /**

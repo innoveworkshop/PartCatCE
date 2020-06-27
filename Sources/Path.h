@@ -14,18 +14,22 @@ class Path {
 protected:
 	WCHAR szPath[MAX_PATH];
 
+	void AppendSeparator();
+
 public:
 	// Constructors and destructors.
 	Path();
 	Path(LPCTSTR szPath);
 
+	// Checking.
+	bool EndsWithSeparator();
+	bool Exists();
+
 	// Operations.
+	void RemoveEndingSeparator();
 	void AppendString(LPCTSTR szString);
 	Path Concatenate(LPCTSTR szChildPath);
 	Path Parent();
-
-	// Existance.
-	bool Exists();
 
 	// Misc.
 	LPCTSTR FileName();
