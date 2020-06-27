@@ -136,14 +136,16 @@ int InitializeApplication(HINSTANCE hInstance) {
 HWND InitializeInstance(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 	HWND hWnd;
 	TCHAR szWindowClass[MAX_LOADSTRING];
+	TCHAR szAppTitle[MAX_LOADSTRING];
 	hInst = hInstance;
 
 	// Load the application name.
 	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
+	LoadString(hInst, IDS_APP_TITLE, szAppTitle, MAX_LOADSTRING);
 
 	// Create the main window.
 	hWnd = CreateWindow(szWindowClass,  // Window class.
-						L"WinUki",      // Window title.
+						szAppTitle,     // Window title.
 						WS_VISIBLE,		// Style flags.
 						CW_USEDEFAULT,  // X position.
 						CW_USEDEFAULT,  // Y position.
