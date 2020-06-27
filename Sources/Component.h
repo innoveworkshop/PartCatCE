@@ -50,6 +50,7 @@ public:
 	LPTSTR GetImage();
 
 	// Properties.
+	Property* GetProperty(size_t index);
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
 	vector<Property>* GetEditableProperties();

@@ -186,7 +186,20 @@ LPCTSTR Component::GetSubCategory() {
 }
 
 /**
- * Gets a property from the component.
+ * Gets a property from the component by its index.
+ *
+ * @param  index Property index.
+ * @return       A component property or NULL if the index is invalid.
+ */
+Property* Component::GetProperty(size_t index) {
+	if (index >= arrProperties.size())
+		return NULL;
+
+	return &arrProperties[index];
+}
+
+/**
+ * Gets a property from the component by its name.
  *
  * @param  szName Name of the property.
  * @return        The requested property or NULL if it wasn't found.
