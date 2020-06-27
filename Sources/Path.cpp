@@ -6,6 +6,9 @@
  */
 
 #include "Path.h"
+#include <string>
+
+using namespace std;
 
 /**
  * Initializes an empty path.
@@ -45,6 +48,26 @@ Path Path::Concatenate(LPCTSTR szChildPath) {
 	path.AppendString(szChildPath);
 
 	return path;
+}
+
+/**
+ * Goes to the parent directory.
+ *
+ * @return Parent directory.
+ */
+Path Path::Parent() {
+	wstring swPath(szPath);
+	size_t iSeparator = swPath.find_last_of(L'\\', swPath.size() - 2);
+
+	// Check if we are already at the root of the filesystem.
+	if (iSeparator == wstring::npos) {
+		return *this;
+	} else if (iSeparator == 0) {
+		iSeparator++;
+	}
+
+	swPath.erase(iSeparator);
+	return Path(swPath.c_str());
 }
 
 /**

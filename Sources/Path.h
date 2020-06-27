@@ -22,6 +22,7 @@ public:
 	// Operations.
 	void AppendString(LPCTSTR szString);
 	Path Concatenate(LPCTSTR szChildPath);
+	Path Parent();
 
 	// Existance.
 	bool Exists();
