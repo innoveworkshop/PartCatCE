@@ -29,6 +29,7 @@ public:
 
 	// Geters and seters.
 	LPCTSTR GetName();
+	LPTSTR GetHumanName();
 	void SetName(LPCTSTR szName);
 	LPCTSTR GetValue();
 	void SetValue(LPCTSTR szValue);
