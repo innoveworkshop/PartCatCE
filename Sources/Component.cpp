@@ -219,6 +219,46 @@ vector<Property>* Component::GetEditableProperties() {
 }
 
 /**
+ * Retrieves the component image path.
+ * @remark The user should free the returned string using LocalFree.
+ *
+ * @return Path to the image or NULL if there isn't one associated with it.
+ */
+LPTSTR Component::GetImage() {
+	Path pathImage = dirPath.Concatenate(IMAGE_FILE);
+
+	// Image file is present.
+	if (pathImage.Exists()) {
+		// Get the image name.
+		LPTSTR szImageName;
+		if (!FileUtils::ReadContents(pathImage.ToString(), &szImageName))
+			return NULL;
+
+		// Navigate to the images folder and append the image file.
+		pathImage = pathImage.Parent().Parent().Parent();
+		pathImage = pathImage.Concatenate(ASSETS_ROOT).Concatenate(IMAGES_DIR);
+		pathImage = pathImage.Concatenate(szImageName);
+		pathImage.AppendString(IMAGE_EXTENSION);
+		LocalFree(szImageName);
+
+		// Check if the image bitmap exists.
+		if (pathImage.Exists()) {
+			LPTSTR szImagePath;
+			
+			// Allocate memory for the string.
+			size_t nLen = wcslen(pathImage.ToString()) + 1;
+			szImagePath = (LPTSTR)LocalAlloc(LMEM_FIXED, nLen * sizeof(WCHAR));
+
+			// Copy the string over and return.
+			wcscpy(szImagePath, pathImage.ToString());
+			return szImagePath;
+		}
+	}
+
+	return NULL;
+}
+
+/**
  * Clears all the fields in the object.
  */
 void Component::ClearFields() {

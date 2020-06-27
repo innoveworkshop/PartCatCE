@@ -31,4 +31,7 @@
 #define PROPERTY_VALUE       L"Value"
 #define PROPERTY_PACKAGE     L"Package"
 
+// File types.
+#define IMAGE_EXTENSION L".bmp"
+
 #endif  //  _CONSTANTS_H

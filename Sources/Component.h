@@ -31,18 +31,29 @@ public:
 	Component();
 	Component(Directory dirPath);
 
-	// Geters and seters.
+	// Name.
 	LPCTSTR GetName();
 	bool SetName(LPCTSTR szName);
+
+	// Notes.
 	LPTSTR GetNotes();
 	bool SaveNotes(LPCTSTR szNotes);
+
+	// Quantity.
 	size_t GetQuantity();
 	LPTSTR GetQuantityString();
 	void SetQuantity(size_t nQuantity);
 	void SetQuantity(LPCTSTR szQuantity);
+
+	// Image.
+	LPTSTR GetImage();
+
+	// Properties.
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
 	vector<Property>* GetEditableProperties();
+
+	// Categories and sub-categories.
 	LPCTSTR GetCategory();
 	LPCTSTR GetSubCategory();
 
