@@ -238,8 +238,14 @@ void UIManager::SetComponentImage(Component *component) {
 	// Clear the current image.
 	ClearImage();
 
+	// Grab the path to the component image.
+	LPTSTR szImagePath = component->GetImage();
+	if (szImagePath == NULL)
+		return;
+
 	// Load the new image.
-	HBITMAP hBmp = ImageUtils::LoadBitmap(L"\\PartCat\\assets\\images\\0805.bmp");
+	HBITMAP hBmp = ImageUtils::LoadBitmap(szImagePath);
+	LocalFree(szImagePath);
 	if (hBmp == NULL) {
 		MessageBox(*hwndMain, L"An error occured while loading the component image.",
 			L"Image Loading Error", MB_OK | MB_ICONERROR);
