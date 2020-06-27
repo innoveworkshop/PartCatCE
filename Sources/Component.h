@@ -25,6 +25,7 @@ protected:
 	// Population.
 	void PopulateProperties();
 	void PopulateFromDirectory();
+	Path GetImageFilePath(LPCTSTR szImageName);
 
 public:
 	// Constructors and destructors.

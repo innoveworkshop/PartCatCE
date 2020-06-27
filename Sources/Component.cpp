@@ -229,17 +229,33 @@ LPTSTR Component::GetImage() {
 
 	// Image file is present.
 	if (pathImage.Exists()) {
-		// Get the image name.
+		// Get the image name and the associated image file.
 		LPTSTR szImageName;
 		if (!FileUtils::ReadContents(pathImage.ToString(), &szImageName))
 			return NULL;
-
-		// Navigate to the images folder and append the image file.
-		pathImage = pathImage.Parent().Parent().Parent();
-		pathImage = pathImage.Concatenate(ASSETS_ROOT).Concatenate(IMAGES_DIR);
-		pathImage = pathImage.Concatenate(szImageName);
-		pathImage.AppendString(IMAGE_EXTENSION);
+		pathImage = GetImageFilePath(szImageName);
 		LocalFree(szImageName);
+
+		// Check if the image bitmap exists.
+		if (pathImage.Exists()) {
+			LPTSTR szImagePath;
+			
+			// Allocate memory for the string.
+			size_t nLen = wcslen(pathImage.ToString()) + 1;
+			szImagePath = (LPTSTR)LocalAlloc(LMEM_FIXED, nLen * sizeof(WCHAR));
+
+			// Copy the string over and return.
+			wcscpy(szImagePath, pathImage.ToString());
+			return szImagePath;
+		}
+
+		return NULL;
+	}
+
+	// Check if the component has a Package property for an image.
+	Property *prop = GetProperty(PROPERTY_PACKAGE);
+	if (prop) {
+		pathImage = GetImageFilePath(prop->GetValue());
 
 		// Check if the image bitmap exists.
 		if (pathImage.Exists()) {
@@ -256,6 +272,27 @@ LPTSTR Component::GetImage() {
 	}
 
 	return NULL;
+}
+
+/**
+ * Gets an image file path according to the desired image name for this
+ * component.
+ * @remark This function doesn't check for the existance of the image,
+ *         it just builds the path to it.
+ *
+ * @param  szImageName Name of the image to create a path for.
+ * @return             Path to the image file.
+ */
+Path Component::GetImageFilePath(LPCTSTR szImageName) {
+	Path pathImage;
+
+	// Navigate to the images folder and append the image file.
+	pathImage = dirPath.Parent().Parent();
+	pathImage = pathImage.Concatenate(ASSETS_ROOT).Concatenate(IMAGES_DIR);
+	pathImage = pathImage.Concatenate(szImageName);
+	pathImage.AppendString(IMAGE_EXTENSION);
+
+	return pathImage;
 }
 
 /**
