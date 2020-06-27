@@ -199,17 +199,15 @@ void UIManager::PopulateDetailView(size_t nIndex) {
 	vector<Property> arrProperties = component->GetProperties();
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		Property prop = arrProperties[i];
-		
-		// Build list caption string.
-		wstring szCaption(prop.GetName());
-		szCaption += L": ";
-		szCaption += prop.GetValue();
+		LPTSTR szCaption = prop.ToString();
 
 		// Append the string to the list box.
 		int pos = (int)SendDlgItemMessage(*hwndDetail, IDC_LSPROPS,
-			LB_ADDSTRING, 0, (LPARAM)szCaption.c_str());
+			LB_ADDSTRING, 0, (LPARAM)szCaption);
 		SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_SETITEMDATA,
 			(WPARAM)pos, (LPARAM)i);
+
+		LocalFree(szCaption);
 	}
 }
 
