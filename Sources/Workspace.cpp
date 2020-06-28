@@ -16,12 +16,21 @@ Workspace::Workspace() {
 }
 
 /**
+ * Initializes a PartCat workspace from a PartCat workspace file.
+ *
+ * @param pathWorkspace A PartCat workspace file.
+ */
+Workspace::Workspace(Path pathWorkspace) {
+	Open(pathWorkspace);
+}
+
+/**
  * Initializes a PartCat workspace from a directory.
  *
  * @param dirWorkspace A PartCat workspace directory.
  */
 Workspace::Workspace(Directory dirWorkspace) {
-	Open(dirWorkspace);
+	Open(dirWorkspace.Concatenate(WORKSPACE_FILE));
 }
 
 /**
@@ -66,15 +75,27 @@ void Workspace::PopulateComponents() {
 /**
  * Opens a workspace.
  *
+ * @param  pathWorkspace A PartCat workspace file.
+ * @return               TRUE if the operation was successful.
+ */
+bool Workspace::Open(Path pathWorkspace) {
+	this->dirWorkspace = Directory(pathWorkspace.Parent());
+	PopulateComponents();
+	bOpened = true;
+
+	// TODO: Read the workspace manifest.
+
+	return bOpened;
+}
+
+/**
+ * Opens a workspace by its directory.
+ *
  * @param  dirWorkspace A PartCat workspace directory.
  * @return              TRUE if the operation was successful.
  */
 bool Workspace::Open(Directory dirWorkspace) {
-	this->dirWorkspace = Directory(dirWorkspace);
-	PopulateComponents();
-	bOpened = true;
-
-	return bOpened;
+	return Open(dirWorkspace.Concatenate(WORKSPACE_FILE));
 }
 
 /**

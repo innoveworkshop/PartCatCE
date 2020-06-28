@@ -27,6 +27,7 @@ protected:
 public:
 	// Constructors and destructors.
 	Workspace();
+	Workspace(Path pathWorkspace);
 	Workspace(Directory dirWorkspace);
 
 	// Components.
@@ -34,6 +35,7 @@ public:
 	vector<Component> GetComponents();
 
 	// Operations.
+	bool Open(Path pathWorkspace);
 	bool Open(Directory dirWorkspace);
 	void Close();
 	bool Refresh();
