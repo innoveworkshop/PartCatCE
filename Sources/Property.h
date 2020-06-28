@@ -40,6 +40,7 @@ public:
 	// Misc.
 	bool IsEmpty();
 	void ClearFields();
+	LPTSTR ToHumanString();
 	LPTSTR ToString();
 };
 

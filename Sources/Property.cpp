@@ -180,12 +180,12 @@ bool Property::IsEmpty() {
 }
 
 /**
- * Gets a string representation of the property.
+ * Gets a human-readable string representation of the property.
  * @remark The string returned should be freed after being used.
  *
  * @return Property line as it should look in a manifest file.
  */
-LPTSTR Property::ToString() {
+LPTSTR Property::ToHumanString() {
 	LPTSTR szName = GetHumanName();
 
 	// Allocate the memory for the string.
@@ -198,5 +198,24 @@ LPTSTR Property::ToString() {
 	wcscat(szBuffer, szValue);
 
 	LocalFree(szName);
+	return szBuffer;
+}
+
+/**
+ * Gets a string representation of the property.
+ * @remark The string returned should be freed after being used.
+ *
+ * @return Property line as it should look in a manifest file.
+ */
+LPTSTR Property::ToString() {
+	// Allocate the memory for the string.
+	size_t nLen = wcslen(szName) + wcslen(szValue) + 3;
+	LPTSTR szBuffer = (LPTSTR)LocalAlloc(LMEM_FIXED, nLen * sizeof(WCHAR));
+
+	// Build the string.
+	wcscpy(szBuffer, szName);
+	wcscat(szBuffer, L": ");
+	wcscat(szBuffer, szValue);
+
 	return szBuffer;
 }
