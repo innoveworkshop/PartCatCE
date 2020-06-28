@@ -241,6 +241,16 @@ void Component::AddProperty(Property property) {
 }
 
 /**
+ * Removes a property at a specified index from the properties array.
+ *
+ * @param index Index of the property to be removed.
+ */
+void Component::RemoveProperty(size_t index) {
+	if ((index >= 0) && (index < arrProperties.size()))
+		arrProperties.erase(arrProperties.begin() + index);
+}
+
+/**
  * Retrieves the component image path.
  * @remark The user should free the returned string using LocalFree.
  *
