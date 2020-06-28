@@ -61,8 +61,11 @@ public:
 	LPCTSTR GetCategory();
 	LPCTSTR GetSubCategory();
 
-	// Misc.
+	// File system changes.
 	bool Save();
+	bool Rename(LPCTSTR szNewName);
+
+	// Misc.
 	void ClearFields();
 	LPCTSTR ToString();
 	void PrintDebug();

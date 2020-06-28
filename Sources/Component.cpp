@@ -72,6 +72,17 @@ void Component::PopulateFromDirectory() {
 }
 
 /**
+ * Renames the component.
+ *
+ * @param  szNewName New name for the component.
+ * @return           TRUE if the operation was successful.
+ */
+bool Component::Rename(LPCTSTR szNewName) {
+	SetName(szNewName);
+	return dirPath.Rename(szNewName);
+}
+
+/**
  * Saves the component object to the file system.
  *
  * @return TRUE if the operation was successful.
