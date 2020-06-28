@@ -36,8 +36,8 @@ public:
 
 	// Component operations.
 	LRESULT CreateComponent();
-	void SyncDetailViewWithComponent(Component *component);
-	LRESULT SaveComponent();
+	void SyncDetailViewWithComponent(Component *component, bool bSaveNotes);
+	LRESULT SaveComponent(bool bSaveAs);
 	bool IsComponentOpened();
 
 	// Detail view.

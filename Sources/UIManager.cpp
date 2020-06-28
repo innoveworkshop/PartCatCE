@@ -180,9 +180,10 @@ bool UIManager::IsComponentOpened() {
 /**
  * Syncs the detail view controls changes with the opened component object.
  *
- * @param  component Component to sync.
+ * @param  component  Component to sync.
+ * @param  bSaveNotes Should we save the notes?
  */
-void UIManager::SyncDetailViewWithComponent(Component *component) {
+void UIManager::SyncDetailViewWithComponent(Component *component, bool bSaveNotes) {
 	LPTSTR szBuffer;
 
 	// Sync quantity.
@@ -191,35 +192,20 @@ void UIManager::SyncDetailViewWithComponent(Component *component) {
 	LocalFree(szBuffer);
 
 	// Sync notes.
-	GetEditText(GetDlgItem(*hwndDetail, IDC_EDNOTES), &szBuffer);
-	component->SaveNotes(szBuffer);
-	LocalFree(szBuffer);
-
-	// Sync properties.
-	vector<Property> *arrProperties = component->GetEditableProperties();
-	arrProperties->clear();
-	int nCount = SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_GETCOUNT, 0, 0);
-	for (int i = 0; i < nCount; i++) {
-		// Get the size of the string and allocate memory for it.
-		int nStrLen = SendDlgItemMessage(*hwndDetail, IDC_LSPROPS,
-			LB_GETTEXTLEN, (WPARAM)i, 0);
-		LPTSTR szLine = (LPTSTR)LocalAlloc(LMEM_FIXED,
-			(nStrLen + 1) * sizeof(WCHAR));
-
-		// Get the string and push it into the array.
-		SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_GETTEXT, (WPARAM)i,
-			(LPARAM)szLine);
-		arrProperties->push_back(Property(szLine));
-		LocalFree(szLine);
+	if (bSaveNotes) {
+		GetEditText(GetDlgItem(*hwndDetail, IDC_EDNOTES), &szBuffer);
+		component->SaveNotes(szBuffer);
+		LocalFree(szBuffer);
 	}
 }
 
 /**
  * Saves the opened component object.
  *
- * @return 0 if the operation was successful.
+ * @param  bSaveAs Are we saving this as another component?
+ * @return         0 if the operation was successful.
  */
-LRESULT UIManager::SaveComponent() {
+LRESULT UIManager::SaveComponent(bool bSaveAs) {
 	// Get component.
 	Component *component = workspace->GetComponent(iSelComponent);
 	if (component == NULL) {
@@ -228,21 +214,49 @@ LRESULT UIManager::SaveComponent() {
 		return 1;
 	}
 
-	// Sync changes.
-	SyncDetailViewWithComponent(component);
-	if (!component->Save()) {
-		MessageBox(*hwndMain, L"An error occured while trying to save the component.",
-			L"Component Save Error", MB_OK | MB_ICONERROR);
-		return 1;
+	// Sync changes and save if we aren't doing a Save As.
+	SyncDetailViewWithComponent(component, !bSaveAs);
+	if (!bSaveAs) {
+		if (!component->Save()) {
+			MessageBox(*hwndMain, L"An error occured while trying to save the component.",
+				L"Component Save Error", MB_OK | MB_ICONERROR);
+			return 1;
+		}
 	}
 
-	// Check if a rename is required.
+	// Check if we should Save As or if a rename is required.
 	LPTSTR szName;
 	GetEditText(GetDlgItem(*hwndDetail, IDC_EDNAME), &szName);
-	if (wcscmp(szName, component->GetName()) != 0) {
-		if (!component->Rename(szName))
+	if (bSaveAs) {
+		// Check if the names are different.
+		if (wcscmp(szName, component->GetName()) == 0) {
+			MessageBox(*hwndMain, L"The name of the new component should be "
+				L"different than the current one. Change the component name "
+				L"before trying to \"Save As\".", L"Trying to Save As with Same Name",
+				MB_OK | MB_ICONERROR);
+			LocalFree(szName);
+
+			return 1;
+		}
+
+		// Actually save the component as a new one.
+		component->SetName(szName);
+		if (!component->Save(component->GetDirectory().Parent(), true)) {
+			MessageBox(*hwndMain, L"An error occured while trying to save the component.",
+				L"Component Save Error", MB_OK | MB_ICONERROR);
+			LocalFree(szName);
+
+			return 1;
+		}
+		SyncDetailViewWithComponent(component, true);
+	} else if (wcscmp(szName, component->GetName()) != 0) {
+		if (!component->Rename(szName)) {
 			MessageBox(*hwndMain, L"An error occured while renaming the component.",
 				L"Component Rename Error", MB_OK | MB_ICONERROR);
+			LocalFree(szName);
+
+			return 1;
+		}
 	}
 	LocalFree(szName);
 
