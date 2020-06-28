@@ -47,6 +47,7 @@ public:
 	vector<Component> GetComponents();
 
 	// Operations.
+	static bool Create(LPCTSTR szPath);
 	bool Open(Path pathWorkspace);
 	bool Open(Directory dirWorkspace);
 	void Close();

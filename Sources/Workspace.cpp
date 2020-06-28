@@ -35,6 +35,36 @@ Workspace::Workspace(Directory dirWorkspace) {
 }
 
 /**
+ * Creates an empty workspace.
+ *
+ * @param  szPath Path to the root folder that should be created.
+ * @return        TRUE if the operation was successful.
+ */
+bool Workspace::Create(LPCTSTR szPath) {
+	Directory dirPath(szPath);
+
+	// Create workspace root.
+	if (!CreateDirectory(szPath, NULL))
+		return false;
+
+	// Create components directory.
+	if (!CreateDirectory(dirPath.Concatenate(COMPONENTS_ROOT).ToString(), NULL))
+		return false;
+
+	// Create assets directory.
+	if (!CreateDirectory(dirPath.Concatenate(ASSETS_ROOT).ToString(), NULL))
+		return false;
+
+	// Create images sub-directory.
+	if (!CreateDirectory(dirPath.Concatenate(ASSETS_ROOT).Concatenate(IMAGES_DIR).ToString(), NULL))
+		return false;
+
+	// Create a simple manifest file.
+	return FileUtils::SaveContents(dirPath.Concatenate(WORKSPACE_FILE).ToString(),
+		L"Name: New Workspace\r\n");
+}
+
+/**
  * Saves the workspace file.
  *
  * @return TRUE if the operation was successful.
