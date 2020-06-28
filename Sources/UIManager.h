@@ -38,18 +38,24 @@ public:
 	LRESULT SaveComponent();
 	bool IsComponentOpened();
 
-	// TreeView and detail view.
-	void ClearImage();
+	// Detail view.
 	void ClearDetailView();
-	void PopulateTreeView();
-	void SetComponentImage(Component *component);
-	void PopulatePropertiesList(Component *component);
 	void PopulateDetailView(size_t nIndex);
+
+	// TreeView.
+	void PopulateTreeView();
+	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
+									 LPARAM lParam);
+
+	// Image.
+	void ClearImage();
+	void SetComponentImage(Component *component);
+
+	// Properties.
+	void PopulatePropertiesList(Component *component);
 	LRESULT CreateProperty();
 	LRESULT EditSelectedProperty();
 	LRESULT DeleteSelectedProperty();
-	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
-									 LPARAM lParam);
 
 	// Workspace operations.
 	LRESULT OpenWorkspace();
