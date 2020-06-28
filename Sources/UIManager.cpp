@@ -67,8 +67,19 @@ LRESULT UIManager::CreateComponent() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::CreateWorkspace() {
-	CreationDialog dialog(*hInst, hwndMain, L"Workspace");
+	CreationDialog dialog(*hInst, hwndMain, L"Workspace Path");
 	if (dialog.Created()) {
+		if (!Workspace::Create(dialog.GetName())) {
+			MessageBox(*hwndMain, L"An error occured while creating the workspace.",
+				L"Workspace Creation Error", MB_OK | MB_ICONERROR);
+		}
+
+		// Try to open the new workspace.
+		if (!workspace->Open(Directory(dialog.GetName()))) {
+			MessageBox(*hwndMain, L"An error occured while trying to open the workspace.",
+				L"Open Workspace Error", MB_OK | MB_ICONERROR);
+			return 1;
+		}
 
 		RefreshWorkspace();
 	}
