@@ -35,6 +35,28 @@ Workspace::Workspace(Directory dirWorkspace) {
 }
 
 /**
+ * Saves the workspace file.
+ *
+ * @return TRUE if the operation was successful.
+ */
+bool Workspace::Save() {
+	LPTSTR szBuffer;
+
+	wstring swProperties;
+	for (size_t i = 0; i < arrProperties.size(); i++) {
+		szBuffer = arrProperties[i].ToString();
+
+		swProperties += szBuffer;
+		swProperties += L"\r\n";
+
+		LocalFree(szBuffer);
+	}
+
+	return FileUtils::SaveContents(dirWorkspace.Concatenate(WORKSPACE_FILE).ToString(),
+		swProperties.c_str());
+}
+
+/**
  * Populates the properties from the workspace file.
  */
 void Workspace::PopulateProperties() {
@@ -65,6 +87,67 @@ void Workspace::PopulateProperties() {
  */
 void Workspace::AddProperty(Property property) {
 	arrProperties.push_back(property);
+}
+
+/**
+ * Gets the workspace properties.
+ *
+ * @return Array of properties.
+ */
+vector<Property> Workspace::GetProperties() {
+	return arrProperties;
+}
+
+/**
+ * Gets an editable version of the workspace properties.
+ *
+ * @return Pointer to the array of properties.
+ */
+vector<Property>* Workspace::GetEditableProperties() {
+	return &arrProperties;
+}
+
+/**
+ * Gets a workspace property by its index.
+ *
+ * @param  nIndex Index of the property.
+ * @return        The requested property or NULL if it wasn't found.
+ */
+Property* Workspace::GetProperty(size_t nIndex) {
+	if (nIndex >= arrProperties.size())
+		return NULL;
+
+	return &arrProperties[nIndex];
+}
+
+/**
+ * Gets a workspace property by its name.
+ *
+ * @param  szName Property name.
+ * @return        The requested property or NULL if it wasn't found.
+ */
+Property* Workspace::GetProperty(LPCTSTR szName) {
+	for (size_t i = 0; i < arrProperties.size(); i++) {
+		Property prop = arrProperties[i];
+
+		if (wcscmp(arrProperties[i].GetName(), szName) == 0)
+			return &arrProperties[i];
+	}
+
+	return NULL;
+}
+
+/**
+ * Gets the workspace name.
+ *
+ * @return Workspace name or NULL if there isn't one.
+ */
+LPCTSTR Workspace::GetName() {
+	Property *property = GetProperty(PROPERTY_NAME);
+	if (property)
+		return property->GetValue();
+
+	return NULL;
 }
 
 /**
@@ -115,10 +198,9 @@ void Workspace::PopulateComponents() {
 bool Workspace::Open(Path pathWorkspace) {
 	this->dirWorkspace = Directory(pathWorkspace.Parent());
 	PopulateComponents();
+	PopulateProperties();
+
 	bOpened = true;
-
-	// TODO: Read the workspace manifest.
-
 	return bOpened;
 }
 

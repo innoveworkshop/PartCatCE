@@ -34,7 +34,13 @@ public:
 	Workspace(Directory dirWorkspace);
 
 	// Properties.
+	bool Save();
 	void AddProperty(Property property);
+	vector<Property> GetProperties();
+	vector<Property>* GetEditableProperties();
+	Property* GetProperty(size_t nIndex);
+	Property* GetProperty(LPCTSTR szName);
+	LPCTSTR GetName();
 
 	// Components.
 	Component* GetComponent(size_t nIndex);
