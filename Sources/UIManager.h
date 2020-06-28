@@ -34,7 +34,7 @@ public:
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
 
 	// Component operations.
-	LRESULT SyncDetailViewWithComponent();
+	void SyncDetailViewWithComponent(Component *component);
 	LRESULT SaveComponent();
 	bool IsComponentOpened();
 

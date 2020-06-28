@@ -102,15 +102,6 @@ LRESULT UIManager::CloseWorkspace() {
 }
 
 /**
- * Saves a component.
- *
- * @return 0 if the operation was successful.
- */
-LRESULT UIManager::SaveComponent() {
-	return SyncDetailViewWithComponent();
-}
-
-/**
  * Checks if there's a component opened in the detail view.
  *
  * @return TRUE if there is a component opened.
@@ -122,31 +113,23 @@ bool UIManager::IsComponentOpened() {
 /**
  * Syncs the detail view controls changes with the opened component object.
  *
- * @return 0 if the operation was successful.
+ * @param  component Component to sync.
  */
-LRESULT UIManager::SyncDetailViewWithComponent() {
+void UIManager::SyncDetailViewWithComponent(Component *component) {
 	LPTSTR szBuffer;
-
-	// Get component.
-	Component *comp = workspace->GetComponent(iSelComponent);
-	if (comp == NULL) {
-		MessageBox(*hwndMain, L"Couldn't retrieve the currently selected component.",
-			L"Component Retrieval Error", MB_OK | MB_ICONERROR);
-		return 1;
-	}
 
 	// Sync quantity.
 	GetEditText(GetDlgItem(*hwndDetail, IDC_EDQUANTITY), &szBuffer);
-	comp->SetQuantity(szBuffer);
+	component->SetQuantity(szBuffer);
 	LocalFree(szBuffer);
 
 	// Sync notes.
 	GetEditText(GetDlgItem(*hwndDetail, IDC_EDNOTES), &szBuffer);
-	comp->SaveNotes(szBuffer);
+	component->SaveNotes(szBuffer);
 	LocalFree(szBuffer);
 
 	// Sync properties.
-	vector<Property> *arrProperties = comp->GetEditableProperties();
+	vector<Property> *arrProperties = component->GetEditableProperties();
 	arrProperties->clear();
 	int nCount = SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_GETCOUNT, 0, 0);
 	for (int i = 0; i < nCount; i++) {
@@ -162,9 +145,32 @@ LRESULT UIManager::SyncDetailViewWithComponent() {
 		arrProperties->push_back(Property(szLine));
 		LocalFree(szLine);
 	}
+}
 
-	// Check if our changes worked.
-	comp->PrintDebug();
+/**
+ * Saves the opened component object.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::SaveComponent() {
+	// Get component.
+	Component *component = workspace->GetComponent(iSelComponent);
+	if (component == NULL) {
+		MessageBox(*hwndMain, L"Couldn't retrieve the currently selected component.",
+			L"Component Retrieval Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	// Sync changes.
+	SyncDetailViewWithComponent(component);
+	if (!component->Save()) {
+		MessageBox(*hwndMain, L"An error occured while trying to save the component.",
+			L"Component Save Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	// Refresh the workspace.
+	RefreshWorkspace();
 
 	return 0;
 }
@@ -221,7 +227,7 @@ void UIManager::PopulatePropertiesList(Component *component) {
 
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		Property prop = arrProperties[i];
-		LPTSTR szCaption = prop.ToString();
+		LPTSTR szCaption = prop.ToHumanString();
 
 		// Append the string to the list box.
 		int pos = (int)SendDlgItemMessage(*hwndDetail, IDC_LSPROPS,
