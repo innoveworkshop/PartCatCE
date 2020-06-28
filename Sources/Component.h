@@ -54,6 +54,7 @@ public:
 	Property* GetProperty(LPCTSTR szName);
 	vector<Property> GetProperties();
 	vector<Property>* GetEditableProperties();
+	void AddProperty(Property property);
 
 	// Categories and sub-categories.
 	LPCTSTR GetCategory();

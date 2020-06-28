@@ -48,7 +48,7 @@ void Component::PopulateProperties() {
 
 	// Go through the file line by line.
 	while (FileUtils::ReadLine(hFile, &swLine)) {
-		arrProperties.push_back(Property(swLine));
+		AddProperty(Property(swLine));
 	}
 
 	// Close the file handle.
@@ -229,6 +229,15 @@ vector<Property> Component::GetProperties() {
  */
 vector<Property>* Component::GetEditableProperties() {
 	return &arrProperties;
+}
+
+/**
+ * Adds a property to the component properties array.
+ *
+ * @param  property Property to be added.
+ */
+void Component::AddProperty(Property property) {
+	arrProperties.push_back(property);
 }
 
 /**
