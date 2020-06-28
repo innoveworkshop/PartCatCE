@@ -47,6 +47,7 @@ public:
 	void PopulateDetailView(size_t nIndex);
 	LRESULT CreateProperty();
 	LRESULT EditSelectedProperty();
+	LRESULT DeleteSelectedProperty();
 	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
 									 LPARAM lParam);
 

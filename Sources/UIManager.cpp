@@ -345,6 +345,29 @@ LRESULT UIManager::EditSelectedProperty() {
 }
 
 /**
+ * Deletes the selected property in the list.
+ *
+ * @return 0 if everything worked.
+ */
+LRESULT UIManager::DeleteSelectedProperty() {
+	HWND hwndList = GetDlgItem(*hwndDetail, IDC_LSPROPS);
+
+	// Get selected item and its associated property index.
+	int iSelected = (int)SendMessage(hwndList, LB_GETCURSEL, 0, 0);
+	size_t iProp = (size_t)SendMessage(hwndList, LB_GETITEMDATA, iSelected, 0);
+
+	// Get component and remove the selected property.
+	Component *component = workspace->GetComponent(iSelComponent);
+	component->RemoveProperty(iProp);
+
+	// Update the properties list.
+	SendMessage(hwndList, LB_RESETCONTENT, 0, 0);
+	PopulatePropertiesList(component);
+
+	return 0;
+}
+
+/**
  * Process the TVN_SELCHANGED message for the component TreeView.
  *
  * @param  hWnd   Window handler.

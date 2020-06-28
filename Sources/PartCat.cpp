@@ -359,6 +359,8 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return uiManager.CreateProperty();
 	case IDM_COMP_EDTPROP:
 		return uiManager.EditSelectedProperty();
+	case IDM_COMP_DELPROP:
+		return uiManager.DeleteSelectedProperty();
 	case IDM_HELP_ABOUT:
 		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
 		break;
