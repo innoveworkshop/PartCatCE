@@ -36,6 +36,7 @@ public:
 	// Component operations.
 	LRESULT SyncDetailViewWithComponent();
 	LRESULT SaveComponent();
+	bool IsComponentOpened();
 
 	// TreeView and detail view.
 	void ClearImage();

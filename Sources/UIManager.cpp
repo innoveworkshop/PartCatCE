@@ -111,6 +111,15 @@ LRESULT UIManager::SaveComponent() {
 }
 
 /**
+ * Checks if there's a component opened in the detail view.
+ *
+ * @return TRUE if there is a component opened.
+ */
+bool UIManager::IsComponentOpened() {
+	return iSelComponent >= 0;
+}
+
+/**
  * Syncs the detail view controls changes with the opened component object.
  *
  * @return 0 if the operation was successful.

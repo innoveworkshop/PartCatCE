@@ -300,16 +300,34 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 	// Enable and disable workspace related items.
 	if (workspace.IsOpened()) {
 		EnableMenuItem(hMenu, IDM_FILE_NEW_COMP, MF_BYCOMMAND | MF_ENABLED);
-		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_ENABLED);
-		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_FILE_REFRESHWS, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_FILE_CLOSEWS, MF_BYCOMMAND | MF_ENABLED);
 	} else {
 		EnableMenuItem(hMenu, IDM_FILE_NEW_COMP, MF_BYCOMMAND | MF_GRAYED);
-		EnableMenuItem(hMenu, IDM_FILE_SAVE, MF_BYCOMMAND | MF_GRAYED);
-		EnableMenuItem(hMenu, IDM_FILE_SAVEAS, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_FILE_REFRESHWS, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_FILE_CLOSEWS, MF_BYCOMMAND | MF_GRAYED);
+	}
+
+	// Enable and disable component related items.
+	if (uiManager.IsComponentOpened() && workspace.IsOpened()) {
+		EnableMenuItem(hMenu, IDM_COMP_SAVE, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_COMP_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_COMP_NEWPROP, MF_BYCOMMAND | MF_ENABLED);
+
+		LONG lCurSel = SendDlgItemMessage(hwndDetail, IDC_LSPROPS, LB_GETCURSEL, 0, 0);
+		if (lCurSel != LB_ERR) {
+			EnableMenuItem(hMenu, IDM_COMP_EDTPROP, MF_BYCOMMAND | MF_ENABLED);
+			EnableMenuItem(hMenu, IDM_COMP_DELPROP, MF_BYCOMMAND | MF_ENABLED);
+		} else {
+			EnableMenuItem(hMenu, IDM_COMP_EDTPROP, MF_BYCOMMAND | MF_GRAYED);
+			EnableMenuItem(hMenu, IDM_COMP_DELPROP, MF_BYCOMMAND | MF_GRAYED);
+		}
+	} else {
+		EnableMenuItem(hMenu, IDM_COMP_SAVE, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_COMP_SAVEAS, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_COMP_NEWPROP, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_COMP_EDTPROP, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_COMP_DELPROP, MF_BYCOMMAND | MF_GRAYED);
 	}
 
 	return 0;
@@ -327,8 +345,6 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
-	case IDM_FILE_SAVE:
-		return uiManager.SaveComponent();
 	case IDM_FILE_OPENWS:
 		return uiManager.OpenWorkspace();
 	case IDM_FILE_REFRESHWS:
@@ -337,6 +353,10 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return uiManager.CloseWorkspace();
 	case IDM_FILE_EXIT:
 		return SendMessage(hWnd, WM_CLOSE, 0, 0);
+	case IDM_COMP_SAVE:
+		return uiManager.SaveComponent();
+	case IDM_COMP_EDTPROP:
+		return uiManager.EditSelectedProperty();
 	case IDM_HELP_ABOUT:
 		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
 		break;

@@ -27,18 +27,21 @@
 #define IDM_HELP_ABOUT                  40003
 #define IDM_FILE_NEW_COMP               40005
 #define IDM_FILE_NEW_WORKSPACE          40006
-#define IDM_FILE_SAVE                   40007
-#define IDM_FILE_SAVEAS                 40008
+#define IDM_COMP_SAVEAS                 40008
 #define IDM_FILE_OPENWS                 40009
 #define IDM_FILE_REFRESHWS              40010
 #define IDM_FILE_CLOSEWS                40011
+#define IDM_COMP_SAVE                   40013
+#define IDM_COMP_NEWPROP                40014
+#define IDM_COMP_EDTPROP                40015
+#define IDM_COMP_DELPROP                40016
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        107
-#define _APS_NEXT_COMMAND_VALUE         40012
+#define _APS_NEXT_COMMAND_VALUE         40017
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
