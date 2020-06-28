@@ -25,11 +25,14 @@ public:
 	bool EndsWithSeparator();
 	bool Exists();
 
-	// Operations.
+	// Normal operations.
 	void RemoveEndingSeparator();
 	void AppendString(LPCTSTR szString);
 	Path Concatenate(LPCTSTR szChildPath);
 	Path Parent();
+
+	// Destructive operations.
+	bool Rename(LPCTSTR szNewName);
 
 	// Misc.
 	LPCTSTR FileName();

@@ -27,6 +27,35 @@ Path::Path(LPCTSTR szPath) {
 }
 
 /**
+ * Renames the file/folder at the path.
+ *
+ * @param  szNewName New name for the file or folder.
+ * @return           TRUE if the operation was successful.
+ */
+bool Path::Rename(LPCTSTR szNewName) {
+	WCHAR szNewPath[MAX_PATH];
+	LPTSTR szTemp = szNewPath;
+	LPTSTR szLastPos = szNewPath;
+
+	// Go through the path looking for the separators.
+	wcscpy(szNewPath, szPath);
+	for (; *szTemp != L'\0'; szTemp++) {
+		if (*szTemp == L'\\')
+			szLastPos = szTemp;
+	}
+
+	// Place the new name at the end of the path.
+	*szLastPos = L'\0';
+	wcscpy(szNewPath, Path(szNewPath).Concatenate(szNewName).ToString());
+
+	bool bSuccess = MoveFile(szPath, szNewPath) != 0;
+	if (bSuccess)
+		wcscpy(szPath, szNewPath);
+
+	return bSuccess;
+}
+
+/**
  * Appens a separator to the end of the path.
  */
 void Path::AppendSeparator() {
