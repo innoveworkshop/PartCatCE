@@ -83,8 +83,10 @@ LRESULT UIManager::OpenWorkspace(bool bRefresh) {
 		}
 	}
 
-	// Populate stuff and return.
+	// Populate and dress up the window.
+	SetApplicationSubTitle(workspace->GetName());
 	PopulateTreeView();
+
 	return 0;
 }
 
@@ -115,6 +117,7 @@ LRESULT UIManager::CloseWorkspace() {
 	ClearDetailView();
 	treeView->Clear();
 	workspace->Close();
+	SetApplicationSubTitle(NULL);
 
 	return 0;
 }
@@ -399,6 +402,24 @@ LRESULT UIManager::DeleteSelectedProperty() {
 	PopulatePropertiesList(component);
 
 	return 0;
+}
+
+/**
+ * Sets the application sub-title.
+ *
+ * @param szSubTitle Application sub-title.
+ */
+void UIManager::SetApplicationSubTitle(LPCTSTR szSubTitle) {
+	WCHAR szAppTitle[MAX_PATH];
+
+	// Load application title and append the sub-title if needed.
+	LoadString(*hInst, IDS_APP_TITLE, szAppTitle, MAX_PATH);
+	if (szSubTitle != NULL) {
+		wcscat(szAppTitle, L" - ");
+		wcscat(szAppTitle, szSubTitle);
+	}
+
+	SetWindowText(*hwndMain, szAppTitle);
 }
 
 /**

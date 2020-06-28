@@ -32,6 +32,7 @@ public:
 
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
+	void SetApplicationSubTitle(LPCTSTR szSubTitle);
 
 	// Component operations.
 	void SyncDetailViewWithComponent(Component *component);
