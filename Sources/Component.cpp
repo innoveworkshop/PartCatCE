@@ -346,12 +346,17 @@ void Component::PrintDebug() {
 	OutputDebugString(L"Properties:\r\n");
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		Property prop = arrProperties[i];
+		LPTSTR szBuffer = prop.GetHumanName();
 
 		OutputDebugString(L"    ");
 		OutputDebugString(prop.GetName());
-		OutputDebugString(L": ");
+		OutputDebugString(L" (");
+		OutputDebugString(szBuffer);
+		OutputDebugString(L"): ");
 		OutputDebugString(prop.GetValue());
 		OutputDebugString(L"\r\n");
+
+		LocalFree(szBuffer);
 	}
 	OutputDebugString(L"\r\n");
 
