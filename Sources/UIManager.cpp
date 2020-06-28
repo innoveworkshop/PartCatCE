@@ -48,39 +48,43 @@ UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
  * @return          0 if the operation was successful.
  */
 LRESULT UIManager::OpenWorkspace(bool bRefresh) {
+	OPENFILENAME ofn = {0};
+    WCHAR szPath[MAX_PATH] = L"";
+
 	// Clear the screen.
 	ClearDetailView();
 	treeView->Clear();
 
-	// Close the workspace first if we are not refreshing.
-	if (!bRefresh)
+	// Check if we are not refreshing.
+	if (!bRefresh) {
+		// Close the workspace first.
 		workspace->Close();
 
-/*	OPENFILENAME ofn = {0};
-    WCHAR szPath[MAX_PATH] = L"";
+		// Populate the structure.
+		ofn.lStructSize = sizeof(ofn);
+		ofn.lpstrTitle = L"Open PartCat Workspace";
+		ofn.hwndOwner = *hwndMain;
+		ofn.lpstrFilter = L"PartCat Workspace (PartCat.pcw)\0PartCat.pcw\0"
+			L"Workspace Files (*.pcw)\0*.pcw\0All Files (*.*)\0*.*\0";
+		ofn.lpstrFile = szPath;
+		ofn.nMaxFile = MAX_PATH;
+		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST;
+		ofn.lpstrDefExt = L"pcw";
 
-	// Populate the structure.
-    ofn.lStructSize = sizeof(ofn);
-	ofn.lpstrTitle = L"Open PartCat Workspace";
-    ofn.hwndOwner = *hwndMain;
-    ofn.lpstrFile = szPath;
-    ofn.nMaxFile = MAX_PATH;
-    ofn.Flags = OFN_EXPLORER;
+		// Open the open folder dialog.
+		if (!GetOpenFileName(&ofn))
+			return 1;
 
-	// Open the open folder dialog.
-	if (!GetOpenFileName(&ofn))
-		return 1;
-
-	// Try to open the workspace.
-	if (!workspace->Open(Directory(szPath))) {
-		MessageBox(*hwndMain, L"An error occured while trying to open the workspace.",
-			L"Open Workspace Error", MB_OK | MB_ICONERROR);
-		return 1;
+		// Try to open the workspace.
+		if (!workspace->Open(Path(szPath))) {
+			MessageBox(*hwndMain, L"An error occured while trying to open the workspace.",
+				L"Open Workspace Error", MB_OK | MB_ICONERROR);
+			return 1;
+		}
 	}
-*/
-	// Populate stuff.
-	PopulateTreeView();
 
+	// Populate stuff and return.
+	PopulateTreeView();
 	return 0;
 }
 

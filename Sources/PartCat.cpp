@@ -39,7 +39,7 @@ HWND hwndDetail;
  */
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
-	workspace = Workspace(Directory(TEST_WORKSPACE));
+	workspace = Workspace(Path(TEST_WORKSPACE));
 	uiManager = UIManager(&hInst, &hwndMain, &workspace, &treeView, &hwndDetail);
 
 	// Populate the TreeView.
