@@ -6,6 +6,7 @@
  */
 
 #include "Property.h"
+#include "Constants.h"
 
 /**
  * Initializes an empty property.
@@ -106,6 +107,32 @@ LPTSTR Property::GetHumanName() {
 	}
 
 	return szName;
+}
+
+/**
+ * Sets the name of the property using a human-readable format.
+ *
+ * @param  szName Human-readable property name.
+ */
+void Property::SetHumanName(LPCTSTR szName) {
+	wstring swBuffer(szName);
+
+	// Firstly convert all spaces back into dashes.
+	for (size_t i = 0; i < swBuffer.length(); i++) {
+		if (swBuffer[i] == L' ')
+			swBuffer[i] = L'-';
+	}
+
+	// Check for keys that should have Value- prepended.
+	if ((swBuffer.compare(PROPERTY_CATEGORY) != 0) &&
+		(swBuffer.compare(PROPERTY_SUBCATEGORY) != 0) &&
+		(swBuffer.compare(PROPERTY_PACKAGE) != 0)) {
+		swBuffer.insert(0, L"-");
+		swBuffer.insert(0, PROPERTY_VALUE);
+	}
+
+	// Set the name.
+	SetName(swBuffer.c_str());
 }
 
 /**
