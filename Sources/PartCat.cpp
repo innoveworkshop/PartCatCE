@@ -355,6 +355,8 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return SendMessage(hWnd, WM_CLOSE, 0, 0);
 	case IDM_COMP_SAVE:
 		return uiManager.SaveComponent();
+	case IDM_COMP_NEWPROP:
+		return uiManager.CreateProperty();
 	case IDM_COMP_EDTPROP:
 		return uiManager.EditSelectedProperty();
 	case IDM_HELP_ABOUT:

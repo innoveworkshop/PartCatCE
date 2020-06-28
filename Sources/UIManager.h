@@ -45,6 +45,7 @@ public:
 	void SetComponentImage(Component *component);
 	void PopulatePropertiesList(Component *component);
 	void PopulateDetailView(size_t nIndex);
+	LRESULT CreateProperty();
 	LRESULT EditSelectedProperty();
 	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
 									 LPARAM lParam);

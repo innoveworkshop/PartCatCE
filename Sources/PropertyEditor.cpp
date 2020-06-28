@@ -88,6 +88,10 @@ int PropertyEditor::DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) 
 		SendDlgItemMessage(hDlg, IDC_CBPROP, CB_ADDSTRING, 0,
 			(LPARAM)PROPERTY_PACKAGE);
 
+		// Don't populate the edits if the property is empty.
+		if (property->IsEmpty())
+			return 1;
+
 		// Set the name of the current property.
 		LPTSTR szName = property->GetHumanName();
 		SetDlgItemText(hDlg, IDC_CBPROP, szName);

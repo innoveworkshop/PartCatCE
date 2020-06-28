@@ -291,6 +291,32 @@ void UIManager::ClearImage() {
 }
 
 /**
+ * Creates a new component property.
+ *
+ * @return 0 if everything worked.
+ */
+LRESULT UIManager::CreateProperty() {
+	HWND hwndList = GetDlgItem(*hwndDetail, IDC_LSPROPS);
+
+	// Create property editor.
+	Property prop;
+	Component *component = workspace->GetComponent(iSelComponent);
+	PropertyEditor editor(*hInst, hwndMain, &prop);
+
+	// Check if any changes were made to the property.
+	if (editor.Updated()) {
+		SendMessage(hwndList, LB_RESETCONTENT, 0, 0);
+
+		if (!prop.IsEmpty()) {
+			component->AddProperty(prop);
+			PopulatePropertiesList(component);
+		}
+	}
+
+	return 0;
+}
+
+/**
  * Edits the selected property in the list.
  *
  * @return 0 if everything worked.
@@ -310,9 +336,9 @@ LRESULT UIManager::EditSelectedProperty() {
 	// Check if any changes were made to the property.
 	if (editor.Updated()) {
 		SendMessage(hwndList, LB_RESETCONTENT, 0, 0);
-		PopulatePropertiesList(component);
 
-		component->PrintDebug();
+		if (!prop->IsEmpty())
+			PopulatePropertiesList(component);
 	}
 
 	return 0;
