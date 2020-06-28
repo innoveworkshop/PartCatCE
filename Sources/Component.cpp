@@ -421,6 +421,15 @@ Path Component::GetImageFilePath(LPCTSTR szImageName) {
 }
 
 /**
+ * Gets the component directory.
+ *
+ * @return Component directory location.
+ */
+Directory Component::GetDirectory() {
+	return dirPath;
+}
+
+/**
  * Clears all the fields in the object.
  */
 void Component::ClearFields() {

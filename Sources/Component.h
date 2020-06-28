@@ -61,11 +61,12 @@ public:
 	LPCTSTR GetCategory();
 	LPCTSTR GetSubCategory();
 
-	// File system changes.
+	// File system.
 	bool Save();
 	bool Save(Directory dirPath, bool bCreating);
 	bool Rename(LPCTSTR szNewName);
 	static bool Create(Directory dirWorkspace, LPCTSTR szName);
+	Directory GetDirectory();
 
 	// Misc.
 	void ClearFields();
