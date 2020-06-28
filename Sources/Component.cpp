@@ -48,7 +48,8 @@ void Component::PopulateProperties() {
 
 	// Go through the file line by line.
 	while (FileUtils::ReadLine(hFile, &swLine)) {
-		AddProperty(Property(swLine));
+		if (swLine[0] != L'\0')
+			AddProperty(Property(swLine));
 	}
 
 	// Close the file handle.
@@ -88,8 +89,29 @@ bool Component::Rename(LPCTSTR szNewName) {
  * @return TRUE if the operation was successful.
  */
 bool Component::Save() {
+	return Save(this->dirPath, false);
+}
+
+/**
+ * Saves the component object to the file system.
+ *
+ * @param  dirPath   Path to the component directory or to the component
+ *                   container if we are creating.
+ * @param  bCreating Are we creating a new component?
+ * @return           TRUE if the operation was successful.
+ */
+bool Component::Save(Directory dirPath, bool bCreating) {
 	LPTSTR szBuffer;
 	bool bSuccess = true;
+
+	// Create directory first.
+	if (bCreating) {
+		this->dirPath = Directory(dirPath.Concatenate(szName));
+		if (!CreateDirectory(this->dirPath.ToString(), NULL))
+			return false;
+		
+		dirPath = this->dirPath;
+	}
 
 	// Save quantity.
 	szBuffer = GetQuantityString();
@@ -99,6 +121,8 @@ bool Component::Save() {
 
 	// Save properties.
 	wstring swProperties;
+	if (arrProperties.size() == 0)
+		swProperties = L"\r\n";
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		szBuffer = arrProperties[i].ToString();
 
@@ -113,6 +137,31 @@ bool Component::Save() {
 	// TODO: Save image.
 
 	return bSuccess;
+}
+
+/**
+ * Creates an empty component in the workspace.
+ *
+ * @param  dirWorkspace Workspace root directory for the component.
+ * @param  szName       New component name.
+ * @return              TRUE if the operation was successful.
+ */
+bool Component::Create(Directory dirWorkspace, LPCTSTR szName) {
+	Component component;
+
+	// Set the component name.
+	if (!component.SetName(szName))
+		return false;
+
+	// Create and save stuff to the new component.
+	if (!component.Save(dirWorkspace.Concatenate(COMPONENTS_ROOT), true))
+		return false;
+
+	// Save notes.
+	if (!component.SaveNotes(L"\r\n"))
+		return false;
+
+	return true;
 }
 
 /**

@@ -63,7 +63,9 @@ public:
 
 	// File system changes.
 	bool Save();
+	bool Save(Directory dirPath, bool bCreating);
 	bool Rename(LPCTSTR szNewName);
+	static bool Create(Directory dirWorkspace, LPCTSTR szName);
 
 	// Misc.
 	void ClearFields();
