@@ -15,6 +15,11 @@
 #include "Constants.h"
 #include "resource.h"
 
+// Application development.
+#ifdef DEVELOP
+#define TEST_WORKSPACE L"\\PartCat\\PartCat.pcw"
+#endif
+
 // Limits.
 #define MAX_LOADSTRING 100
 

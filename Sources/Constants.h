@@ -8,15 +8,13 @@
 #ifndef  _CONSTANTS_H
 #define  _CONSTANTS_H
 
-// Application development.
-#ifdef DEVELOP
-#define TEST_WORKSPACE L"\\PartCat"
-#endif
-
 // PartCat paths.
 #define COMPONENTS_ROOT L"components"
 #define ASSETS_ROOT     L"assets"
 #define IMAGES_DIR      L"images"
+
+// PartCat workspace files.
+#define WORKSPACE_FILE L"PartCat.pcw"
 
 // PartCat component files.
 #define MANIFEST_FILE  L"MANIFEST"
@@ -32,6 +30,7 @@
 #define PROPERTY_PACKAGE     L"Package"
 
 // File types.
-#define IMAGE_EXTENSION L".bmp"
+#define IMAGE_EXTENSION     L".bmp"
+#define WORKSPACE_EXTENSION L".pcw"
 
 #endif  //  _CONSTANTS_H
