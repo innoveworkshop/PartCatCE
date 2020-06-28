@@ -18,7 +18,6 @@
 #include "TreeView.h"
 #include "Workspace.h"
 #include "UIManager.h"
-#include "PropertyEditor.h"
 
 // Styling stuff.
 #define DEFAULT_UI_MARGIN 5
@@ -345,6 +344,10 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
+	case IDM_FILE_NEW_COMPONENT:
+		return uiManager.CreateComponent();
+	case IDM_FILE_NEW_WORKSPACE:
+		return uiManager.CreateWorkspace();
 	case IDM_FILE_OPENWS:
 		return uiManager.OpenWorkspace(false);
 	case IDM_FILE_REFRESHWS:

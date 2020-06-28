@@ -11,6 +11,7 @@
 #include "Category.h"
 #include "ImageUtils.h"
 #include "PropertyEditor.h"
+#include "CreationDialog.h"
 #include "resource.h"
 #include "commdlg.h"
 
@@ -39,6 +40,40 @@ UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
 	this->hwndDetail = hwndDetail;
 
 	ClearDetailView();
+}
+
+/**
+ * Creates a component for the user.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::CreateComponent() {
+	CreationDialog dialog(*hInst, hwndMain, L"Component");
+	if (dialog.Created()) {
+		if (!Component::Create(workspace->GetDirectory(), dialog.GetName())) {
+			MessageBox(*hwndMain, L"An error occured while creating the component.",
+				L"Component Creation Error", MB_OK | MB_ICONERROR);
+		}
+
+		RefreshWorkspace();
+	}
+
+	return 0;
+}
+
+/**
+ * Creates a workspace for the user.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::CreateWorkspace() {
+	CreationDialog dialog(*hInst, hwndMain, L"Workspace");
+	if (dialog.Created()) {
+
+		RefreshWorkspace();
+	}
+
+	return 0;
 }
 
 /**

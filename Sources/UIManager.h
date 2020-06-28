@@ -35,6 +35,7 @@ public:
 	void SetApplicationSubTitle(LPCTSTR szSubTitle);
 
 	// Component operations.
+	LRESULT CreateComponent();
 	void SyncDetailViewWithComponent(Component *component);
 	LRESULT SaveComponent();
 	bool IsComponentOpened();
@@ -59,6 +60,7 @@ public:
 	LRESULT DeleteSelectedProperty();
 
 	// Workspace operations.
+	LRESULT CreateWorkspace();
 	LRESULT OpenWorkspace(bool bRefresh);
 	LRESULT RefreshWorkspace();
 	LRESULT CloseWorkspace();
