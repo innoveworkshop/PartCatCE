@@ -68,7 +68,7 @@ int CreationDialog::DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) 
 			int nLength;
 
 			hCtl = GetDlgItem(hDlg, IDC_EDVALUE);
-			nLength = GetWindowTextLength(hCtl);
+			nLength = GetWindowTextLength(hCtl) + 1;
 			bCreated = GetWindowText(hCtl, szName, nLength) != 0;
 
 			EndDialog(hDlg, LOWORD(wParam));
