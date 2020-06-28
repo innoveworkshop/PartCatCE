@@ -43,7 +43,7 @@ LRESULT LoadTestWorkspace() {
 	uiManager = UIManager(&hInst, &hwndMain, &workspace, &treeView, &hwndDetail);
 
 	// Populate the TreeView.
-	uiManager.PopulateTreeView();
+	uiManager.OpenWorkspace(true);
 
 	return 0;
 }
@@ -346,7 +346,7 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
 	case IDM_FILE_OPENWS:
-		return uiManager.OpenWorkspace();
+		return uiManager.OpenWorkspace(false);
 	case IDM_FILE_REFRESHWS:
 		return uiManager.RefreshWorkspace();
 	case IDM_FILE_CLOSEWS:

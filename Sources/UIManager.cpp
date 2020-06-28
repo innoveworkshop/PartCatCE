@@ -44,10 +44,18 @@ UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
 /**
  * Opens a workspace for the user.
  *
- * @return 0 if the operation was successful.
+ * @param  bRefresh Are we in a refresh operation?
+ * @return          0 if the operation was successful.
  */
-LRESULT UIManager::OpenWorkspace() {
+LRESULT UIManager::OpenWorkspace(bool bRefresh) {
+	// Clear the screen.
 	ClearDetailView();
+	treeView->Clear();
+
+	// Close the workspace first if we are not refreshing.
+	if (!bRefresh)
+		workspace->Close();
+
 /*	OPENFILENAME ofn = {0};
     WCHAR szPath[MAX_PATH] = L"";
 
@@ -70,6 +78,9 @@ LRESULT UIManager::OpenWorkspace() {
 		return 1;
 	}
 */
+	// Populate stuff.
+	PopulateTreeView();
+
 	return 0;
 }
 
@@ -80,13 +91,14 @@ LRESULT UIManager::OpenWorkspace() {
  */
 LRESULT UIManager::RefreshWorkspace() {
 	ClearDetailView();
-
+	treeView->Clear();
 	if (!workspace->Refresh()) {
 		MessageBox(*hwndMain, L"An error occured while refreshing the workspace.",
 			L"Workspace Refresh Error", MB_OK | MB_ICONERROR);
 		return 1;
 	}
 
+	OpenWorkspace(true);
 	return 0;
 }
 
@@ -97,7 +109,9 @@ LRESULT UIManager::RefreshWorkspace() {
  */
 LRESULT UIManager::CloseWorkspace() {
 	ClearDetailView();
+	treeView->Clear();
 	workspace->Close();
+
 	return 0;
 }
 
@@ -168,6 +182,16 @@ LRESULT UIManager::SaveComponent() {
 			L"Component Save Error", MB_OK | MB_ICONERROR);
 		return 1;
 	}
+
+	// Check if a rename is required.
+	LPTSTR szName;
+	GetEditText(GetDlgItem(*hwndDetail, IDC_EDNAME), &szName);
+	if (wcscmp(szName, component->GetName()) != 0) {
+		if (!component->Rename(szName))
+			MessageBox(*hwndMain, L"An error occured while renaming the component.",
+				L"Component Rename Error", MB_OK | MB_ICONERROR);
+	}
+	LocalFree(szName);
 
 	// Refresh the workspace.
 	RefreshWorkspace();

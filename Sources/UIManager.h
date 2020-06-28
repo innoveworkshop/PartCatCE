@@ -58,7 +58,7 @@ public:
 	LRESULT DeleteSelectedProperty();
 
 	// Workspace operations.
-	LRESULT OpenWorkspace();
+	LRESULT OpenWorkspace(bool bRefresh);
 	LRESULT RefreshWorkspace();
 	LRESULT CloseWorkspace();
 };
