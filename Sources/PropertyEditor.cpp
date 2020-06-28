@@ -10,14 +10,14 @@
 #include "resource.h"
 
 extern "C" {
-	void *lpThis;
+	void *lpPropertyEditorThis;
 }
 
 /**
  * Initializes an empty object.
  */
 PropertyEditor::PropertyEditor() {
-	lpThis = NULL;
+	lpPropertyEditorThis = NULL;
 	bUpdated = false;
 }
 
@@ -29,7 +29,7 @@ PropertyEditor::PropertyEditor() {
  * @param property   Property to be edited.
  */
 PropertyEditor::PropertyEditor(HINSTANCE hInst, HWND *hwndParent, Property *property) {
-	lpThis = NULL;
+	lpPropertyEditorThis = NULL;
 	bUpdated = false;
 	this->hwndParent = hwndParent;
 	this->property = property;
@@ -142,9 +142,9 @@ bool PropertyEditor::Updated() {
  */
 int CALLBACK PropertyEditor::DlgProcWrapper(HWND hDlg, UINT wMsg, WPARAM wParam,
 											LPARAM lParam) {
-	if (lpThis == NULL)
-		lpThis = (void*)lParam;
+	if (lpPropertyEditorThis == NULL)
+		lpPropertyEditorThis = (void*)lParam;
 
-	PropertyEditor *pThis = reinterpret_cast<PropertyEditor*>(lpThis);
+	PropertyEditor *pThis = reinterpret_cast<PropertyEditor*>(lpPropertyEditorThis);
 	return pThis->DlgProc(hDlg, wMsg, wParam, lParam);
 }

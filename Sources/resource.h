@@ -12,6 +12,7 @@
 #define IDD_ABOUTBOX                    103
 #define IDD_DETAILVIEW                  104
 #define IDD_PROPEDIT                    105
+#define IDD_NEWOBJECT                   107
 #define IDC_EDIT1                       1002
 #define IDC_EDNAME                      1002
 #define IDC_EDVALUE                     1002
@@ -23,6 +24,7 @@
 #define IDC_PICOMP                      1013
 #define IDC_LBNOIMAGE                   1014
 #define IDC_CBPROP                      1015
+#define IDC_LBNAME                      1016
 #define IDM_FILE_EXIT                   40002
 #define IDM_HELP_ABOUT                  40003
 #define IDM_FILE_NEW_COMP               40005
@@ -35,14 +37,15 @@
 #define IDM_COMP_NEWPROP                40014
 #define IDM_COMP_EDTPROP                40015
 #define IDM_COMP_DELPROP                40016
+#define IDM_FILE_NEW_COMPONENT          40017
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        107
-#define _APS_NEXT_COMMAND_VALUE         40017
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_COMMAND_VALUE         40018
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -380,6 +380,97 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat;h"
 # Begin Source File
 
+SOURCE=.\Sources\CreationDialog.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_CREAT=\
+	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
+	".\Sources\Property.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\CreationDialog.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\PartCat.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -562,6 +653,7 @@ DEP_CPP_PROPE=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_PROPE=\
+	".\Sources\Constants.h"\
 	".\Sources\Property.h"\
 	".\Sources\PropertyEditor.h"\
 	
@@ -1150,6 +1242,7 @@ DEP_CPP_PROPER=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_PROPER=\
+	".\Sources\Constants.h"\
 	".\Sources\Property.h"\
 	
 
@@ -1278,6 +1371,7 @@ DEP_CPP_WORKS=\
 	".\Sources\Component.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
+	".\Sources\FileUtils.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
 	".\Sources\Workspace.h"\
