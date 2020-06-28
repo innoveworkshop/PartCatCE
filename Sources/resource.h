@@ -11,8 +11,10 @@
 #define IDM_MAINMENU                    102
 #define IDD_ABOUTBOX                    103
 #define IDD_DETAILVIEW                  104
+#define IDD_PROPEDIT                    105
 #define IDC_EDIT1                       1002
 #define IDC_EDNAME                      1002
+#define IDC_EDVALUE                     1002
 #define IDC_EDQUANTITY                  1003
 #define IDC_BTDATASHEET                 1004
 #define IDC_EDNOTES                     1005
@@ -20,6 +22,7 @@
 #define IDC_SPQUANTITY                  1007
 #define IDC_PICOMP                      1013
 #define IDC_LBNOIMAGE                   1014
+#define IDC_CBPROP                      1015
 #define IDM_FILE_EXIT                   40002
 #define IDM_HELP_ABOUT                  40003
 #define IDM_FILE_NEW_COMP               40005
@@ -34,9 +37,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        105
+#define _APS_NEXT_RESOURCE_VALUE        107
 #define _APS_NEXT_COMMAND_VALUE         40012
-#define _APS_NEXT_CONTROL_VALUE         1015
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

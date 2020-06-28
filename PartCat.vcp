@@ -478,6 +478,7 @@ DEP_CPP_PARTC=\
 	".\Sources\PartCat.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\UIManager.h"\
@@ -490,6 +491,87 @@ DEP_CPP_PARTC=\
 # Begin Source File
 
 SOURCE=.\Sources\PartCat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\PropertyEditor.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_PROPE=\
+	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\PropertyEditor.h
 # End Source File
 # Begin Source File
 
@@ -699,8 +781,10 @@ DEP_CPP_UIMAN=\
 	".\Sources\Component.h"\
 	".\Sources\Constants.h"\
 	".\Sources\Directory.h"\
+	".\Sources\ImageUtils.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
+	".\Sources\PropertyEditor.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\UIManager.h"\
 	".\Sources\Workspace.h"\
@@ -1011,61 +1095,61 @@ SOURCE=.\Sources\Property.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
-DEP_CPP_PROPE=\
+DEP_CPP_PROPER=\
 	".\Sources\Property.h"\
 	
 
@@ -1444,23 +1528,63 @@ SOURCE=.\Sources\ImageUtils.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
 
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
+
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
 
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
+
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
 
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
+
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
 
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
+
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
 
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
 
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
+
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_IMAGE=\
+	".\Sources\ImageUtils.h"\
+	
 
 !ENDIF 
 

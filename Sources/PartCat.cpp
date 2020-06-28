@@ -18,6 +18,7 @@
 #include "TreeView.h"
 #include "Workspace.h"
 #include "UIManager.h"
+#include "PropertyEditor.h"
 
 // Styling stuff.
 #define DEFAULT_UI_MARGIN 5
@@ -39,7 +40,7 @@ HWND hwndDetail;
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
 	workspace = Workspace(Directory(TEST_WORKSPACE));
-	uiManager = UIManager(&hwndMain, &workspace, &treeView, &hwndDetail);
+	uiManager = UIManager(&hInst, &hwndMain, &workspace, &treeView, &hwndDetail);
 
 	// Populate the TreeView.
 	uiManager.PopulateTreeView();
@@ -463,7 +464,7 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		BringWindowToTop(GetDlgItem(hDlg, IDC_LBNOIMAGE));
 		ShowWindow(GetDlgItem(hDlg, IDC_LBNOIMAGE), SW_SHOW);
 		return 0;
-	case WM_SIZE:
+	case WM_SIZE: {
 		// Get the dialog position and size.
 		RECT rcDialog;
 		GetWindowRect(hDlg, &rcDialog);
@@ -492,6 +493,19 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		SetWindowPos(hwndNotes, HWND_TOP, rcNotes.left, rcNotes.top,
 			rcNotes.right, rcNotes.bottom, SWP_SHOWWINDOW);
 		return 0;
+	}
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case IDC_LSPROPS:
+			switch (HIWORD(wParam)) {
+			case LBN_DBLCLK:
+				return uiManager.EditSelectedProperty();
+			}
+
+			break;
+		}
+
+		break;
 	}
 
     return 0;

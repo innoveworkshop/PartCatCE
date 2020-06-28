@@ -121,6 +121,20 @@ BEGIN
     CTEXT           "No\r\nImage",IDC_LBNOIMAGE,0,15,60,20
 END
 
+IDD_PROPEDIT DIALOG DISCARDABLE  0, 0, 132, 81
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Property Editor"
+FONT 8, "System"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,60,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,60,50,14
+    LTEXT           "Property:",IDC_STATIC,7,7,32,8
+    COMBOBOX        IDC_CBPROP,7,16,118,30,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Value:",IDC_STATIC,7,33,21,8
+    EDITTEXT        IDC_EDVALUE,7,42,118,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -144,6 +158,14 @@ BEGIN
         RIGHTMARGIN, 238
         TOPMARGIN, 7
         BOTTOMMARGIN, 79
+    END
+
+    IDD_PROPEDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 125
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
     END
 END
 #endif    // APSTUDIO_INVOKED

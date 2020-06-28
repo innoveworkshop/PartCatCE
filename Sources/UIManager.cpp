@@ -10,6 +10,7 @@
 #include "UIManager.h"
 #include "Category.h"
 #include "ImageUtils.h"
+#include "PropertyEditor.h"
 #include "resource.h"
 #include "commdlg.h"
 
@@ -23,15 +24,17 @@ UIManager::UIManager() {
  * Initializes a component manager with a workspace directory and a TreeView
  * control to manage.
  *
+ * @param hInst      Application instance handle.
  * @param hwndMain   Main window handle.
  * @param workspace  PartCat workspace .
  * @param treeView   TreeView control manager.
  * @param hwndDetail Detail dialog view handle.
  */
-UIManager::UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
-					 HWND *hwndDetail) {
+UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
+					 TreeView *treeView, HWND *hwndDetail) {
 	this->workspace = workspace;
 	this->treeView = treeView;
+	this->hInst = hInst;
 	this->hwndMain = hwndMain;
 	this->hwndDetail = hwndDetail;
 
@@ -196,7 +199,17 @@ void UIManager::PopulateDetailView(size_t nIndex) {
 	}
 
 	// Populate the properties list.
+	PopulatePropertiesList(component);
+}
+
+/**
+ * Populates the properties list with data from a component.
+ *
+ * @param component Component used to populate the list.
+ */
+void UIManager::PopulatePropertiesList(Component *component) {
 	vector<Property> arrProperties = component->GetProperties();
+
 	for (size_t i = 0; i < arrProperties.size(); i++) {
 		Property prop = arrProperties[i];
 		LPTSTR szCaption = prop.ToString();
@@ -266,6 +279,34 @@ void UIManager::ClearImage() {
 	ShowWindow(GetDlgItem(*hwndDetail, IDC_PICOMP), SW_HIDE);
 	DeleteObject(hbmpComponent);
 	ShowWindow(GetDlgItem(*hwndDetail, IDC_LBNOIMAGE), SW_SHOW);
+}
+
+/**
+ * Edits the selected property in the list.
+ *
+ * @return 0 if everything worked.
+ */
+LRESULT UIManager::EditSelectedProperty() {
+	HWND hwndList = GetDlgItem(*hwndDetail, IDC_LSPROPS);
+
+	// Get selected item and its associated property index.
+	int iSelected = (int)SendMessage(hwndList, LB_GETCURSEL, 0, 0);
+	size_t iProp = (size_t)SendMessage(hwndList, LB_GETITEMDATA, iSelected, 0);
+
+	// Get property and create property editor.
+	Component *component = workspace->GetComponent(iSelComponent);
+	Property *prop = component->GetProperty(iProp);
+	PropertyEditor editor(*hInst, hwndMain, prop);
+
+	// Check if any changes were made to the property.
+	if (editor.Updated()) {
+		SendMessage(hwndList, LB_RESETCONTENT, 0, 0);
+		PopulatePropertiesList(component);
+
+		component->PrintDebug();
+	}
+
+	return 0;
 }
 
 /**

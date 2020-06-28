@@ -16,6 +16,7 @@
 
 class UIManager {
 protected:
+	HINSTANCE *hInst;
 	HWND *hwndMain;
 	HWND *hwndDetail;
 	HBITMAP hbmpComponent;
@@ -26,8 +27,8 @@ protected:
 public:
 	// Constructors and destructors.
 	UIManager();
-	UIManager(HWND *hwndMain, Workspace *workspace, TreeView *treeView,
-			  HWND *hwndDetail);
+	UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
+			  TreeView *treeView, HWND *hwndDetail);
 
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
@@ -41,7 +42,9 @@ public:
 	void ClearDetailView();
 	void PopulateTreeView();
 	void SetComponentImage(Component *component);
+	void PopulatePropertiesList(Component *component);
 	void PopulateDetailView(size_t nIndex);
+	LRESULT EditSelectedProperty();
 	LRESULT TreeViewSelectionChanged(HWND hWnd, UINT wMsg, WPARAM wParam,
 									 LPARAM lParam);
 
