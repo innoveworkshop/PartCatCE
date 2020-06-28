@@ -171,6 +171,15 @@ void Property::ClearFields() {
 }
 
 /**
+ * Checks if the property is empty.
+ *
+ * @return TRUE if the property name is empty.
+ */
+bool Property::IsEmpty() {
+	return wcslen(szName) == 0;
+}
+
+/**
  * Gets a string representation of the property.
  * @remark The string returned should be freed after being used.
  *

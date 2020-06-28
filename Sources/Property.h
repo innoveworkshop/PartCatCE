@@ -27,15 +27,18 @@ public:
 	Property(LPCTSTR szLine);
 	Property(wstring swLine);
 
-	// Geters and seters.
+	// Name.
 	LPCTSTR GetName();
 	LPTSTR GetHumanName();
 	void SetHumanName(LPCTSTR szName);
 	void SetName(LPCTSTR szName);
+
+	// Value.
 	LPCTSTR GetValue();
 	void SetValue(LPCTSTR szValue);
 
 	// Misc.
+	bool IsEmpty();
 	void ClearFields();
 	LPTSTR ToString();
 };
