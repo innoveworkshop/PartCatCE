@@ -6,7 +6,7 @@ CE platform.
 ![Main Screenshot](/Screenshots/2020-06-27.png)
 
 
-## Requirements
+## Development Requirements
 
 This project depends on the amazing [STL for eMbedded Visual C++](http://users.libero.it/g.govi/stlport_ce_en.html),
 which is included in the project in case the webpage goes down in the future.
