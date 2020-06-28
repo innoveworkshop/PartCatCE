@@ -62,6 +62,7 @@ public:
 	LPCTSTR GetSubCategory();
 
 	// Misc.
+	bool Save();
 	void ClearFields();
 	LPCTSTR ToString();
 	void PrintDebug();

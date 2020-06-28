@@ -72,6 +72,39 @@ void Component::PopulateFromDirectory() {
 }
 
 /**
+ * Saves the component object to the file system.
+ *
+ * @return TRUE if the operation was successful.
+ */
+bool Component::Save() {
+	LPTSTR szBuffer;
+	bool bSuccess = true;
+
+	// Save quantity.
+	szBuffer = GetQuantityString();
+	bSuccess &= FileUtils::SaveContents(dirPath.Concatenate(QUANTITY_FILE).ToString(),
+		szBuffer);
+	LocalFree(szBuffer);
+
+	// Save properties.
+	wstring swProperties;
+	for (size_t i = 0; i < arrProperties.size(); i++) {
+		szBuffer = arrProperties[i].ToString();
+
+		swProperties += szBuffer;
+		swProperties += L"\r\n";
+
+		LocalFree(szBuffer);
+	}
+	bSuccess &= FileUtils::SaveContents(dirPath.Concatenate(MANIFEST_FILE).ToString(),
+		swProperties.c_str());
+
+	// TODO: Save image.
+
+	return bSuccess;
+}
+
+/**
  * Gets the name of the component.
  *
  * @return Component name.
