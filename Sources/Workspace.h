@@ -19,9 +19,12 @@ using namespace std;
 class Workspace {
 protected:
 	Directory dirWorkspace;
+	vector<Property> arrProperties;
 	vector<Component> arrComponents;
 	bool bOpened;
 
+	// Population.
+	void PopulateProperties();
 	void PopulateComponents();
 
 public:
@@ -29,6 +32,9 @@ public:
 	Workspace();
 	Workspace(Path pathWorkspace);
 	Workspace(Directory dirWorkspace);
+
+	// Properties.
+	void AddProperty(Property property);
 
 	// Components.
 	Component* GetComponent(size_t nIndex);

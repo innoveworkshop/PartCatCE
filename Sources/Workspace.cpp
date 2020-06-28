@@ -7,6 +7,7 @@
  */
 
 #include "Workspace.h"
+#include "FileUtils.h"
 
 /**
  * Initializes an empty PartCat workspace.
@@ -31,6 +32,39 @@ Workspace::Workspace(Path pathWorkspace) {
  */
 Workspace::Workspace(Directory dirWorkspace) {
 	Open(dirWorkspace.Concatenate(WORKSPACE_FILE));
+}
+
+/**
+ * Populates the properties from the workspace file.
+ */
+void Workspace::PopulateProperties() {
+	HANDLE hFile;
+	wstring swLine;
+
+	// Clear the properties array.
+	arrProperties.clear();
+
+	// Open the MANIFEST file for reading.
+	hFile = CreateFile(dirWorkspace.Concatenate(WORKSPACE_FILE).ToString(),
+		GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	// Go through the file line by line.
+	while (FileUtils::ReadLine(hFile, &swLine)) {
+		AddProperty(Property(swLine));
+	}
+
+	// Close the file handle.
+	CloseHandle(hFile);
+}
+
+/**
+ * Adds a property to the workspace properties array.
+ *
+ * @param  property Property to be added.
+ */
+void Workspace::AddProperty(Property property) {
+	arrProperties.push_back(property);
 }
 
 /**
