@@ -233,6 +233,15 @@ void Workspace::Close() {
 }
 
 /**
+ * Gets the workspace directory.
+ *
+ * @return Workspace directory root.
+ */
+Directory Workspace::GetDirectory() {
+	return dirWorkspace;
+}
+
+/**
  * Checks if the workspace is currently opened.
  *
  * @return TRUE if the workspace is opened.

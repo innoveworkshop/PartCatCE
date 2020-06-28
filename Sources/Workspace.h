@@ -53,6 +53,7 @@ public:
 	bool Refresh();
 
 	// Status.
+	Directory GetDirectory();
 	bool IsOpened();
 };
 
