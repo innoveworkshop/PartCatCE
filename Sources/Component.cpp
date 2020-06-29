@@ -165,6 +165,15 @@ bool Component::Create(Directory dirWorkspace, LPCTSTR szName) {
 }
 
 /**
+ * Deletes the component.
+ *
+ * @return TRUE if the operation was successful.
+ */
+bool Component::Delete() {
+	return dirPath.DeleteRecursively();
+}
+
+/**
  * Gets the name of the component.
  *
  * @return Component name.
