@@ -27,6 +27,9 @@ public:
 	// Information.
 	vector<Directory> GetSubDirectories();
 
+	// Operations.
+	bool DeleteRecursively();
+
 	// Misc.
 	void SetPath(Path path);
 };
