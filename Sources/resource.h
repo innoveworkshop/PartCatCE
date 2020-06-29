@@ -38,13 +38,14 @@
 #define IDM_COMP_EDTPROP                40015
 #define IDM_COMP_DELPROP                40016
 #define IDM_FILE_NEW_COMPONENT          40017
+#define IDM_COMP_DELCOMP                40018
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        108
-#define _APS_NEXT_COMMAND_VALUE         40018
+#define _APS_NEXT_COMMAND_VALUE         40019
 #define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

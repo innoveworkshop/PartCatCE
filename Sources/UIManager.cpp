@@ -267,6 +267,41 @@ LRESULT UIManager::SaveComponent(bool bSaveAs) {
 }
 
 /**
+ * Deletes the opened component.
+ *
+ * @return 0 if the operation was successful.
+ */
+LRESULT UIManager::DeleteComponent() {
+	// Ask the user politely.
+	if (MessageBox(*hwndMain, L"Are you sure you want to permanently delete this component?",
+			L"Delete Component", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2 |
+			MB_APPLMODAL) != IDYES)
+		return 0;
+
+	// Get component.
+	Component *component = workspace->GetComponent(iSelComponent);
+	if (component == NULL) {
+		MessageBox(*hwndMain, L"Couldn't retrieve the currently selected component.",
+			L"Component Retrieval Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	// Clear the space.
+	ClearDetailView();
+
+	// Actually delete the component.
+	if (!component->Delete()) {
+		MessageBox(*hwndMain, L"An error occured while trying to delete the component.",
+			L"Component Deletion Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	// Refresh workspace and return.
+	RefreshWorkspace();
+	return 0;
+}
+
+/**
  * Populates the detail view with data from a selected component.
  *
  * @param nIndex Selected component index.

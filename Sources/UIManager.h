@@ -38,6 +38,7 @@ public:
 	LRESULT CreateComponent();
 	void SyncDetailViewWithComponent(Component *component, bool bSaveNotes);
 	LRESULT SaveComponent(bool bSaveAs);
+	LRESULT DeleteComponent();
 	bool IsComponentOpened();
 
 	// Detail view.

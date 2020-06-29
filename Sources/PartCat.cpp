@@ -360,6 +360,8 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return uiManager.SaveComponent(false);
 	case IDM_COMP_SAVEAS:
 		return uiManager.SaveComponent(true);
+	case IDM_COMP_DELCOMP:
+		return uiManager.DeleteComponent();
 	case IDM_COMP_NEWPROP:
 		return uiManager.CreateProperty();
 	case IDM_COMP_EDTPROP:

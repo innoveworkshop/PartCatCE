@@ -81,6 +81,7 @@ BEGIN
     BEGIN
         MENUITEM "&Save\tCtrl+S",               IDM_COMP_SAVE
         MENUITEM "Save &As...",                 IDM_COMP_SAVEAS
+        MENUITEM "De&lete Component",           IDM_COMP_DELCOMP
         MENUITEM SEPARATOR
         MENUITEM "&New Property\tCtrl+I",       IDM_COMP_NEWPROP
         MENUITEM "&Edit Property...\tCtrl+E",   IDM_COMP_EDTPROP
