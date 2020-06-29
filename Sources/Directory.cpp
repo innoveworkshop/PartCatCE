@@ -26,7 +26,7 @@ vector<Directory> Directory::GetSubDirectories() {
 	WIN32_FIND_DATA fndData;
 
 	// Initialize array with enough space for everything.
-	vector<Directory> arr;// = new Array<Directory>(GetSubDirectoriesCount());
+	vector<Directory> arr;
 
 	// Find the first file in the directory.
 	hFind = FindFirstFile(this->Concatenate(L"\\*").ToString(), &fndData);
