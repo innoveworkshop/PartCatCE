@@ -3,7 +3,7 @@
 A port of [PartCat](https://github.com/innoveworkshop/PartCat) to the Windows
 CE platform.
 
-![Main Screenshot](/Screenshots/2020-06-27.png)
+![Main Screenshot](/Screenshots/2020-06-30.png)
 
 
 ## Development Requirements
