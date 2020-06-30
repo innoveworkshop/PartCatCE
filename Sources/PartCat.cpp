@@ -22,6 +22,22 @@
 // Styling stuff.
 #define DEFAULT_UI_MARGIN 5
 
+// CommandBar buttons.
+const TBBUTTON tbButtons[] = {
+//   BitmapIndex                         Command         State            Style       UserData String
+    { 0,                                 0,              0,               TBSTYLE_SEP,       0,   0 },
+    { STD_FILENEW,                       IDC_BTNEWCOMP,  TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { STD_FILESAVE,                      IDC_BTSAVECOMP, TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { STD_DELETE,                        IDC_BTDELCOMP,  TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { 0,                                 0,              0,               TBSTYLE_SEP,       0,   0 },
+	{ STD_BMPS_LEN + VIEW_NEWFOLDER,     IDC_BTNEWWS,    TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { STD_FILEOPEN,                      IDC_BTOPENWS,   TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { 0,                                 0,              0,               TBSTYLE_SEP,       0,   0 },
+    { STD_BMPS_LEN + VIEW_NETCONNECT,    IDC_BTNEWPROP,  TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { STD_PROPERTIES,                    IDC_BTEDITPROP, TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 },
+    { STD_BMPS_LEN + VIEW_NETDISCONNECT, IDC_BTDELPROP,  TBSTATE_ENABLED, TBSTYLE_BUTTON,    0,   0 }
+};
+
 // Global variables.
 HINSTANCE hInst;
 HWND hwndMain;
@@ -239,8 +255,8 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 
 	// Insert menu bar, toolbar buttons, and the exit button.
 	CommandBar_InsertMenubar(hwndCB, hInst, IDM_MAINMENU, 0);
-    //CommandBar_AddButtons(hwndCB, sizeof(tbButtons) / sizeof(TBBUTTON),
-	//	tbButtons);
+    CommandBar_AddButtons(hwndCB, sizeof(tbButtons) / sizeof(TBBUTTON),
+		tbButtons);
 	CommandBar_AddAdornments(hwndCB, 0, 0);
 
 	// Calculate the TreeView control size and position.
@@ -339,10 +355,13 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 					   LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
+	case IDC_BTNEWCOMP:
 	case IDM_FILE_NEW_COMPONENT:
 		return uiManager.CreateComponent();
+	case IDC_BTNEWWS:
 	case IDM_FILE_NEW_WORKSPACE:
 		return uiManager.CreateWorkspace();
+	case IDC_BTOPENWS:
 	case IDM_FILE_OPENWS:
 		return uiManager.OpenWorkspace(false);
 	case IDM_FILE_REFRESHWS:
@@ -351,16 +370,21 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return uiManager.CloseWorkspace();
 	case IDM_FILE_EXIT:
 		return SendMessage(hWnd, WM_CLOSE, 0, 0);
+	case IDC_BTSAVECOMP:
 	case IDM_COMP_SAVE:
 		return uiManager.SaveComponent(false);
 	case IDM_COMP_SAVEAS:
 		return uiManager.SaveComponent(true);
+	case IDC_BTDELCOMP:
 	case IDM_COMP_DELCOMP:
 		return uiManager.DeleteComponent();
+	case IDC_BTNEWPROP:
 	case IDM_COMP_NEWPROP:
 		return uiManager.CreateProperty();
+	case IDC_BTEDITPROP:
 	case IDM_COMP_EDTPROP:
 		return uiManager.EditSelectedProperty();
+	case IDC_BTDELPROP:
 	case IDM_COMP_DELPROP:
 		return uiManager.DeleteSelectedProperty();
 	case IDM_HELP_ABOUT:

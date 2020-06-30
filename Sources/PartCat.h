@@ -27,6 +27,16 @@
 #define IDC_CMDBAR   201
 #define IDC_TREEVIEW 202
 
+// CommandBar buttons.
+#define IDC_BTNEWCOMP  211
+#define IDC_BTSAVECOMP 212
+#define IDC_BTDELCOMP  213
+#define IDC_BTNEWWS    214
+#define IDC_BTOPENWS   215
+#define IDC_BTNEWPROP  216
+#define IDC_BTEDITPROP 217
+#define IDC_BTDELPROP  218
+
 // Number of bitmaps in the standard and view image lists.
 #define STD_BMPS_LEN  STD_PRINT + 1
 #define VIEW_BMPS_LEN VIEW_NEWFOLDER + 1
