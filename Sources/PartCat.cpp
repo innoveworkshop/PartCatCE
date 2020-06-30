@@ -408,8 +408,7 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
 					  LPARAM lParam) {
 	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
-		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam,
-			lParam);
+		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
 	}
 
 	return 0;
