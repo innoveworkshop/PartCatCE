@@ -23,6 +23,7 @@ protected:
 	Workspace *workspace;
 	TreeView *treeView;
 	long iSelComponent;
+	bool bDirty;
 
 public:
 	// Constructors and destructors.
@@ -33,6 +34,11 @@ public:
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
 	void SetApplicationSubTitle(LPCTSTR szSubTitle);
+
+	// Dirtiness and unsaved changes stuff.
+	void SetDirty(bool bDirty);
+	bool IsDirty();
+	bool CheckForUnsavedChanges();
 
 	// Component operations.
 	LRESULT CreateComponent();

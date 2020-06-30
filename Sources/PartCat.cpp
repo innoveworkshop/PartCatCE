@@ -389,12 +389,10 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return uiManager.DeleteSelectedProperty();
 	case IDM_HELP_ABOUT:
 		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
-		break;
-	default:
-		return DefWindowProc(hWnd, wMsg, wParam, lParam);
+		return 0;
 	}
 
-	return 0;
+	return DefWindowProc(hWnd, wMsg, wParam, lParam);
 }
 
 /**
@@ -429,8 +427,8 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
 LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
 					 LPARAM lParam) {
 	// Check for unsaved changes.
-	//if (CheckForUnsavedChanges())
-	//	return 1;
+	if (uiManager.CheckForUnsavedChanges())
+		return 1;
 
 	// Send window destruction message.
 	DestroyWindow(hWnd);
@@ -545,11 +543,19 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		return 0;
 	}
 	case WM_COMMAND:
-		switch (LOWORD(wParam)) {
+		switch (GET_WM_COMMAND_ID(wParam, lParam)) {
 		case IDC_LSPROPS:
 			switch (HIWORD(wParam)) {
 			case LBN_DBLCLK:
 				return uiManager.EditSelectedProperty();
+			}
+
+			break;
+		case IDC_EDNAME:
+		case IDC_EDQUANTITY:
+		case IDC_EDNOTES:
+			if (HIWORD(wParam) == EN_CHANGE) {
+				uiManager.SetDirty(true);
 			}
 
 			break;

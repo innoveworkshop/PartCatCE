@@ -19,6 +19,8 @@
  * Initializes an empty component manager.
  */
 UIManager::UIManager() {
+	SetDirty(false);
+	iSelComponent = -1;
 }
 
 /**
@@ -43,11 +45,45 @@ UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
 }
 
 /**
+ * Checks for unsaved changes and displays a message box if there are any.
+ *
+ * @return TRUE if we should abort the current operation.
+ */
+bool UIManager::CheckForUnsavedChanges() {
+	int iSelection;
+
+	// Check for dirtiness.
+	if (IsDirty()) {
+		// Show the message box and get the user selection.
+		iSelection = MessageBox(NULL, L"You have unsaved changes. Do you want "
+			L"to save your changes?", L"Unsaved Changes",
+			MB_YESNOCANCEL | MB_ICONWARNING);
+
+		// Check which button the user clicked.
+		switch (iSelection) {
+		case IDYES:
+			SaveComponent(false);
+			return false;
+		case IDNO:
+			SetDirty(false);
+			return false;
+		case IDCANCEL:
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Creates a component for the user.
  *
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::CreateComponent() {
+	if (CheckForUnsavedChanges())
+		return 1;
+
 	CreationDialog dialog(*hInst, hwndMain, L"Component");
 	if (dialog.Created()) {
 		if (!Component::Create(workspace->GetDirectory(), dialog.GetName())) {
@@ -67,6 +103,9 @@ LRESULT UIManager::CreateComponent() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::CreateWorkspace() {
+	if (CheckForUnsavedChanges())
+		return 1;
+
 	CreationDialog dialog(*hInst, hwndMain, L"Workspace Path");
 	if (dialog.Created()) {
 		if (!Workspace::Create(dialog.GetName())) {
@@ -96,6 +135,9 @@ LRESULT UIManager::CreateWorkspace() {
 LRESULT UIManager::OpenWorkspace(bool bRefresh) {
 	OPENFILENAME ofn = {0};
     WCHAR szPath[MAX_PATH] = L"";
+
+	if (CheckForUnsavedChanges())
+		return 1;
 
 	// Clear the screen.
 	ClearDetailView();
@@ -142,6 +184,9 @@ LRESULT UIManager::OpenWorkspace(bool bRefresh) {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::RefreshWorkspace() {
+	if (CheckForUnsavedChanges())
+		return 1;
+
 	ClearDetailView();
 	treeView->Clear();
 	if (!workspace->Refresh()) {
@@ -160,6 +205,9 @@ LRESULT UIManager::RefreshWorkspace() {
  * @return 0 if the operation was successful.
  */
 LRESULT UIManager::CloseWorkspace() {
+	if (CheckForUnsavedChanges())
+		return 1;
+
 	ClearDetailView();
 	treeView->Clear();
 	workspace->Close();
@@ -261,6 +309,7 @@ LRESULT UIManager::SaveComponent(bool bSaveAs) {
 	LocalFree(szName);
 
 	// Refresh the workspace.
+	SetDirty(false);
 	RefreshWorkspace();
 
 	return 0;
@@ -276,7 +325,7 @@ LRESULT UIManager::DeleteComponent() {
 	if (MessageBox(*hwndMain, L"Are you sure you want to permanently delete this component?",
 			L"Delete Component", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2 |
 			MB_APPLMODAL) != IDYES)
-		return 0;
+		return 1;
 
 	// Get component.
 	Component *component = workspace->GetComponent(iSelComponent);
@@ -341,6 +390,9 @@ void UIManager::PopulateDetailView(size_t nIndex) {
 
 	// Populate the properties list.
 	PopulatePropertiesList(component);
+
+	// Make sure we are not dirty.
+	SetDirty(false);
 }
 
 /**
@@ -378,7 +430,9 @@ void UIManager::ClearDetailView() {
 	SendDlgItemMessage(*hwndDetail, IDC_LSPROPS, LB_RESETCONTENT, 0, 0);
 	ClearImage();
 
+	// Reset flags.
 	iSelComponent = -1;
+	SetDirty(false);
 }
 
 /**
@@ -442,6 +496,8 @@ LRESULT UIManager::CreateProperty() {
 		if (!prop.IsEmpty()) {
 			component->AddProperty(prop);
 			PopulatePropertiesList(component);
+
+			SetDirty(true);
 		}
 	}
 
@@ -468,8 +524,9 @@ LRESULT UIManager::EditSelectedProperty() {
 	// Check if any changes were made to the property.
 	if (editor.Updated()) {
 		SendMessage(hwndList, LB_RESETCONTENT, 0, 0);
+		SetDirty(true);
 
-		if (!prop->IsEmpty())
+		if (!prop->IsEmpty()) 
 			PopulatePropertiesList(component);
 	}
 
@@ -482,15 +539,21 @@ LRESULT UIManager::EditSelectedProperty() {
  * @return 0 if everything worked.
  */
 LRESULT UIManager::DeleteSelectedProperty() {
-	HWND hwndList = GetDlgItem(*hwndDetail, IDC_LSPROPS);
+	// Ask the user politely.
+	if (MessageBox(*hwndMain, L"Are you sure you want to permanently delete this property?",
+			L"Delete Property", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2 |
+			MB_APPLMODAL) != IDYES)
+		return 1;
 
 	// Get selected item and its associated property index.
+	HWND hwndList = GetDlgItem(*hwndDetail, IDC_LSPROPS);
 	int iSelected = (int)SendMessage(hwndList, LB_GETCURSEL, 0, 0);
 	size_t iProp = (size_t)SendMessage(hwndList, LB_GETITEMDATA, iSelected, 0);
 
 	// Get component and remove the selected property.
 	Component *component = workspace->GetComponent(iSelComponent);
 	component->RemoveProperty(iProp);
+	SetDirty(true);
 
 	// Update the properties list.
 	SendMessage(hwndList, LB_RESETCONTENT, 0, 0);
@@ -531,6 +594,9 @@ LRESULT UIManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
 	TVITEM tvItem;
 	NMTREEVIEW* pnmTreeView = (LPNMTREEVIEW)lParam;
 	size_t nIndex;
+
+	if (CheckForUnsavedChanges())
+		return 1;
 
 	// Get item information.
 	tvItem.hItem = pnmTreeView->itemNew.hItem;
@@ -685,4 +751,22 @@ bool UIManager::GetEditText(HWND hwndControl, LPTSTR *szBuffer) {
 
 	// Get the string from the control and return.
 	return GetWindowText(hwndControl, *szBuffer, nLength) != 0;
+}
+
+/**
+ * Set the dirtiness flag.
+ *
+ * @param bDirty Are we dirty?
+ */
+void UIManager::SetDirty(bool bDirty) {
+	this->bDirty = bDirty;
+}
+
+/**
+ * Checks if we are dirty.
+ *
+ * @return TRUE if we are dirty.
+ */
+bool UIManager::IsDirty() {
+	return bDirty;
 }
