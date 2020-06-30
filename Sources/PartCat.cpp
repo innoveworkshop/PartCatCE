@@ -270,11 +270,6 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
 	SetWindowPos(hwndDetail, HWND_TOP, rcDetailView.left, rcDetailView.top,
 		rcDetailView.right, rcDetailView.bottom, SWP_SHOWWINDOW);
 
-	// Setup the detail view spin control for quantity.
-	SendDlgItemMessage(hwndDetail, IDC_SPQUANTITY, UDM_SETBUDDY,
-		(WPARAM)GetDlgItem(hwndDetail, IDC_EDQUANTITY), (LPARAM)0);
-	SendDlgItemMessage(hwndDetail, IDC_SPQUANTITY, UDM_SETBASE, (WPARAM)10, (LPARAM)0);
-
 #ifdef DEVELOP
 	// Load the test workspace.
 	LoadTestWorkspace();
