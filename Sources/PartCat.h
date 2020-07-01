@@ -47,24 +47,17 @@ HWND InitializeInstance(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow);
 int TerminateInstance(HINSTANCE hInstance, int nDefRC);
 
 // Window procedure.
-LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
-								LPARAM lParam);
-LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam,
-							  LPARAM lParam);
+LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam);
 int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam);
 
 // Window message handlers.
-LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
-					  LPARAM lParam);
-LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
-					   LPARAM lParam);
-LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
-							 LPARAM lParam);
-LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
-					  LPARAM lParam);
-LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
-					 LPARAM lParam);
-LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam,
-					   LPARAM lParam);
+LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT WndMainActivate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
+LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
 
 #endif // _PARTCAT_H

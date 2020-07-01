@@ -13,6 +13,9 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
+#ifdef WIN32_PLATFORM_PSPC
+#include <aygshell.h>
+#endif
 
 #include "Directory.h"
 #include "TreeView.h"
@@ -45,6 +48,15 @@ TreeView treeView;
 Workspace workspace;
 UIManager uiManager;
 HWND hwndDetail;
+
+#ifdef WIN32_PLATFORM_PSPC
+// Pocket PC specific components.
+HWND hwndMenuBar;
+SHACTIVATEINFO sai;
+#else
+// Handheld PC specific components.
+HWND hwndCB;
+#endif
 
 #ifdef DEVELOP
 /**
@@ -119,17 +131,27 @@ int InitializeApplication(HINSTANCE hInstance) {
 	// Load the application name.
 	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
 
+	
+#ifdef WIN32_PLATFORM_PSPC
+	// Only allow one instance of the application.
+	HWND hWnd = FindWindow(szWindowClass, NULL);
+	if (hWnd) {
+		SetForegroundWindow((HWND)(((DWORD)hWnd) | 0x01));
+		return 1;
+	}
+#endif
+
 	// Register the application's main window class.
-	wc.style = 0;					   // Window style.
-	wc.lpfnWndProc = MainWindowProc;   // Main window procedure.
-	wc.cbClsExtra = 0;				   // Extra class data.
-	wc.cbWndExtra = 0;				   // Extra window data.
-	wc.hInstance = hInstance;		   // Owner handle.
+	wc.style = CS_VREDRAW | CS_HREDRAW;  // Window style.
+	wc.lpfnWndProc = MainWindowProc;     // Main window procedure.
+	wc.cbClsExtra = 0;				     // Extra class data.
+	wc.cbWndExtra = 0;				     // Extra window data.
+	wc.hInstance = hInstance;		     // Owner handle.
 	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
-	wc.hCursor = NULL;				   // Default cursor. (Always NULL)
+	wc.hCursor = NULL;				     // Default cursor. (Always NULL)
 	wc.hbrBackground = (HBRUSH)GetSysColorBrush(COLOR_STATIC);
-	wc.lpszMenuName = NULL;            // Menu name. (Always NULL)
-	wc.lpszClassName = szWindowClass;  // Window class name.
+	wc.lpszMenuName = NULL;              // Menu name. (Always NULL)
+	wc.lpszClassName = szWindowClass;    // Window class name.
 
 	// Check if the class registration worked.
 	if (!RegisterClass(&wc)) {
@@ -191,7 +213,7 @@ HWND InitializeInstance(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 	SendMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
 	// Show and update the window.
-	ShowWindow(hWnd, SW_SHOWMAXIMIZED);
+	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
 	return hWnd;
@@ -217,8 +239,7 @@ int TerminateInstance(HINSTANCE hInstance, int nDefRC) {
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
-								LPARAM lParam) {
+LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (wMsg) {
 	case WM_CREATE:
 		return WndMainCreate(hWnd, wMsg, wParam, lParam);
@@ -228,6 +249,8 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
 		return WndMainInitMenuPopUp(hWnd, wMsg, wParam, lParam);
 	case WM_NOTIFY:
 		return WndMainNotify(hWnd, wMsg, wParam, lParam);
+	case WM_ACTIVATE:
+		return WndMainActivate(hWnd, wMsg, wParam, lParam);
 	case WM_CLOSE:
 		return WndMainClose(hWnd, wMsg, wParam, lParam);
 	case WM_DESTROY:
@@ -246,16 +269,44 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
-					  LPARAM lParam) {
+LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Ensure that the common controls DLL is loaded. 
     InitCommonControls();
 
 	// Initialize the Image List.
 	//HIMAGELIST hIml = InitializeImageList(hInst);
 
+#ifdef WIN32_PLATFORM_PSPC
+	SHMENUBARINFO mbi = {0};
+	SIPINFO si = {0};
+	int cx, cy;
+
+	// Initialize the shell to activate the info structure.
+	memset(&sai, 0, sizeof(sai));
+	sai.cbSize = sizeof(sai);
+
+	// Setup the menu bar.
+	mbi.cbSize = sizeof(SHMENUBARINFO);  // Size field.
+	mbi.hwndParent = hWnd;               // Parent window.
+	mbi.dwFlags = SHCMBF_EMPTYBAR;       // Hide SIP button.
+	mbi.nToolBarId = 0;                  // ID of the toolbar resource.
+	mbi.hInstRes = 0;                    // Instance handle of our application.
+	mbi.nBmpId = 0;                      // Bitmap resource ID.
+	mbi.cBmpImages = 0;                  // Number of images in the bitmap.
+	mbi.hwndMB = 0;                      // Returned handle of the menu bar.
+	
+	// Create the menu bar.
+	if (!SHCreateMenuBar(&mbi)) {
+		MessageBox(hWnd, L"Couldn't create the menu bar.", L"UI Error",
+			MB_OK | MB_ICONERROR);
+		DestroyWindow(hWnd);
+	}
+
+	// Save the menu bar handle.
+	hwndMenuBar = mbi.hwndMB;
+#else
 	// Create CommandBar.
-	HWND hwndCB = CommandBar_Create(hInst, hWnd, IDC_CMDBAR);
+	hwndCB = CommandBar_Create(hInst, hWnd, IDC_CMDBAR);
 	
     // Add the Standard and View bitmaps to the toolbar.
     CommandBar_AddBitmap(hwndCB, HINST_COMMCTRL, IDB_STD_SMALL_COLOR,
@@ -268,11 +319,15 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
     CommandBar_AddButtons(hwndCB, sizeof(tbButtons) / sizeof(TBBUTTON),
 		tbButtons);
 	CommandBar_AddAdornments(hwndCB, 0, 0);
+#endif
 
 	// Calculate the TreeView control size and position.
 	RECT rcTreeView;
 	GetClientRect(hWnd, &rcTreeView);
+#ifdef WIN32_PLATFORM_PSPC
+#else
 	rcTreeView.top += CommandBar_Height(hwndCB);
+#endif
 	rcTreeView.bottom -= rcTreeView.top;
 	rcTreeView.right = (LONG)(rcTreeView.right / 3.5);
 
@@ -313,9 +368,12 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
-							 LPARAM lParam) {
-	HMENU hMenu = CommandBar_GetMenu(GetDlgItem(hWnd, IDC_CMDBAR), 0);
+LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
+#ifdef WIN32_PLATFORM_PSPC
+	HMENU hMenu;
+#else
+	HMENU hMenu = CommandBar_GetMenu(hwndCB, 0);
+#endif
 
 	// Enable and disable workspace related items.
 	if (workspace.IsOpened()) {
@@ -362,8 +420,7 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
-					   LPARAM lParam) {
+LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (GET_WM_COMMAND_ID(wParam, lParam)) {
 	case IDC_BTNEWCOMP:
 	case IDM_FILE_NEW_COMPONENT:
@@ -414,12 +471,29 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
-					  LPARAM lParam) {
+LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
 		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
 	}
+
+	return 0;
+}
+
+/**
+ * Process the WM_ACTIVATE message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainActivate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
+#ifdef WIN32_PLATFORM_PSPC
+	// Notify shell of our activate message.
+	SHHandleWMActivate(hWnd, wParam, lParam, &sai, 0);
+#endif
 
 	return 0;
 }
@@ -433,8 +507,7 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
-					 LPARAM lParam) {
+LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Check for unsaved changes.
 	if (uiManager.CheckForUnsavedChanges())
 		return 1;
@@ -455,8 +528,7 @@ LRESULT WndMainClose(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam,
-					   LPARAM lParam) {
+LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Post quit message and return.
 	PostQuitMessage(0);
 	return 0;
@@ -471,8 +543,7 @@ LRESULT WndMainDestroy(HWND hWnd, UINT wMsg, WPARAM wParam,
  * @param  lParam Message parameter.
  * @return        0 if everything worked.
  */
-LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam,
-							  LPARAM lParam) {
+LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	RECT rt, rt1;
 	int DlgWidth, DlgHeight;	// dialog width and height in pixel units
 	int NewPosX, NewPosY;
