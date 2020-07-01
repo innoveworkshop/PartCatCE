@@ -569,7 +569,6 @@ DEP_CPP_PARTC=\
 	".\Sources\PartCat.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
-	".\Sources\PropertyEditor.h"\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\UIManager.h"\
@@ -872,6 +871,7 @@ DEP_CPP_UIMAN=\
 	".\Sources\Category.h"\
 	".\Sources\Component.h"\
 	".\Sources\Constants.h"\
+	".\Sources\CreationDialog.h"\
 	".\Sources\Directory.h"\
 	".\Sources\ImageUtils.h"\
 	".\Sources\Path.h"\
@@ -893,6 +893,10 @@ SOURCE=.\Sources\UIManager.h
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\Resources\DISKS009.ICO
+# End Source File
 # Begin Source File
 
 SOURCE=.\Sources\newres.h
