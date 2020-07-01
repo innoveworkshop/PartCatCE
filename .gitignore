@@ -2,8 +2,8 @@
 *.o
 *.so
 *.aps
-build/
-Debug/
+*build/
+*Debug/
 *Dbg/
 *Rel/
 
