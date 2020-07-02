@@ -178,6 +178,11 @@ HWND InitializeInstance(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
 	LoadString(hInst, IDS_APP_TITLE, szAppTitle, MAX_LOADSTRING);
 
+#ifdef SHELL_AYGSHELL
+	// Initialize PocketPC controls.
+	SHInitExtraControls();
+#endif
+
 	// Create the main window.
 	hWnd = CreateWindow(szWindowClass,  // Window class.
 						szAppTitle,     // Window title.
@@ -246,6 +251,8 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lPar
 		return WndMainInitMenuPopUp(hWnd, wMsg, wParam, lParam);
 	case WM_NOTIFY:
 		return WndMainNotify(hWnd, wMsg, wParam, lParam);
+	case WM_SETTINGCHANGE:
+		return WndMainSettingChange(hWnd, wMsg, wParam, lParam);
 	case WM_ACTIVATE:
 		return WndMainActivate(hWnd, wMsg, wParam, lParam);
 	case WM_CLOSE:
@@ -285,9 +292,8 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Setup the menu bar.
 	mbi.cbSize = sizeof(SHMENUBARINFO);  // Size field.
 	mbi.hwndParent = hWnd;               // Parent window.
-	mbi.dwFlags = SHCMBF_EMPTYBAR;       // Hide SIP button.
-	mbi.nToolBarId = 0;                  // ID of the toolbar resource.
-	mbi.hInstRes = 0;                    // Instance handle of our application.
+	mbi.nToolBarId = IDR_MENUBAR;        // ID of the toolbar resource.
+	mbi.hInstRes = hInst;                // Instance handle of our application.
 	mbi.nBmpId = 0;                      // Bitmap resource ID.
 	mbi.cBmpImages = 0;                  // Number of images in the bitmap.
 	mbi.hwndMB = 0;                      // Returned handle of the menu bar.
@@ -385,7 +391,8 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
  */
 LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 #ifdef SHELL_AYGSHELL
-	HMENU hMenu;
+	HMENU hmenuRes = LoadMenu(hInst, MAKEINTRESOURCE(IDR_MENUBAR));
+	HMENU hMenu = (HMENU)SendMessage(hwndMenuBar, SHCMBM_GETMENU, 0, 0);
 #else
 	HMENU hMenu = CommandBar_GetMenu(hwndCB, 0);
 #endif
@@ -405,6 +412,7 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam)
 	if (uiManager.IsComponentOpened() && workspace.IsOpened()) {
 		EnableMenuItem(hMenu, IDM_COMP_SAVE, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_COMP_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_COMP_DELETE, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_COMP_NEWPROP, MF_BYCOMMAND | MF_ENABLED);
 
 		LONG lCurSel = SendDlgItemMessage(hwndDetail, IDC_LSPROPS, LB_GETCURSEL, 0, 0);
@@ -418,6 +426,7 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam)
 	} else {
 		EnableMenuItem(hMenu, IDM_COMP_SAVE, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_COMP_SAVEAS, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_COMP_DELETE, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_COMP_NEWPROP, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_COMP_EDTPROP, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_COMP_DELPROP, MF_BYCOMMAND | MF_GRAYED);
@@ -458,7 +467,7 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	case IDM_COMP_SAVEAS:
 		return uiManager.SaveComponent(true);
 	case IDC_BTDELCOMP:
-	case IDM_COMP_DELCOMP:
+	case IDM_COMP_DELETE:
 		return uiManager.DeleteComponent();
 	case IDC_BTNEWPROP:
 	case IDM_COMP_NEWPROP:
@@ -491,6 +500,24 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	case TVN_SELCHANGED:
 		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
 	}
+
+	return 0;
+}
+
+/**
+ * Process the WM_SETTINGCHANGE message for the window.
+ *
+ * @param  hWnd   Window handler.
+ * @param  wMsg   Message type.
+ * @param  wParam Message parameter.
+ * @param  lParam Message parameter.
+ * @return        0 if everything worked.
+ */
+LRESULT WndMainSettingChange(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
+#ifdef SHELL_AYGSHELL
+	// Notify shell of our setting change message.
+	SHHandleWMSettingChange(hWnd, wParam, lParam, &sai);
+#endif
 
 	return 0;
 }

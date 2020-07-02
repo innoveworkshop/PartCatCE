@@ -58,7 +58,7 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Menu
+// Menubar
 //
 
 IDM_MAINMENU MENU DISCARDABLE 
@@ -81,7 +81,7 @@ BEGIN
     BEGIN
         MENUITEM "&Save\tCtrl+S",               IDM_COMP_SAVE
         MENUITEM "Save &As...",                 IDM_COMP_SAVEAS
-        MENUITEM "De&lete Component",           IDM_COMP_DELCOMP
+        MENUITEM "De&lete",                     IDM_COMP_DELETE
         MENUITEM SEPARATOR
         MENUITEM "&New Property\tCtrl+I",       IDM_COMP_NEWPROP
         MENUITEM "&Edit Property...\tCtrl+E",   IDM_COMP_EDTPROP
@@ -90,6 +90,38 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&About",                      IDM_HELP_ABOUT
+    END
+END
+
+IDR_MENUBAR MENU DISCARDABLE 
+BEGIN
+    POPUP "Tools"
+    BEGIN
+        POPUP "New"
+        BEGIN
+            MENUITEM "Component",                   IDM_FILE_NEW_COMPONENT
+            MENUITEM "Workspace",                   IDM_FILE_NEW_WORKSPACE
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Open Workspace...",           IDM_FILE_OPENWS
+        MENUITEM "Refresh Workspace",           IDM_FILE_REFRESHWS
+        MENUITEM "Close Workspace",             IDM_FILE_CLOSEWS
+        MENUITEM SEPARATOR
+        POPUP "Help"
+        BEGIN
+            MENUITEM "About",                       IDM_HELP_ABOUT
+        END
+        MENUITEM "Exit",                        IDM_FILE_EXIT
+    END
+    POPUP "Component"
+    BEGIN
+        MENUITEM "Save",                        IDM_COMP_SAVE
+        MENUITEM "Save As...",                  IDM_COMP_SAVEAS
+        MENUITEM "Delete",                      IDM_COMP_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "New Property",                IDM_COMP_NEWPROP
+        MENUITEM "Edit Property",               IDM_COMP_EDTPROP
+        MENUITEM "Delete Propety",              IDM_COMP_DELPROP
     END
 END
 
@@ -264,6 +296,21 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Data
+//
+
+IDR_MENUBAR SHMENUBAR DISCARDABLE 
+BEGIN
+    IDR_MENUBAR, 2,
+    I_IMAGENONE, IDM_FILE, TBSTATE_ENABLED, 
+    TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_CAP_FILE, 0, 0,
+    I_IMAGENONE, IDM_COMPONENT, TBSTATE_ENABLED, 
+    TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_CAP_COMPONENT, 0, 1,
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -272,6 +319,12 @@ BEGIN
     IDS_APP_TITLE           "PartCat"
     IDS_HELLO               "Hello World!"
     IDC_PARTCAT             "PARTCAT"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CAP_FILE            "Tools"
+    IDS_CAP_COMPONENT       "Component"
 END
 
 #endif    // English (U.S.) resources

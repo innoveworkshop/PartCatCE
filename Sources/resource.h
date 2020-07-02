@@ -13,6 +13,7 @@
 #define IDD_DETAILVIEW                  104
 #define IDD_PROPEDIT                    105
 #define IDD_NEWOBJECT                   107
+#define IDR_MENUBAR                     108
 #define IDC_EDIT1                       1002
 #define IDC_EDNAME                      1002
 #define IDC_EDVALUE                     1002
@@ -39,13 +40,18 @@
 #define IDM_COMP_DELPROP                40016
 #define IDM_FILE_NEW_COMPONENT          40017
 #define IDM_COMP_DELCOMP                40018
+#define IDS_CAP_FILE                    40021
+#define IDM_FILE                        40022
+#define IDM_COMPONENT                   40026
+#define IDS_CAP_COMPONENT               40028
+#define IDM_COMP_DELETE                 40030
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        108
-#define _APS_NEXT_COMMAND_VALUE         40019
+#define _APS_NEXT_RESOURCE_VALUE        109
+#define _APS_NEXT_COMMAND_VALUE         40031
 #define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
