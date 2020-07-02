@@ -17,7 +17,11 @@
 
 // Local Header Files
 
-// TODO: reference additional headers your program requires here
+#if defined(WIN32_PLATFORM_PSPC) || defined(WIN32_PLATFORM_WFSP)
+#define SHELL_AYGSHELL
+#include <aygshell.h>
+#pragma comment(lib, "aygshell")
+#endif
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft eMbedded Visual C++ will insert additional declarations immediately before the previous line.

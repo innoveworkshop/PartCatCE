@@ -13,9 +13,6 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
-#ifdef WIN32_PLATFORM_PSPC
-#include <aygshell.h>
-#endif
 
 #include "Directory.h"
 #include "TreeView.h"
@@ -49,7 +46,7 @@ Workspace workspace;
 UIManager uiManager;
 HWND hwndDetail;
 
-#ifdef WIN32_PLATFORM_PSPC
+#ifdef SHELL_AYGSHELL
 // Pocket PC specific components.
 HWND hwndMenuBar;
 SHACTIVATEINFO sai;
@@ -132,7 +129,7 @@ int InitializeApplication(HINSTANCE hInstance) {
 	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
 
 	
-#ifdef WIN32_PLATFORM_PSPC
+#ifdef SHELL_AYGSHELL
 	// Only allow one instance of the application.
 	HWND hWnd = FindWindow(szWindowClass, NULL);
 	if (hWnd) {
@@ -276,7 +273,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Initialize the Image List.
 	//HIMAGELIST hIml = InitializeImageList(hInst);
 
-#ifdef WIN32_PLATFORM_PSPC
+#ifdef SHELL_AYGSHELL
 	SHMENUBARINFO mbi = {0};
 	SIPINFO si = {0};
 	int cx, cy;
@@ -324,7 +321,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Calculate the TreeView control size and position.
 	RECT rcTreeView;
 	GetClientRect(hWnd, &rcTreeView);
-#ifdef WIN32_PLATFORM_PSPC
+#ifdef SHELL_AYGSHELL
 #else
 	rcTreeView.top += CommandBar_Height(hwndCB);
 #endif
@@ -369,7 +366,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
  * @return        0 if everything worked.
  */
 LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
-#ifdef WIN32_PLATFORM_PSPC
+#ifdef SHELL_AYGSHELL
 	HMENU hMenu;
 #else
 	HMENU hMenu = CommandBar_GetMenu(hwndCB, 0);
@@ -490,7 +487,7 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
  * @return        0 if everything worked.
  */
 LRESULT WndMainActivate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
-#ifdef WIN32_PLATFORM_PSPC
+#ifdef SHELL_AYGSHELL
 	// Notify shell of our activate message.
 	SHHandleWMActivate(hWnd, wParam, lParam, &sai, 0);
 #endif
