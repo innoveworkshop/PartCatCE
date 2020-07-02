@@ -26,10 +26,17 @@ TreeView::TreeView(HINSTANCE hInst, HWND hwndParent,
     InitCommonControls(); 
 	
 	// Create TreeView window.
+#ifdef SHELL_AYGSHELL
+	hWnd = CreateWindowEx(0, WC_TREEVIEW, L"Tree View",
+		WS_VISIBLE | WS_CHILD | TVS_HASLINES | TVS_HASBUTTONS | TVS_LINESATROOT, 
+		rcClient.left, rcClient.top, rcClient.right, rcClient.bottom,
+		hwndParent, hTreeViewID, hInst, NULL);
+#else
 	hWnd = CreateWindowEx(0, WC_TREEVIEW, L"Tree View",
 		WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES | TVS_HASBUTTONS | TVS_LINESATROOT, 
 		rcClient.left, rcClient.top, rcClient.right, rcClient.bottom,
 		hwndParent, hTreeViewID, hInst, NULL);
+#endif
 }
 
 /**

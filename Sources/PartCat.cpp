@@ -301,6 +301,23 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 
 	// Save the menu bar handle.
 	hwndMenuBar = mbi.hwndMB;
+
+	// Query the SIP state and size our window appropriately.
+	si.cbSize = sizeof(si);
+	SHSipInfo(SPI_GETSIPINFO, 0, (PVOID)&si, 0);
+	cx = si.rcVisibleDesktop.right - si.rcVisibleDesktop.left;
+	cy = si.rcVisibleDesktop.bottom - si.rcVisibleDesktop.top;
+
+	// Correct the window height based on the menu bar height.
+	if (!(si.fdwFlags & SIPF_ON) || ((si.fdwFlags & SIPF_ON) && (si.fdwFlags & SIPF_DOCKED))) {
+		RECT rcMenuBar;
+		GetWindowRect(hwndMenuBar, &rcMenuBar);
+
+		cy -= (rcMenuBar.bottom - rcMenuBar.top);
+	}
+
+	// Resize our window appropriately.
+	SetWindowPos(hWnd, NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_NOZORDER);
 #else
 	// Create CommandBar.
 	hwndCB = CommandBar_Create(hInst, hWnd, IDC_CMDBAR);
@@ -321,17 +338,17 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Calculate the TreeView control size and position.
 	RECT rcTreeView;
 	GetClientRect(hWnd, &rcTreeView);
-#ifdef SHELL_AYGSHELL
-#else
+#ifndef SHELL_AYGSHELL
 	rcTreeView.top += CommandBar_Height(hwndCB);
-#endif
 	rcTreeView.bottom -= rcTreeView.top;
 	rcTreeView.right = (LONG)(rcTreeView.right / 3.5);
+#endif
 
 	// Create the TreeView control.
 	treeView = TreeView(hInst, hWnd, rcTreeView, (HMENU)IDC_TREEVIEW);
 	//treeView.SetImageList(hIml);
 
+#ifndef SHELL_AYGSHELL
 	// Calculate the detail view dialog size and position.
 	RECT rcDetailView;
 	GetClientRect(hWnd, &rcDetailView);
@@ -347,6 +364,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		hWnd, DetailDlgProc, (LPARAM)&rcDetailView);
 	SetWindowPos(hwndDetail, HWND_TOP, rcDetailView.left, rcDetailView.top,
 		rcDetailView.right, rcDetailView.bottom, SWP_SHOWWINDOW);
+#endif
 
 #ifdef DEVELOP
 	// Load the test workspace.
