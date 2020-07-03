@@ -20,7 +20,11 @@
 #include "UIManager.h"
 
 // Styling stuff.
+#ifdef SHELL_AYGSHELL
+#define DEFAULT_UI_MARGIN 7
+#else
 #define DEFAULT_UI_MARGIN 5
+#endif
 
 // CommandBar buttons.
 const TBBUTTON tbButtons[] = {
@@ -499,9 +503,10 @@ LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
 #ifdef SHELL_AYGSHELL
-		// Show the detail view dialog.
+		// Create and show the detail view dialog.
 		hwndDetail = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DETAILPPC), hWnd,
 			(DLGPROC)DetailDlgProc);
+		ShowWindow(hwndDetail, SW_SHOW);
 #endif
 
 		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
@@ -641,10 +646,11 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		// Setup the dialog as full-screen.
 		SHINITDLGINFO shidi = {0};
 		shidi.dwMask = SHIDIM_FLAGS;
-		shidi.dwFlags = SHIDIF_DONEBUTTON | SHIDIF_SIPDOWN | SHIDIF_SIZEDLGFULLSCREEN;
+		shidi.dwFlags = SHIDIF_DONEBUTTON | SHIDIF_SIZEDLGFULLSCREEN;
 		shidi.hDlg = hDlg;
 
 		SHInitDialog(&shidi);
+		SetActiveWindow(hDlg);
 #endif
 
 		BringWindowToTop(GetDlgItem(hDlg, IDC_LBNOIMAGE));
@@ -652,7 +658,6 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		return 0;
 	}
 	case WM_SIZE: {
-#if !defined(SHELL_AYGSHELL)
 		// Get the dialog position and size.
 		RECT rcDialog;
 		GetWindowRect(hDlg, &rcDialog);
@@ -661,26 +666,62 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		HWND hwndList = GetDlgItem(hDlg, IDC_LSPROPS);
 		RECT rcList;
 		GetWindowRect(hwndList, &rcList);
+#ifdef SHELL_AYGSHELL
+		rcList.top -= rcDialog.top;
+		rcList.right = rcDialog.right - rcDialog.left - rcList.left - DEFAULT_UI_MARGIN;
+		rcList.bottom = rcDialog.bottom - rcDialog.top - rcList.top - DEFAULT_UI_MARGIN;
+#else
 		rcList.left -= rcDialog.left;
 		rcList.top -= rcDialog.top;
 		rcList.right = rcDialog.right - rcDialog.left - rcList.left - DEFAULT_UI_MARGIN;
 		rcList.bottom = rcDialog.bottom - rcDialog.top - rcList.top - DEFAULT_UI_MARGIN;
+#endif
 
 		// Calculate the notes edit size and position.
 		HWND hwndNotes = GetDlgItem(hDlg, IDC_EDNOTES);
 		RECT rcNotes;
 		GetWindowRect(hwndNotes, &rcNotes);
+#ifdef SHELL_AYGSHELL
+		rcNotes.top -= rcDialog.top;
+		rcNotes.right = rcDialog.right - rcDialog.left - rcNotes.left - DEFAULT_UI_MARGIN;
+		rcNotes.bottom -= rcDialog.top + rcNotes.top;
+#else
 		rcNotes.left -= rcDialog.left;
 		rcNotes.top -= rcDialog.top;
 		rcNotes.right = rcList.left - (DEFAULT_UI_MARGIN * 2);
 		rcNotes.bottom = rcDialog.bottom - rcDialog.top - rcNotes.top - DEFAULT_UI_MARGIN;
+#endif
+
+#ifdef SHELL_AYGSHELL
+		// Calculate the name edit size and position.
+		HWND hwndName = GetDlgItem(hDlg, IDC_EDNAME);
+		RECT rcName;
+		GetWindowRect(hwndName, &rcName);
+		rcName.top -= rcDialog.top;
+		rcName.right = rcDialog.right - rcDialog.left - rcName.left - DEFAULT_UI_MARGIN;
+		rcName.bottom -= rcDialog.top + rcName.top;
+
+		// Calculate the quantity edit size and position.
+		HWND hwndQuantity = GetDlgItem(hDlg, IDC_EDQUANTITY);
+		RECT rcQuantity;
+		GetWindowRect(hwndQuantity, &rcQuantity);
+		rcQuantity.top -= rcDialog.top;
+		rcQuantity.right = rcDialog.right - rcDialog.left - rcQuantity.left - DEFAULT_UI_MARGIN;
+		rcQuantity.bottom -= rcDialog.top + rcQuantity.top;
+#endif
 
 		// Expand the dynamic controls in the view.
 		SetWindowPos(hwndList, HWND_TOP, rcList.left, rcList.top, rcList.right,
 			rcList.bottom, SWP_SHOWWINDOW);
 		SetWindowPos(hwndNotes, HWND_TOP, rcNotes.left, rcNotes.top,
 			rcNotes.right, rcNotes.bottom, SWP_SHOWWINDOW);
+#ifdef SHELL_AYGSHELL
+		SetWindowPos(hwndName, HWND_TOP, rcName.left, rcName.top,
+			rcName.right, rcName.bottom, SWP_SHOWWINDOW);
+		SetWindowPos(hwndQuantity, HWND_TOP, rcQuantity.left, rcQuantity.top,
+			rcQuantity.right, rcQuantity.bottom, SWP_SHOWWINDOW);
 #endif
+
 		return 0;
 	}
 	case WM_COMMAND:
@@ -701,8 +742,11 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 
 			break;
 		case IDOK:
-			EndDialog(hDlg, LOWORD(wParam));
-			return 0;
+			// Check for unsaved changes.
+			if (uiManager.CheckForUnsavedChanges())
+				return 1;
+
+			return DestroyWindow(hDlg) == 0;
 		}
 
 		break;

@@ -441,6 +441,8 @@ void UIManager::ClearDetailView() {
  * @param component Component to get the image for.
  */
 void UIManager::SetComponentImage(Component *component) {
+	int cx, cy;
+
 	// Clear the current image.
 	ClearImage();
 
@@ -458,8 +460,17 @@ void UIManager::SetComponentImage(Component *component) {
 		return;
 	}
 
+	// Set the optimal size for the component image.
+#ifdef SHELL_AYGSHELL
+	cx = 82;
+	cy = 85;
+#else
+	cx = 103;
+	cy = 83;
+#endif
+
 	// Resize it and display it.
-	hbmpComponent = ImageUtils::ResizeBitmap(hBmp, 103, 83);
+	hbmpComponent = ImageUtils::ResizeBitmap(hBmp, cx, cy);
 	SendDlgItemMessage(*hwndDetail, IDC_PICOMP, STM_SETIMAGE, IMAGE_BITMAP,
 		(LPARAM)hbmpComponent);
 	ShowWindow(GetDlgItem(*hwndDetail, IDC_LBNOIMAGE), SW_HIDE);
