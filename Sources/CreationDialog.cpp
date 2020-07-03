@@ -59,7 +59,7 @@ int CreationDialog::DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) 
 		swprintf(szBuffer, L"Create %s", szType);
 		SetWindowText(hDlg, szBuffer);
 
-		return 1;
+		return 0;
 	}
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
@@ -72,7 +72,7 @@ int CreationDialog::DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) 
 			bCreated = GetWindowText(hCtl, szName, nLength) != 0;
 
 			EndDialog(hDlg, LOWORD(wParam));
-			return 1;
+			return 0;
 		}
 		case IDCANCEL:
 			bCreated = false;
