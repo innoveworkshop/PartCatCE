@@ -14,6 +14,7 @@
 #define IDD_PROPEDIT                    105
 #define IDD_NEWOBJECT                   107
 #define IDR_MENUBAR                     108
+#define IDD_DETAILPPC                   108
 #define IDC_EDIT1                       1002
 #define IDC_EDNAME                      1002
 #define IDC_EDVALUE                     1002

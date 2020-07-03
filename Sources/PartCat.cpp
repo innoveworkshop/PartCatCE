@@ -344,7 +344,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Calculate the TreeView control size and position.
 	RECT rcTreeView;
 	GetClientRect(hWnd, &rcTreeView);
-#ifndef SHELL_AYGSHELL
+#if !defined(SHELL_AYGSHELL)
 	rcTreeView.top += CommandBar_Height(hwndCB);
 	rcTreeView.bottom -= rcTreeView.top;
 	rcTreeView.right = (LONG)(rcTreeView.right / 3.5);
@@ -354,7 +354,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	treeView = TreeView(hInst, hWnd, rcTreeView, (HMENU)IDC_TREEVIEW);
 	//treeView.SetImageList(hIml);
 
-#ifndef SHELL_AYGSHELL
+#if !defined(SHELL_AYGSHELL)
 	// Calculate the detail view dialog size and position.
 	RECT rcDetailView;
 	GetClientRect(hWnd, &rcDetailView);
@@ -479,7 +479,7 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	case IDM_COMP_DELPROP:
 		return uiManager.DeleteSelectedProperty();
 	case IDM_HELP_ABOUT:
-		DialogBox(hInst, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)AboutDlgProc);
+		DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, (DLGPROC)AboutDlgProc);
 		return 0;
 	}
 
@@ -498,6 +498,12 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
+#ifdef SHELL_AYGSHELL
+		// Show the detail view dialog.
+		hwndDetail = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DETAILPPC), hWnd,
+			(DLGPROC)DetailDlgProc);
+#endif
+
 		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
 	}
 
@@ -630,11 +636,23 @@ LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam
  */
 int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (wMsg) {
-	case WM_INITDIALOG:
+	case WM_INITDIALOG: {
+#ifdef SHELL_AYGSHELL
+		// Setup the dialog as full-screen.
+		SHINITDLGINFO shidi = {0};
+		shidi.dwMask = SHIDIM_FLAGS;
+		shidi.dwFlags = SHIDIF_DONEBUTTON | SHIDIF_SIPDOWN | SHIDIF_SIZEDLGFULLSCREEN;
+		shidi.hDlg = hDlg;
+
+		SHInitDialog(&shidi);
+#endif
+
 		BringWindowToTop(GetDlgItem(hDlg, IDC_LBNOIMAGE));
 		ShowWindow(GetDlgItem(hDlg, IDC_LBNOIMAGE), SW_SHOW);
 		return 0;
+	}
 	case WM_SIZE: {
+#if !defined(SHELL_AYGSHELL)
 		// Get the dialog position and size.
 		RECT rcDialog;
 		GetWindowRect(hDlg, &rcDialog);
@@ -662,6 +680,7 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 			rcList.bottom, SWP_SHOWWINDOW);
 		SetWindowPos(hwndNotes, HWND_TOP, rcNotes.left, rcNotes.top,
 			rcNotes.right, rcNotes.bottom, SWP_SHOWWINDOW);
+#endif
 		return 0;
 	}
 	case WM_COMMAND:
@@ -681,6 +700,9 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 			}
 
 			break;
+		case IDOK:
+			EndDialog(hDlg, LOWORD(wParam));
+			return 0;
 		}
 
 		break;

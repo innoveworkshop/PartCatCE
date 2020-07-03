@@ -590,7 +590,7 @@ void UIManager::SetApplicationSubTitle(LPCTSTR szSubTitle) {
  * @return        0 if everything worked.
  */
 LRESULT UIManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
-												   WPARAM wParam, LPARAM lParam) {
+											WPARAM wParam, LPARAM lParam) {
 	TVITEM tvItem;
 	NMTREEVIEW* pnmTreeView = (LPNMTREEVIEW)lParam;
 	size_t nIndex;
