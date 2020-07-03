@@ -474,7 +474,7 @@ void UIManager::SetComponentImage(Component *component) {
 	cx = 82;
 	cy = 85;
 #else
-	cx = 103;
+	cx = 86;
 	cy = 83;
 #endif
 

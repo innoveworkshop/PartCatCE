@@ -20,11 +20,7 @@
 #include "UIManager.h"
 
 // Styling stuff.
-#ifdef SHELL_AYGSHELL
 #define DEFAULT_UI_MARGIN 7
-#else
-#define DEFAULT_UI_MARGIN 5
-#endif
 
 // CommandBar buttons.
 const TBBUTTON tbButtons[] = {
@@ -363,10 +359,10 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	// Calculate the detail view dialog size and position.
 	RECT rcDetailView;
 	GetClientRect(hWnd, &rcDetailView);
-	rcDetailView.top = rcTreeView.top;
-	rcDetailView.bottom = rcTreeView.bottom;
+	rcDetailView.top = rcTreeView.top + DEFAULT_UI_MARGIN;
+	rcDetailView.bottom = rcTreeView.bottom - DEFAULT_UI_MARGIN;
 	rcDetailView.left = rcTreeView.right + DEFAULT_UI_MARGIN;
-	rcDetailView.right -= rcDetailView.left;
+	rcDetailView.right -= rcDetailView.left + DEFAULT_UI_MARGIN;
 
 	// Load and embed the detail view dialog.
 	HRSRC hResDialog = FindResource(hInst, MAKEINTRESOURCE(IDD_DETAILVIEW), RT_DIALOG);
@@ -667,7 +663,7 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 #else
 		rcList.left -= rcDialog.left;
 		rcList.top -= rcDialog.top;
-		rcList.right = rcDialog.right - rcDialog.left - rcList.left - DEFAULT_UI_MARGIN;
+		rcList.right = rcDialog.right - rcDialog.left - rcList.left;
 		rcList.bottom = rcDialog.bottom - rcDialog.top - rcList.top - DEFAULT_UI_MARGIN;
 #endif
 
@@ -682,7 +678,7 @@ int CALLBACK DetailDlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 #else
 		rcNotes.left -= rcDialog.left;
 		rcNotes.top -= rcDialog.top;
-		rcNotes.right = rcList.left - (DEFAULT_UI_MARGIN * 2);
+		rcNotes.right = rcList.left - DEFAULT_UI_MARGIN - 2;
 		rcNotes.bottom = rcDialog.bottom - rcDialog.top - rcNotes.top - DEFAULT_UI_MARGIN;
 #endif
 
