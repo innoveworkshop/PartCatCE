@@ -68,7 +68,8 @@ HWND hwndCB;
 LRESULT LoadTestWorkspace() {
 	// Initialize everything.
 	workspace = Workspace(Path(TEST_WORKSPACE));
-	uiManager = UIManager(&hInst, &hwndMain, &workspace, &treeView, &hwndDetail);
+	uiManager = UIManager(&hInst, &hwndMain, &workspace, &treeView, &hwndDetail,
+		(DLGPROC)DetailDlgProc);
 
 	// Populate the TreeView.
 	uiManager.OpenWorkspace(true);
@@ -502,13 +503,6 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 LRESULT WndMainNotify(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (((LPNMHDR)lParam)->code) {
 	case TVN_SELCHANGED:
-#ifdef SHELL_AYGSHELL
-		// Create and show the detail view dialog.
-		hwndDetail = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DETAILPPC), hWnd,
-			(DLGPROC)DetailDlgProc);
-		ShowWindow(hwndDetail, SW_SHOW);
-#endif
-
 		return uiManager.TreeViewSelectionChanged(hWnd, wMsg, wParam, lParam);
 	}
 

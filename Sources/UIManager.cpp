@@ -27,21 +27,23 @@ UIManager::UIManager() {
  * Initializes a component manager with a workspace directory and a TreeView
  * control to manage.
  *
- * @param hInst      Application instance handle.
- * @param hwndMain   Main window handle.
- * @param workspace  PartCat workspace .
- * @param treeView   TreeView control manager.
- * @param hwndDetail Detail dialog view handle.
+ * @param hInst        Application instance handle.
+ * @param hwndMain     Main window handle.
+ * @param workspace    PartCat workspace .
+ * @param treeView     TreeView control manager.
+ * @param hwndDetail   Detail dialog view handle.
+ * @param lpDetailProc Detail view dialog procedure.
  */
 UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
-					 TreeView *treeView, HWND *hwndDetail) {
+					 TreeView *treeView, HWND *hwndDetail, DLGPROC lpDetailProc) {
 	this->workspace = workspace;
 	this->treeView = treeView;
 	this->hInst = hInst;
 	this->hwndMain = hwndMain;
 	this->hwndDetail = hwndDetail;
+	this->lpDetailProc = lpDetailProc;
 
-	ClearDetailView();
+	ClearDetailView(true);
 }
 
 /**
@@ -140,7 +142,7 @@ LRESULT UIManager::OpenWorkspace(bool bRefresh) {
 		return 1;
 
 	// Clear the screen.
-	ClearDetailView();
+	ClearDetailView(true);
 	treeView->Clear();
 
 	// Check if we are not refreshing.
@@ -187,7 +189,7 @@ LRESULT UIManager::RefreshWorkspace() {
 	if (CheckForUnsavedChanges())
 		return 1;
 
-	ClearDetailView();
+	ClearDetailView(true);
 	treeView->Clear();
 	if (!workspace->Refresh()) {
 		MessageBox(*hwndMain, L"An error occured while refreshing the workspace.",
@@ -208,7 +210,7 @@ LRESULT UIManager::CloseWorkspace() {
 	if (CheckForUnsavedChanges())
 		return 1;
 
-	ClearDetailView();
+	ClearDetailView(true);
 	treeView->Clear();
 	workspace->Close();
 	SetApplicationSubTitle(NULL);
@@ -336,7 +338,7 @@ LRESULT UIManager::DeleteComponent() {
 	}
 
 	// Clear the space.
-	ClearDetailView();
+	ClearDetailView(true);
 
 	// Actually delete the component.
 	if (!component->Delete()) {
@@ -357,7 +359,7 @@ LRESULT UIManager::DeleteComponent() {
  */
 void UIManager::PopulateDetailView(size_t nIndex) {
 	// Clear the view for a new component.
-	ClearDetailView();
+	ClearDetailView(false);
 
 	// Get the component and check if it's valid.
 	Component *component = workspace->GetComponent(nIndex);
@@ -419,8 +421,10 @@ void UIManager::PopulatePropertiesList(Component *component) {
 
 /**
  * Clears the detail view.
+ *
+ * @param bClose Should we also destroy the detail dialog?
  */
-void UIManager::ClearDetailView() {
+void UIManager::ClearDetailView(bool bClose) {
 	// Clear edit boxes.
 	SetDlgItemText(*hwndDetail, IDC_EDNAME, L"");
 	SetDlgItemText(*hwndDetail, IDC_EDQUANTITY, L"");
@@ -433,6 +437,11 @@ void UIManager::ClearDetailView() {
 	// Reset flags.
 	iSelComponent = -1;
 	SetDirty(false);
+
+#ifdef SHELL_AYGSHELL
+	if (bClose)
+		DestroyWindow(*hwndDetail);
+#endif
 }
 
 /**
@@ -616,9 +625,16 @@ LRESULT UIManager::TreeViewSelectionChanged(HWND hWnd, UINT wMsg,
 
 	// Check if the selected item is a component.
 	if (tvItem.lParam == -1) {
-		ClearDetailView();
+		ClearDetailView(true);
 		return 0;
 	}
+
+#ifdef SHELL_AYGSHELL
+		// Create and show the detail view dialog.
+		*hwndDetail = CreateDialog(*hInst, MAKEINTRESOURCE(IDD_DETAILPPC), *hwndMain,
+			(DLGPROC)lpDetailProc);
+		ShowWindow(*hwndDetail, SW_SHOW);
+#endif
 	
 	// Get component index from parameter and show it in the detail view.
 	nIndex = (size_t)tvItem.lParam;

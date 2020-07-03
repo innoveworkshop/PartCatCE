@@ -20,6 +20,7 @@ protected:
 	HWND *hwndMain;
 	HWND *hwndDetail;
 	HBITMAP hbmpComponent;
+	DLGPROC lpDetailProc;
 	Workspace *workspace;
 	TreeView *treeView;
 	long iSelComponent;
@@ -29,7 +30,7 @@ public:
 	// Constructors and destructors.
 	UIManager();
 	UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
-			  TreeView *treeView, HWND *hwndDetail);
+			  TreeView *treeView, HWND *hwndDetail, DLGPROC lpDetailProc);
 
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
@@ -48,7 +49,7 @@ public:
 	bool IsComponentOpened();
 
 	// Detail view.
-	void ClearDetailView();
+	void ClearDetailView(bool bClose);
 	void PopulateDetailView(size_t nIndex);
 
 	// TreeView.
