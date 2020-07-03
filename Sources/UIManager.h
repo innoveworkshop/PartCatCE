@@ -10,6 +10,7 @@
 #define _UI_MANAGER_H
 
 #include <windows.h>
+#include "Settings.h"
 #include "TreeView.h"
 #include "Directory.h"
 #include "Workspace.h"
@@ -21,6 +22,7 @@ protected:
 	HWND *hwndDetail;
 	HBITMAP hbmpComponent;
 	DLGPROC lpDetailProc;
+	Settings *settings;
 	Workspace *workspace;
 	TreeView *treeView;
 	long iSelComponent;
@@ -29,8 +31,9 @@ protected:
 public:
 	// Constructors and destructors.
 	UIManager();
-	UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
-			  TreeView *treeView, HWND *hwndDetail, DLGPROC lpDetailProc);
+	UIManager(HINSTANCE *hInst, HWND *hwndMain, Settings *settings,
+			  Workspace *workspace, TreeView *treeView, HWND *hwndDetail,
+			  DLGPROC lpDetailProc);
 
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);

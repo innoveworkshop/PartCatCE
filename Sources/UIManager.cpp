@@ -34,8 +34,10 @@ UIManager::UIManager() {
  * @param hwndDetail   Detail dialog view handle.
  * @param lpDetailProc Detail view dialog procedure.
  */
-UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Workspace *workspace,
-					 TreeView *treeView, HWND *hwndDetail, DLGPROC lpDetailProc) {
+UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Settings *settings,
+					 Workspace *workspace, TreeView *treeView, HWND *hwndDetail,
+					 DLGPROC lpDetailProc) {
+	this->settings = settings;
 	this->workspace = workspace;
 	this->treeView = treeView;
 	this->hInst = hInst;

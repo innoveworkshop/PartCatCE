@@ -14,6 +14,7 @@
 #include <windowsx.h>
 #include <commctrl.h>
 
+#include "Settings.h"
 #include "Directory.h"
 #include "TreeView.h"
 #include "Workspace.h"
@@ -43,6 +44,7 @@ HINSTANCE hInst;
 HWND hwndMain;
 TreeView treeView;
 Workspace workspace;
+Settings settings;
 UIManager uiManager;
 HWND hwndDetail;
 
@@ -62,9 +64,12 @@ HWND hwndCB;
  * @return 0 if everything went OK.
  */
 LRESULT LoadTestWorkspace() {
+	// Initialize settings.
+	settings = Settings(&hInst, &hwndMain);
+
 	// Initialize everything.
 	workspace = Workspace(Path(TEST_WORKSPACE));
-	uiManager = UIManager(&hInst, &hwndMain, &workspace, &treeView, &hwndDetail,
+	uiManager = UIManager(&hInst, &hwndMain, &settings, &workspace, &treeView, &hwndDetail,
 		(DLGPROC)DetailDlgProc);
 
 	// Populate the TreeView.
@@ -479,6 +484,8 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	case IDC_BTDELPROP:
 	case IDM_COMP_DELPROP:
 		return uiManager.DeleteSelectedProperty();
+	case IDM_TOOLS_SETTINGS:
+		return settings.ShowDialog();
 	case IDM_HELP_ABOUT:
 		DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, (DLGPROC)AboutDlgProc);
 		return 0;

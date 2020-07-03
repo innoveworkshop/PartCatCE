@@ -667,6 +667,87 @@ SOURCE=.\Sources\PropertyEditor.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Sources\Settings.cpp
+
+!IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Release"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH4) Debug"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Release"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE SH3) Debug"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Release"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE ARM) Debug"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Release"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
+
+DEP_CPP_SETTI=\
+	".\Sources\Constants.h"\
+	".\Sources\Settings.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sources\Settings.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Sources\TreeView.cpp
 
 !IF  "$(CFG)" == "PartCat - Win32 (WCE MIPS) Release"
@@ -726,7 +807,10 @@ DEP_CPP_TREEV=\
 !ELSEIF  "$(CFG)" == "PartCat - Win32 (WCE x86em) Debug"
 
 DEP_CPP_TREEV=\
+	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"sipapi.h"\
 	
 
 !ENDIF 
@@ -878,6 +962,7 @@ DEP_CPP_UIMAN=\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
 	".\Sources\PropertyEditor.h"\
+	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\UIManager.h"\
 	".\Sources\Workspace.h"\
@@ -1829,6 +1914,8 @@ DEP_CPP_STDAF=\
 
 DEP_CPP_STDAF=\
 	".\Sources\StdAfx.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"sipapi.h"\
 	
 
 !ENDIF 

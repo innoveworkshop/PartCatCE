@@ -87,6 +87,10 @@ BEGIN
         MENUITEM "&Edit Property...\tCtrl+E",   IDM_COMP_EDTPROP
         MENUITEM "&Delete Property",            IDM_COMP_DELPROP
     END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Settings",                   IDM_TOOLS_SETTINGS
+    END
     POPUP "&Help"
     BEGIN
         MENUITEM "&About",                      IDM_HELP_ABOUT
@@ -203,6 +207,18 @@ BEGIN
     CTEXT           "No\r\nImage",IDC_LBNOIMAGE,7,19,38,20
 END
 
+IDD_SETTINGS DIALOG DISCARDABLE  0, 0, 124, 60
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Settings"
+FONT 8, "System"
+BEGIN
+    DEFPUSHBUTTON   "Save",IDOK,7,39,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,67,39,50,14
+    LTEXT           "PDF Reader:",IDC_STATIC,7,7,42,8
+    EDITTEXT        IDC_EDPDFAPP,7,16,87,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BTPDFBROWSE,99,16,18,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -250,6 +266,14 @@ BEGIN
         RIGHTMARGIN, 130
         TOPMARGIN, 7
         BOTTOMMARGIN, 144
+    END
+
+    IDD_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 117
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
     END
 END
 #endif    // APSTUDIO_INVOKED

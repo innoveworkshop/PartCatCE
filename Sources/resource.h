@@ -15,9 +15,11 @@
 #define IDD_NEWOBJECT                   107
 #define IDR_MENUBAR                     108
 #define IDD_DETAILPPC                   108
+#define IDD_SETTINGS                    109
 #define IDC_EDIT1                       1002
 #define IDC_EDNAME                      1002
 #define IDC_EDVALUE                     1002
+#define IDC_EDPDFAPP                    1002
 #define IDC_EDQUANTITY                  1003
 #define IDC_BTDATASHEET                 1004
 #define IDC_EDNOTES                     1005
@@ -27,6 +29,7 @@
 #define IDC_LBNOIMAGE                   1014
 #define IDC_CBPROP                      1015
 #define IDC_LBNAME                      1016
+#define IDC_BTPDFBROWSE                 1017
 #define IDM_FILE_EXIT                   40002
 #define IDM_HELP_ABOUT                  40003
 #define IDM_FILE_NEW_COMP               40005
@@ -46,14 +49,15 @@
 #define IDM_COMPONENT                   40026
 #define IDS_CAP_COMPONENT               40028
 #define IDM_COMP_DELETE                 40030
+#define IDM_TOOLS_SETTINGS              40031
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        109
-#define _APS_NEXT_COMMAND_VALUE         40031
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_RESOURCE_VALUE        110
+#define _APS_NEXT_COMMAND_VALUE         40032
+#define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
