@@ -14,6 +14,8 @@ class Settings {
 protected:
 	HINSTANCE *hInstance;
 	HWND *hwndParent;
+	HWND hwndDialog;
+	WCHAR szPDFViewerPath[MAX_PATH];
 
 	// Dialog procedure.
 	int DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam);
@@ -27,6 +29,12 @@ public:
 
 	// Dialog box.
 	int ShowDialog();
+	int PopulateDialog();
+
+	// PDF viewer.
+	LPCTSTR GetPDFViewer();
+	void SetPDFViewer(LPCTSTR szPath);
+	int SelectPDFProgram();
 };
 
 #endif  // _SETTINGS_H

@@ -8,6 +8,7 @@
 #include "Settings.h"
 #include "Constants.h"
 #include "resource.h"
+#include "commdlg.h"
 
 extern "C" {
 	void *lpSettingsThis;
@@ -18,6 +19,8 @@ extern "C" {
  */
 Settings::Settings() {
 	lpSettingsThis = NULL;
+	hwndDialog = NULL;
+	szPDFViewerPath[0] = L'\0';
 }
 
 /**
@@ -28,6 +31,8 @@ Settings::Settings() {
  */
 Settings::Settings(HINSTANCE *hInstance, HWND *hwndParent) {
 	lpSettingsThis = NULL;
+	hwndDialog = NULL;
+	szPDFViewerPath[0] = L'\0';
 
 	this->hInstance = hInstance;
 	this->hwndParent = hwndParent;
@@ -45,6 +50,67 @@ int Settings::ShowDialog() {
 }
 
 /**
+ * Selects a PDF viewer program using a file browser.
+ *
+ * @return 0 if everything worked.
+ */
+int Settings::SelectPDFProgram() {
+	OPENFILENAME ofn = {0};
+    WCHAR szPath[MAX_PATH] = L"";
+
+	// Setup the open dialog.
+	ofn.lStructSize = sizeof(ofn);
+	ofn.lpstrTitle = L"Select PDF Viewer Program";
+	ofn.hwndOwner = *hwndParent;
+	ofn.lpstrFilter = L"Executables (*.exe)\0*.exe\0All Files (*.*)\0*.*\0";
+	ofn.lpstrFile = szPath;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST;
+	ofn.lpstrDefExt = L"exe";
+
+	// Open the open file dialog.
+	if (!GetOpenFileName(&ofn))
+		return 1;
+
+	// Set the PDF viewer path and refresh the dialog.
+	SetPDFViewer(szPath);
+	PopulateDialog();
+
+	return 0;
+}
+
+/**
+ * Populates the dialog with settings.
+ *
+ * @return 0 if everything went fine.
+ */
+int Settings::PopulateDialog() {
+	SetDlgItemText(hwndDialog, IDC_EDPDFAPP, szPDFViewerPath);
+	return 0;
+}
+
+/**
+ * Gets the path to the default PDF viewer application.
+ *
+ * @return PDF viewer path or NULL if one wasn't set.
+ */
+LPCTSTR Settings::GetPDFViewer() {
+	if (szPDFViewerPath[0] == L'\0')
+		return NULL;
+
+	return szPDFViewerPath;
+}
+
+/**
+ * Sets the PDF viewer program path.
+ *
+ * @param szPath Path to the PDF viewer.
+ */
+void Settings::SetPDFViewer(LPCTSTR szPath) {
+	wcscpy(szPDFViewerPath, szPath);
+}
+
+/**
  * Mesage handler for the dialog box.
  *
  * @param  hDlg   Dialog window handler.
@@ -55,33 +121,18 @@ int Settings::ShowDialog() {
  */
 int Settings::DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	switch (wMsg) {
-	case WM_INITDIALOG: {
-		WCHAR szBuffer[MAX_PATH];
-
-		// Set the type of creation we are doing.
-		wcscpy(szBuffer, L"Hello!");
-		SetDlgItemText(hDlg, IDC_EDPDFAPP, szBuffer);
-		
-		return 0;
-	}
+	case WM_INITDIALOG:
+		hwndDialog = hDlg;
+		return PopulateDialog();
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDC_BTPDFBROWSE:
-			return 0;
-		case IDOK: {
-/*			HWND hCtl;
-			int nLength;
-
-			hCtl = GetDlgItem(hDlg, IDC_EDVALUE);
-			nLength = GetWindowTextLength(hCtl) + 1;
-			bCreated = GetWindowText(hCtl, szName, nLength) != 0;
-*/
-			EndDialog(hDlg, LOWORD(wParam));
-			return 0;
-		}
+			return SelectPDFProgram();
+		case IDOK:
+			// TODO: Save the settings to the registry.
 		case IDCANCEL:
 			EndDialog(hDlg, LOWORD(wParam));
-			return 1;
+			return 0;
 		}
 		break;
 	}
