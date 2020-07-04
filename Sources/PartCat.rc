@@ -86,10 +86,8 @@ BEGIN
         MENUITEM "&New Property\tCtrl+I",       IDM_COMP_NEWPROP
         MENUITEM "&Edit Property...\tCtrl+E",   IDM_COMP_EDTPROP
         MENUITEM "&Delete Property",            IDM_COMP_DELPROP
-    END
-    POPUP "&Tools"
-    BEGIN
-        MENUITEM "&Settings",                   IDM_TOOLS_SETTINGS
+        MENUITEM SEPARATOR
+        MENUITEM "Show Datasheet\tCtrl+D",      IDM_COMP_DATASHEET
     END
     POPUP "&Help"
     BEGIN
@@ -287,6 +285,7 @@ END
 IDC_PARTCAT ACCELERATORS DISCARDABLE 
 BEGIN
     "/",            IDM_HELP_ABOUT,         ASCII,  ALT, NOINVERT
+    "D",            IDM_COMP_DATASHEET,     VIRTKEY, CONTROL, NOINVERT
     "E",            IDM_COMP_EDTPROP,       VIRTKEY, CONTROL, NOINVERT
     "I",            IDM_COMP_NEWPROP,       VIRTKEY, CONTROL, NOINVERT
     "N",            IDM_FILE_NEW_COMP,      VIRTKEY, CONTROL, NOINVERT

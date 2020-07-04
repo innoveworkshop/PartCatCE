@@ -420,6 +420,7 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam)
 		EnableMenuItem(hMenu, IDM_COMP_SAVEAS, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_COMP_DELETE, MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(hMenu, IDM_COMP_NEWPROP, MF_BYCOMMAND | MF_ENABLED);
+		EnableMenuItem(hMenu, IDM_COMP_DATASHEET, MF_BYCOMMAND | MF_ENABLED);
 
 		LONG lCurSel = SendDlgItemMessage(hwndDetail, IDC_LSPROPS, LB_GETCURSEL, 0, 0);
 		if (lCurSel != LB_ERR) {
@@ -436,6 +437,7 @@ LRESULT WndMainInitMenuPopUp(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam)
 		EnableMenuItem(hMenu, IDM_COMP_NEWPROP, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_COMP_EDTPROP, MF_BYCOMMAND | MF_GRAYED);
 		EnableMenuItem(hMenu, IDM_COMP_DELPROP, MF_BYCOMMAND | MF_GRAYED);
+		EnableMenuItem(hMenu, IDM_COMP_DATASHEET, MF_BYCOMMAND | MF_GRAYED);
 	}
 
 	return 0;
@@ -484,8 +486,10 @@ LRESULT WndMainCommand(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 	case IDC_BTDELPROP:
 	case IDM_COMP_DELPROP:
 		return uiManager.DeleteSelectedProperty();
-	case IDM_TOOLS_SETTINGS:
-		return settings.ShowDialog();
+	case IDM_COMP_DATASHEET:
+		return uiManager.ShowDatasheet();
+//	case IDM_TOOLS_SETTINGS:
+//		return settings.ShowDialog();
 	case IDM_HELP_ABOUT:
 		DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, (DLGPROC)AboutDlgProc);
 		return 0;

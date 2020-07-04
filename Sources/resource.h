@@ -49,14 +49,14 @@
 #define IDM_COMPONENT                   40026
 #define IDS_CAP_COMPONENT               40028
 #define IDM_COMP_DELETE                 40030
-#define IDM_TOOLS_SETTINGS              40031
+#define IDM_COMP_DATASHEET              40032
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        110
-#define _APS_NEXT_COMMAND_VALUE         40032
+#define _APS_NEXT_COMMAND_VALUE         40033
 #define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

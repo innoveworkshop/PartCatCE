@@ -53,6 +53,7 @@ public:
 	void SyncDetailViewWithComponent(Component *component, bool bSaveNotes);
 	LRESULT SaveComponent(bool bSaveAs);
 	LRESULT DeleteComponent();
+	LRESULT ShowDatasheet();
 	bool IsComponentOpened();
 
 	// Detail view.

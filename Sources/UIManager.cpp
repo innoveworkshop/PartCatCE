@@ -588,6 +588,34 @@ LRESULT UIManager::DeleteSelectedProperty() {
 }
 
 /**
+ * Shows the currently selected component datasheet.
+ *
+ * @param szSubTitle Application sub-title.
+ */
+LRESULT UIManager::ShowDatasheet() {
+	SHELLEXECUTEINFO lpExecInfo = {0};
+
+	// Get component.
+	Component *component = workspace->GetComponent(iSelComponent);
+	if (component == NULL) {
+		MessageBox(*hwndMain, L"Couldn't retrieve the currently selected component.",
+			L"Component Retrieval Error", MB_OK | MB_ICONERROR);
+		return 1;
+	}
+
+	// Get datasheet path and setup its opening.
+	Path pathDatasheet = component->GetDirectory().Concatenate(DATASHEET_FILE);
+	lpExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+	lpExecInfo.lpFile = pathDatasheet.ToString();
+	lpExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+	lpExecInfo.lpVerb = L"open";
+
+	// Open the file.
+	ShellExecuteEx(&lpExecInfo);
+	return 0;
+}
+
+/**
  * Sets the application sub-title.
  *
  * @param szSubTitle Application sub-title.
