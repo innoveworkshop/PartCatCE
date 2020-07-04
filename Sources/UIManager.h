@@ -35,6 +35,10 @@ public:
 			  Workspace *workspace, TreeView *treeView, HWND *hwndDetail,
 			  DLGPROC lpDetailProc);
 
+	// Loading dialog.
+	static void ShowLoading();
+	static void HideLoading();
+
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);
 	void SetApplicationSubTitle(LPCTSTR szSubTitle);

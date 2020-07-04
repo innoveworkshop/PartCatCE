@@ -168,7 +168,9 @@ LRESULT UIManager::OpenWorkspace(bool bRefresh) {
 			return 1;
 
 		// Try to open the workspace.
+		ShowLoading();
 		if (!workspace->Open(Path(szPath))) {
+			HideLoading();
 			MessageBox(*hwndMain, L"An error occured while trying to open the workspace.",
 				L"Open Workspace Error", MB_OK | MB_ICONERROR);
 			return 1;
@@ -178,6 +180,7 @@ LRESULT UIManager::OpenWorkspace(bool bRefresh) {
 	// Populate and dress up the window.
 	SetApplicationSubTitle(workspace->GetName());
 	PopulateTreeView();
+	HideLoading();
 
 	return 0;
 }
@@ -761,6 +764,20 @@ void UIManager::PopulateTreeView() {
 		// Expand the node.
 		treeView->ExpandNode(nodeCategory);
 	}
+}
+
+/**
+ * Shows the classic loading/waiting hourglass.
+ */
+void UIManager::ShowLoading() {
+	SetCursor(LoadCursor(NULL, IDC_WAIT));
+}
+
+/**
+ * Hides the classic loading/waiting hourglass.
+ */
+void UIManager::HideLoading() {
+	SetCursor(NULL);
 }
 
 /**
