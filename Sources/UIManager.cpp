@@ -609,6 +609,8 @@ LRESULT UIManager::ShowDatasheet() {
 	lpExecInfo.lpFile = pathDatasheet.ToString();
 	lpExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
 	lpExecInfo.lpVerb = L"open";
+	lpExecInfo.nShow = SW_SHOWNORMAL;
+	lpExecInfo.hwnd = NULL;
 
 	// Open the file.
 	ShellExecuteEx(&lpExecInfo);
