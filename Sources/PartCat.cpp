@@ -133,8 +133,7 @@ int InitializeApplication(HINSTANCE hInstance) {
 	TCHAR szWindowClass[MAX_LOADSTRING];
 
 	// Load the application name.
-	LoadString(hInst, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
-
+	LoadString(hInstance, IDC_PARTCAT, szWindowClass, MAX_LOADSTRING);
 	
 #ifdef SHELL_AYGSHELL
 	// Only allow one instance of the application.
@@ -202,7 +201,6 @@ HWND InitializeInstance(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 						NULL,			// Menu class. (Always NULL)
 						hInstance,		// Application instance.
 						NULL);			// Pointer to create parameters.
-
 
 	// Check if the window creation worked.
 	if (!IsWindow(hWnd)) {
