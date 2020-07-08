@@ -16,6 +16,8 @@
 #define IDR_MENUBAR                     108
 #define IDD_DETAILPPC                   108
 #define IDD_SETTINGS                    109
+#define IDB_CHIP                        114
+#define IDB_FOLDER                      115
 #define IDC_EDIT1                       1002
 #define IDC_EDNAME                      1002
 #define IDC_EDVALUE                     1002
@@ -55,7 +57,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        110
+#define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40033
 #define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           101

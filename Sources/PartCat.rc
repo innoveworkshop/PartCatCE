@@ -58,7 +58,7 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Menubar
+// Menu
 //
 
 IDM_MAINMENU MENU DISCARDABLE 
@@ -351,15 +351,20 @@ END
 // Data
 //
 
-IDR_MENUBAR SHMENUBAR DISCARDABLE 
+IDR_MENUBAR RCDATA DISCARDABLE 
 BEGIN
-    IDR_MENUBAR, 2,
-    I_IMAGENONE, IDM_FILE, TBSTATE_ENABLED, 
-    TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_CAP_FILE, 0, 0,
-    I_IMAGENONE, IDM_COMPONENT, TBSTATE_ENABLED, 
-    TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_CAP_COMPONENT, 0, 1,
+    0x006c, 0x0002, 0xfffe, 0x9c56, 0x0004, 0x0018, 0x9c55, 0x0000, 0x0000, 
+    0xfffe, 0x9c5a, 0x0004, 0x0018, 0x9c5c, 0x0000, 0x0001
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CHIP                BITMAP  DISCARDABLE     "..\\resources\\CHIP.bmp"
+IDB_FOLDER              BITMAP  DISCARDABLE     "..\\resources\\Folder.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -31,16 +31,18 @@ UIManager::UIManager() {
  * @param hwndMain     Main window handle.
  * @param workspace    PartCat workspace .
  * @param treeView     TreeView control manager.
+ * @param hIml         ImageList handle.
  * @param hwndDetail   Detail dialog view handle.
  * @param lpDetailProc Detail view dialog procedure.
  */
 UIManager::UIManager(HINSTANCE *hInst, HWND *hwndMain, Settings *settings,
-					 Workspace *workspace, TreeView *treeView, HWND *hwndDetail,
-					 DLGPROC lpDetailProc) {
+					 Workspace *workspace, TreeView *treeView, HIMAGELIST *hIml,
+					 HWND *hwndDetail, DLGPROC lpDetailProc) {
 	this->settings = settings;
 	this->workspace = workspace;
 	this->treeView = treeView;
 	this->hInst = hInst;
+	this->hIml = hIml;
 	this->hwndMain = hwndMain;
 	this->hwndDetail = hwndDetail;
 	this->lpDetailProc = lpDetailProc;
@@ -618,6 +620,30 @@ LRESULT UIManager::ShowDatasheet() {
 }
 
 /**
+ * Initializes the main application image list.
+ *
+ * @param  hInstance Application instance.
+ * @return           Image list handle.
+ */
+HIMAGELIST UIManager::InitializeImageList(HINSTANCE hInstance) {
+	HIMAGELIST hIml;
+	HBITMAP hBmp;
+
+	// Create an Image List.
+	hIml = ImageList_Create(16, 16, 0, 2, 0);
+
+	// Load the folder image into the Image List.
+	hBmp = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_FOLDER));
+	ImageList_Add(hIml, hBmp, NULL);
+
+	// Load the chip image into the Image List.
+	hBmp = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_CHIP));
+	ImageList_Add(hIml, hBmp, NULL);
+
+	return hIml;
+}
+
+/**
  * Sets the application sub-title.
  *
  * @param szSubTitle Application sub-title.
@@ -722,13 +748,13 @@ void UIManager::PopulateTreeView() {
 	for (i = 0; i < arrCategories.size(); i++) {
 		// Add category to the TreeView.
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, arrCategories[i].GetName(),
-			NULL, 0, (LPARAM)-1);
+			NULL, ILI_FOLDER, (LPARAM)-1);
 
 		// Go through sub-categories and populate its components.
 		vector<wstring> arrSubCategories = arrCategories[i].GetSubCategories();
 		for (j = 0; j < arrSubCategories.size(); j++) {
 			HTREEITEM nodeSubCategory = treeView->AddItem(nodeCategory,
-				arrSubCategories[j].c_str(), NULL, 0, (LPARAM)-1);
+				arrSubCategories[j].c_str(), NULL, ILI_FOLDER, (LPARAM)-1);
 
 			// Go through components searching for the ones that belong here.
 			for (size_t k = 0; k < arrComponents.size(); k++) {
@@ -747,7 +773,7 @@ void UIManager::PopulateTreeView() {
 					// Check if this component fits into this sub-category.
 					if (arrSubCategories[j].compare(wstring(szSubCategory)) == 0)
 						treeView->AddItem(nodeSubCategory, arrComponents[k].ToString(),
-							NULL, 0, (LPARAM)k);
+							NULL, ILI_CHIP, (LPARAM)k);
 				}
 			}
 
@@ -768,7 +794,7 @@ void UIManager::PopulateTreeView() {
 
 					if (szSubCategory == NULL)
 						treeView->AddItem(nodeCategory, arrComponents[j].ToString(),
-							NULL, 0, (LPARAM)j);
+							NULL, ILI_CHIP, (LPARAM)j);
 				}
 			}
 		}
@@ -781,14 +807,14 @@ void UIManager::PopulateTreeView() {
 	if (bHasUncategorized) {
 		arrCategories.push_back(Category(L"Uncategorized"));
 		HTREEITEM nodeCategory = treeView->AddItem(NULL, L"Uncategorized",
-			NULL, 0, (LPARAM)-1);
+			NULL, ILI_FOLDER, (LPARAM)-1);
 
 		// Go through components searching for uncategorized ones.
 		for (j = 0; j < arrComponents.size(); j++) {
 			LPCTSTR szCategory = arrComponents[j].GetCategory();
 			if (szCategory == NULL)
 				treeView->AddItem(nodeCategory, arrComponents[j].ToString(),
-					NULL, 0, (LPARAM)j);
+					NULL, ILI_CHIP, (LPARAM)j);
 		}
 
 		// Expand the node.

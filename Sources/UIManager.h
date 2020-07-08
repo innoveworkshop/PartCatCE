@@ -15,11 +15,16 @@
 #include "Directory.h"
 #include "Workspace.h"
 
+// Define the Image List image indexes.
+#define ILI_FOLDER 0
+#define ILI_CHIP   1
+
 class UIManager {
 protected:
 	HINSTANCE *hInst;
 	HWND *hwndMain;
 	HWND *hwndDetail;
+	HIMAGELIST *hIml;
 	HBITMAP hbmpComponent;
 	DLGPROC lpDetailProc;
 	Settings *settings;
@@ -32,12 +37,15 @@ public:
 	// Constructors and destructors.
 	UIManager();
 	UIManager(HINSTANCE *hInst, HWND *hwndMain, Settings *settings,
-			  Workspace *workspace, TreeView *treeView, HWND *hwndDetail,
-			  DLGPROC lpDetailProc);
+			  Workspace *workspace, TreeView *treeView, HIMAGELIST *hIml,
+			  HWND *hwndDetail, DLGPROC lpDetailProc);
 
 	// Loading dialog.
 	static void ShowLoading();
 	static void HideLoading();
+
+	// Image list.
+	static HIMAGELIST InitializeImageList(HINSTANCE hInstance);
 
 	// General stuff.
 	bool GetEditText(HWND hwndControl, LPTSTR *szBuffer);

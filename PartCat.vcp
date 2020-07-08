@@ -570,6 +570,7 @@ DEP_CPP_PARTC=\
 	".\Sources\PartCat.h"\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
+	".\Sources\Settings.h"\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\UIManager.h"\
@@ -809,8 +810,6 @@ DEP_CPP_TREEV=\
 DEP_CPP_TREEV=\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
-	{$(INCLUDE)}"aygshell.h"\
-	{$(INCLUDE)}"sipapi.h"\
 	
 
 !ENDIF 
@@ -962,6 +961,7 @@ DEP_CPP_UIMAN=\
 	".\Sources\Path.h"\
 	".\Sources\Property.h"\
 	".\Sources\PropertyEditor.h"\
+	".\Sources\Settings.h"\
 	".\Sources\StdAfx.h"\
 	".\Sources\TreeView.h"\
 	".\Sources\UIManager.h"\
@@ -981,7 +981,15 @@ SOURCE=.\Sources\UIManager.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
+SOURCE=.\Resources\bitmap3.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Resources\DISKS009.ICO
+# End Source File
+# Begin Source File
+
+SOURCE=.\Resources\Folder.bmp
 # End Source File
 # Begin Source File
 
@@ -1914,8 +1922,6 @@ DEP_CPP_STDAF=\
 
 DEP_CPP_STDAF=\
 	".\Sources\StdAfx.h"\
-	{$(INCLUDE)}"aygshell.h"\
-	{$(INCLUDE)}"sipapi.h"\
 	
 
 !ENDIF 

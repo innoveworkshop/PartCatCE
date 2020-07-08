@@ -42,11 +42,12 @@ const TBBUTTON tbButtons[] = {
 // Global variables.
 HINSTANCE hInst;
 HWND hwndMain;
+HWND hwndDetail;
+HIMAGELIST hIml;
 TreeView treeView;
 Workspace workspace;
 Settings settings;
 UIManager uiManager;
-HWND hwndDetail;
 
 #ifdef SHELL_AYGSHELL
 // Pocket PC specific components.
@@ -69,8 +70,8 @@ LRESULT LoadTestWorkspace() {
 
 	// Initialize everything.
 	workspace = Workspace(Path(TEST_WORKSPACE));
-	uiManager = UIManager(&hInst, &hwndMain, &settings, &workspace, &treeView, &hwndDetail,
-		(DLGPROC)DetailDlgProc);
+	uiManager = UIManager(&hInst, &hwndMain, &settings, &workspace, &treeView, &hIml,
+		&hwndDetail, (DLGPROC)DetailDlgProc);
 
 	// Populate the TreeView.
 	uiManager.OpenWorkspace(true);
@@ -284,7 +285,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
     InitCommonControls();
 
 	// Initialize the Image List.
-	//HIMAGELIST hIml = InitializeImageList(hInst);
+	hIml = UIManager::InitializeImageList(hInst);
 
 #ifdef SHELL_AYGSHELL
 	SHMENUBARINFO mbi = {0};
@@ -358,7 +359,7 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 
 	// Create the TreeView control.
 	treeView = TreeView(hInst, hWnd, rcTreeView, (HMENU)IDC_TREEVIEW);
-	//treeView.SetImageList(hIml);
+	treeView.SetImageList(hIml);
 
 #if !defined(SHELL_AYGSHELL)
 	// Calculate the detail view dialog size and position.
