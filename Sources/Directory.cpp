@@ -89,7 +89,7 @@ vector<Directory> Directory::GetSubDirectories() {
 			} else {
 				MessageBox(NULL, L"Error while listing directory", L"Error",
 					MB_OK | MB_ICONERROR);
-				return 0;
+				return vector<Directory>();
 			}
 		}
 	}
