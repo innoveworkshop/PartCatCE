@@ -5,9 +5,6 @@
  * @author Nathan Campos <nathan@innoveworkshop.com>
  */
 
-// Enable development mode.
-#define DEVELOP
-
 #include "stdafx.h"
 #include "PartCat.h"
 #include <windows.h>
@@ -58,27 +55,6 @@ SHACTIVATEINFO sai;
 HWND hwndCB;
 #endif
 
-#ifdef DEVELOP
-/**
- * Simple test workspace that is loaded for debugging quickly.
- *
- * @return 0 if everything went OK.
- */
-LRESULT LoadTestWorkspace() {
-	// Initialize settings.
-	settings = Settings(&hInst, &hwndMain);
-
-	// Initialize everything.
-	workspace = Workspace(Path(TEST_WORKSPACE));
-	uiManager = UIManager(&hInst, &hwndMain, &settings, &workspace, &treeView, &hIml,
-		&hwndDetail, (DLGPROC)DetailDlgProc);
-
-	// Populate the TreeView.
-	uiManager.OpenWorkspace(true);
-
-	return 0;
-}
-#endif
 
 /**
  * Application's main entry point.
@@ -377,10 +353,16 @@ LRESULT WndMainCreate(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		rcDetailView.right, rcDetailView.bottom, SWP_SHOWWINDOW);
 #endif
 
-#ifdef DEVELOP
-	// Load the test workspace.
-	LoadTestWorkspace();
-#endif
+	// Initialize settings and UI manager.
+	settings = Settings(&hInst, &hwndMain);
+	uiManager = UIManager(&hInst, &hwndMain, &settings, &workspace, &treeView, &hIml,
+		&hwndDetail, (DLGPROC)DetailDlgProc);
+
+	// Load the last opened workspace if available.
+	if (settings.GetLastOpenedWorkspace() != NULL) {
+		workspace = Workspace(Path(settings.GetLastOpenedWorkspace()));
+		uiManager.OpenWorkspace(true);
+	}
 
 	return 0;
 }
