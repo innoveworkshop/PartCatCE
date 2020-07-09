@@ -177,6 +177,9 @@ LRESULT UIManager::OpenWorkspace(bool bRefresh) {
 				L"Open Workspace Error", MB_OK | MB_ICONERROR);
 			return 1;
 		}
+
+		// Save Last Workspace settings.
+		settings->SetLastOpenedWorkspace(szPath);
 	}
 
 	// Populate and dress up the window.
@@ -217,10 +220,14 @@ LRESULT UIManager::CloseWorkspace() {
 	if (CheckForUnsavedChanges())
 		return 1;
 
+	// Clear the UI.
 	ClearDetailView(true);
 	treeView->Clear();
-	workspace->Close();
 	SetApplicationSubTitle(NULL);
+
+	// Close the workspace and clear the last workspace settings.
+	workspace->Close();
+	settings->SetLastOpenedWorkspace(L"");
 
 	return 0;
 }

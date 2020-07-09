@@ -7,8 +7,13 @@
 
 #include "Settings.h"
 #include "Constants.h"
+#include "FileUtils.h"
 #include "resource.h"
 #include "commdlg.h"
+
+// Registry storage definitions.
+#define SETTINGS_ROOT        L"Software\\Innove Workshop\\PartCat"
+#define REGVAL_LASTWORKSPACE L"LastWorkspace"
 
 extern "C" {
 	void *lpSettingsThis;
@@ -18,9 +23,7 @@ extern "C" {
  * Initializes an empty object.
  */
 Settings::Settings() {
-	lpSettingsThis = NULL;
-	hwndDialog = NULL;
-	szPDFViewerPath[0] = L'\0';
+	Initialize();
 }
 
 /**
@@ -30,12 +33,88 @@ Settings::Settings() {
  * @param hwndParent Parent window handle.
  */
 Settings::Settings(HINSTANCE *hInstance, HWND *hwndParent) {
-	lpSettingsThis = NULL;
-	hwndDialog = NULL;
-	szPDFViewerPath[0] = L'\0';
-
+	Initialize();
 	this->hInstance = hInstance;
 	this->hwndParent = hwndParent;
+}
+
+/**
+ * Initializes the settings object.
+ */
+void Settings::Initialize() {
+	HKEY hKey;
+	DWORD dwDisposition;
+	LONG lResult;
+
+	// Clear everything.
+	lpSettingsThis = NULL;
+	hwndDialog = NULL;
+	szLastWorkspace[0] = L'\0';
+
+	// Open the registry key.
+	lResult = RegCreateKeyEx(HKEY_CURRENT_USER, SETTINGS_ROOT, 0, NULL, 0, 0, NULL,
+			&hKey, &dwDisposition);
+	if (lResult != ERROR_SUCCESS) {
+		MessageBox(NULL, L"Couldn't open the the settings registry key.",
+			L"Registry Error", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// Check if we just created the key.
+	if (dwDisposition == REG_OPENED_EXISTING_KEY) {
+		DWORD dwLength = MAX_PATH;
+
+		// Get the last opened workspace key.
+		lResult = RegQueryValueEx(hKey, REGVAL_LASTWORKSPACE, NULL, NULL,
+			(LPBYTE)szLastWorkspace, &dwLength);
+		if (lResult != ERROR_SUCCESS)
+			szLastWorkspace[0] = '\0';
+	}
+
+	// Close the registry key.
+	RegCloseKey(hKey);
+}
+
+/**
+ * Sets a registry value in the appropriate place.
+ * @remark This function will show error message boxes in case of an error.
+ *
+ * @param  szRegValue Registry value name.
+ * @param  dwType     Type of the registry value.
+ * @param  lpData     Registry value data to be set.
+ * @param  dwLength   Length of the data.
+ * @return            RegSetValueEx return code.
+ */
+long Settings::SetRegistryValue(LPCTSTR szRegValue, DWORD dwType,
+								const BYTE *lpData, DWORD dwLength) {
+	HKEY hKey;
+	LONG lResult;
+
+	// Open the registry key.
+	lResult = RegOpenKeyEx(HKEY_CURRENT_USER, SETTINGS_ROOT, 0, 0, &hKey);
+	if (lResult != ERROR_SUCCESS) {
+		MessageBox(NULL, L"Couldn't open the the settings registry key.",
+			L"Registry Error", MB_OK | MB_ICONERROR);
+		return lResult;
+	}
+
+	// Set the registry value.
+	lResult = RegSetValueEx(hKey, szRegValue, 0, REG_SZ, lpData, dwLength);
+
+	// Close the registry key and return.
+	return RegCloseKey(hKey);
+}
+
+/**
+ * Sets a REG_SZ registry value in the appropriate place.
+ * @remark This function will show error message boxes in case of an error.
+ *
+ * @param  szRegValue Registry value name.
+ * @param  szData     String data for the value contents.
+ * @return            RegSetValueEx return code.
+ */
+long Settings::SetRegistryValue(LPCTSTR szRegValue, LPCTSTR szData) {
+	return SetRegistryValue(szRegValue, REG_SZ, (const BYTE*)szData, sizeof(WCHAR) * (wcslen(szData) + 1));
 }
 
 /**
@@ -50,64 +129,42 @@ int Settings::ShowDialog() {
 }
 
 /**
- * Selects a PDF viewer program using a file browser.
- *
- * @return 0 if everything worked.
- */
-int Settings::SelectPDFProgram() {
-	OPENFILENAME ofn = {0};
-    WCHAR szPath[MAX_PATH] = L"";
-
-	// Setup the open dialog.
-	ofn.lStructSize = sizeof(ofn);
-	ofn.lpstrTitle = L"Select PDF Viewer Program";
-	ofn.hwndOwner = *hwndParent;
-	ofn.lpstrFilter = L"Executables (*.exe)\0*.exe\0All Files (*.*)\0*.*\0";
-	ofn.lpstrFile = szPath;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST;
-	ofn.lpstrDefExt = L"exe";
-
-	// Open the open file dialog.
-	if (!GetOpenFileName(&ofn))
-		return 1;
-
-	// Set the PDF viewer path and refresh the dialog.
-	SetPDFViewer(szPath);
-	PopulateDialog();
-
-	return 0;
-}
-
-/**
  * Populates the dialog with settings.
  *
  * @return 0 if everything went fine.
  */
 int Settings::PopulateDialog() {
-	SetDlgItemText(hwndDialog, IDC_EDPDFAPP, szPDFViewerPath);
 	return 0;
 }
 
 /**
- * Gets the path to the default PDF viewer application.
+ * Gets the path to the last opened workspace.
  *
- * @return PDF viewer path or NULL if one wasn't set.
+ * @return Last opened workspace path or NULL if one wasn't set or moved.
  */
-LPCTSTR Settings::GetPDFViewer() {
-	if (szPDFViewerPath[0] == L'\0')
+LPCTSTR Settings::GetLastOpenedWorkspace() {
+	// Check if the last workspace is empty.
+	if (szLastWorkspace[0] == L'\0')
 		return NULL;
 
-	return szPDFViewerPath;
+	// Check if the last workspace still exists.
+	if (!FileUtils::Exists(szLastWorkspace))
+		return NULL;
+
+	return szLastWorkspace;
 }
 
 /**
- * Sets the PDF viewer program path.
+ * Sets the last opened workspace path.
  *
- * @param szPath Path to the PDF viewer.
+ * @param szPath Path to the last opened workspace.
  */
-void Settings::SetPDFViewer(LPCTSTR szPath) {
-	wcscpy(szPDFViewerPath, szPath);
+void Settings::SetLastOpenedWorkspace(LPCTSTR szPath) {
+	// Set the last workspace locally.
+	wcscpy(szLastWorkspace, szPath);
+
+	// Set the Last Workspace registry value.
+	SetRegistryValue(REGVAL_LASTWORKSPACE, szLastWorkspace);
 }
 
 /**
@@ -126,8 +183,6 @@ int Settings::DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam) {
 		return PopulateDialog();
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
-		case IDC_BTPDFBROWSE:
-			return SelectPDFProgram();
 		case IDOK:
 			// TODO: Save the settings to the registry.
 		case IDCANCEL:

@@ -15,7 +15,15 @@ protected:
 	HINSTANCE *hInstance;
 	HWND *hwndParent;
 	HWND hwndDialog;
-	WCHAR szPDFViewerPath[MAX_PATH];
+	WCHAR szLastWorkspace[MAX_PATH];
+
+	// Initialization.
+	void Initialize();
+
+	// Registry.
+	long SetRegistryValue(LPCTSTR szRegValue, DWORD dwType,
+						  const BYTE *lpData, DWORD dwLength);
+	long SetRegistryValue(LPCTSTR szRegValue, LPCTSTR szData);
 
 	// Dialog procedure.
 	int DlgProc(HWND hDlg, UINT wMsg, WPARAM wParam, LPARAM lParam);
@@ -31,10 +39,9 @@ public:
 	int ShowDialog();
 	int PopulateDialog();
 
-	// PDF viewer.
-	LPCTSTR GetPDFViewer();
-	void SetPDFViewer(LPCTSTR szPath);
-	int SelectPDFProgram();
+	// Last opened workspace.
+	LPCTSTR GetLastOpenedWorkspace();
+	void SetLastOpenedWorkspace(LPCTSTR szPath);
 };
 
 #endif  // _SETTINGS_H
