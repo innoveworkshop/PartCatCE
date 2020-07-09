@@ -7,6 +7,7 @@
 
 #include "Path.h"
 #include <string>
+#include "FileUtils.h"
 
 using namespace std;
 
@@ -119,7 +120,7 @@ Path Path::Parent() {
  * @return TRUE if the path exists.
  */
 bool Path::Exists() {
-	return GetFileAttributes(szPath) != 0xFFFFFFFF;
+	return FileUtils::Exists(szPath);
 }
 
 /**

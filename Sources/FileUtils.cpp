@@ -160,3 +160,13 @@ bool FileUtils::SaveContents(LPCTSTR szFilePath, LPCTSTR szContents) {
 
     return true;
 }
+
+/**
+ * Checks if a file exists.
+ *
+ * @param  szPath Path to the file to check for existance.
+ * @return        TRUE if the file exists.
+ */
+bool FileUtils::Exists(LPCTSTR szPath) {
+	return GetFileAttributes(szPath) != 0xFFFFFFFF;
+}
